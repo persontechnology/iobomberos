@@ -4,6 +4,7 @@ namespace iobom\Http\Controllers;
 
 use Illuminate\Http\Request;
 use iobom\Models\Estacion;
+use iobom\DataTables\EstacionDataTable;
 
 class Estaciones extends Controller
 {
@@ -12,8 +13,9 @@ class Estaciones extends Controller
         $this->middleware('auth');
     }
 
-	public function index()
+	public function index(EstacionDataTable $dataTable)
 	{
-	 	return view('estaciones.index');
+		return  $dataTable->render('estaciones.index');
+	 	
 	}
 }

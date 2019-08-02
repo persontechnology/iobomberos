@@ -40,7 +40,7 @@
                  {{--  menus para las gestiones del proyecto  --}}
                 <li class="nav-item nav-item-submenu" id="menuGestionInformacion">
                     <a href="#" class="nav-link">
-                        <i class="fas fa-globe-americas"></i>
+                        <i class="fas fa-list"></i>
                         <span>Gestón de Información</span>
                     </a>
                     <ul class="nav nav-group-sub" data-submenu-title="Form components">

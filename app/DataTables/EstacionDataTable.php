@@ -2,8 +2,8 @@
 
 namespace iobom\DataTables;
 
-use iobom\User;
 use Yajra\DataTables\Services\DataTable;
+use iobom\Models\Estacion;
 
 class EstacionDataTable extends DataTable
 {
@@ -27,9 +27,9 @@ class EstacionDataTable extends DataTable
      * @param \iobom\User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(User $model)
+    public function query(Estacion $model)
     {
-        return $model->newQuery()->select('id', 'add-your-columns-here', 'created_at', 'updated_at');
+        return $model->newQuery()->select($this->getColumns());
     }
 
     /**
@@ -40,7 +40,7 @@ class EstacionDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->columns($this->getColumns())
+                    ->columns($this->getColumnsTable())
                     ->minifiedAjax()
                     ->addAction(['width' => '80px','exportable' => false,'printable' => false,'title'=>'Acciones'])
                     ->parameters($this->getBuilderParameters());
@@ -55,9 +55,17 @@ class EstacionDataTable extends DataTable
     {
         return [
             'id',
-            'add your columns',
-            'created_at',
-            'updated_at'
+            'nombre',
+            'direccion',
+            
+        ];
+    }
+     protected function getColumnsTable()
+    {
+        return [
+            'id'=>['title'=>'#'],
+            'nombre',
+            'direccion'=>['title'=>'Dirección'],            
         ];
     }
 
