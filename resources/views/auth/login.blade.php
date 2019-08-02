@@ -1,4 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.app',['title'=>'Ingresar al sistema'])
+
+@section('breadcrumbs', Breadcrumbs::render('login'))
+
 
 @section('content')
 <div class="container">
@@ -8,7 +11,7 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('login') }}" id="loginForm">
                         @csrf
 
                         <div class="form-group row">
@@ -70,4 +73,18 @@
         </div>
     </div>
 </div>
+
+@push('linksCabeza')
+
+    <script src="{{ asset('admin/plus/validate/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('admin/plus/validate/messages_es.min.js') }}"></script>
+@endpush
+
+@prepend('linksPie')
+    <script> 
+        $( "#loginForm" ).validate();
+        $('#menuLogin').addClass('active');
+    </script>
+@endprepend
+
 @endsection

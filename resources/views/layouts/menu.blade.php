@@ -46,7 +46,12 @@
                     <ul class="nav nav-group-sub" data-submenu-title="Form components">
                         <li class="nav-item">
                             <a href="{{ route('estaciones') }}" class="nav-link" id="menuEstacion">Estaciones</a>
-                        </li>                     
+                        </li> 
+                        
+
+                        <li class="nav-item">
+                            <a href="{{ route('usuarios') }}" class="nav-link" id="menuUsuarios">Personal operativo</a>
+                        </li> 
 
                     </ul>
                 </li>

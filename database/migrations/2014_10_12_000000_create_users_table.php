@@ -21,6 +21,10 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->boolean('estado')->default(true);
+            $table->bigInteger('creadoPor')->nullable();
+            $table->bigInteger('actualizadoPor')->nullable();
         });
     }
 
