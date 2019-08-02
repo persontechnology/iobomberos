@@ -37,4 +37,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //A:Deivid
+    // D: retornar usuarios creado y actualizado por
+    public function creadoPor($idUsuario)
+    {
+        $user=$this::find($idUsuario);
+        if($user){
+            return $user;
+        }
+        return '';
+    }
+
+    public function actualizadoPor($idUsuario)
+    {
+        $user=$this::find($idUsuario);
+        if($user){
+            return $user;
+        }
+        return '';
+    }
 }

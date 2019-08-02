@@ -1,5 +1,16 @@
 <?php
 
+// auth
+
+
+Breadcrumbs::for('inicio', function ($trail) {
+    $trail->push('Inicio', url('/'));
+});
+Breadcrumbs::for('login', function ($trail) {
+    $trail->parent('inicio');
+    $trail->push('Ingresar al sistema', route('login'));
+});
+
 // Home
 Breadcrumbs::for('home', function ($trail) {
     $trail->push('Administración', route('home'));
