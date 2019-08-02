@@ -52,3 +52,12 @@ Breadcrumbs::for('estaciones', function ($trail) {
     $trail->push('Estaciones', route('estaciones'));
 });
 
+Breadcrumbs::for('nuevaEstacion', function ($trail) {
+    $trail->parent('estaciones');
+    $trail->push('Nueva estación', route('nuevaEstacion'));
+});
+
+Breadcrumbs::for('editarEstacion', function ($trail,$estacion) {
+    $trail->parent('estaciones');
+    $trail->push('Editar estación', route('editarEstacion',$estacion->id));
+});
