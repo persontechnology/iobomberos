@@ -12,7 +12,10 @@ class PermisosTableSeeder extends Seeder
      */
     public function run()
     {
-        $permisos = array('name' => 'G. de usuarios');
+        $permisos = array(
+            'G. de personal',
+            'G. de estaciones'
+        );
         foreach ($permisos as $permiso) {
             Permission::firstOrCreate(['name' => $permiso]);
         }

@@ -31,5 +31,24 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/permisos-sincronizar', 'Permisos@sincronizar')->name('sincronizarPermiso');
     });
 
+    Route::namespace('Usuario')->group(function () {
+        // Usuarios
+        Route::get('/usuarios', 'Usuarios@index')->name('usuarios');
+        Route::get('/usuarios-nuevo', 'Usuarios@nuevo')->name('usuariosNuevo');
+        Route::post('/usuarios-guardar', 'Usuarios@guardar')->name('guardarUsuario');
+        Route::post('/usuarios-eliminar', 'Usuarios@eliminar')->name('eliminarUsuario');
+        Route::get('/usuarios-editar-rol/{idUsuario}', 'Usuarios@editarRol')->name('editarRolUsuario');
+        Route::post('/usuarios-actualizar-roles', 'Usuarios@actualizarRolUsuario')->name('actualizarRolUsuario');
+        Route::get('/usuarios-editar/{idUsuario}', 'Usuarios@editar')->name('editarUsuario');
+        Route::post('/usuarios-actualizar', 'Usuarios@actualizar')->name('actualizarUsuario');
+        Route::get('/usuarios-informacion/{idUsuario}', 'Usuarios@informacion')->name('informacionUsuario');
+        Route::get('/usuarios-rol/{nombreRol}', 'Usuarios@usuariosPoRol')->name('usuariosPoRol');
+        Route::get('/usuarios-informacion-pdf/{idUsuario}', 'Usuarios@informacionPdf')->name('usuarioInformacionPdf');
+        Route::get('/usuarios-informacion-imprimir/{idUsuario}', 'Usuarios@informacionImprimir')->name('usuarioInformacionImprimir');
+        Route::get('/usuarios-importar', 'Usuarios@importar')->name('usuariosImportar');
+        Route::post('/usuarios-procesar-importar', 'Usuarios@procesarImportacion')->name('procesarImportacionUsuarios');
+            
+    });
+
 
 });
