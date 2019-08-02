@@ -16,6 +16,7 @@ Breadcrumbs::for('permisos', function ($trail,$rol) {
     $trail->push('Permisos', route('permisos',$rol->id));
 });
 
+
 //A:Deivid
 //D:Breadcrums de usuarios
 Breadcrumbs::for('usuarios', function ($trail) {
@@ -42,3 +43,12 @@ Breadcrumbs::for('usuariosImportar', function ($trail) {
     $trail->parent('usuarios');
     $trail->push('Importar usuarios', route('usuariosImportar'));
 });
+
+//A:Fabian Lopez
+//D:Breadcrums de estaciones
+
+Breadcrumbs::for('estaciones', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Estaciones', route('estaciones'));
+});
+

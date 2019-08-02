@@ -31,6 +31,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/permisos-sincronizar', 'Permisos@sincronizar')->name('sincronizarPermiso');
     });
 
+
     Route::namespace('Usuario')->group(function () {
         // Usuarios
         Route::get('/usuarios', 'Usuarios@index')->name('usuarios');
@@ -49,6 +50,11 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/usuarios-procesar-importar', 'Usuarios@procesarImportacion')->name('procesarImportacionUsuarios');
             
     });
+
+    //A:Fabian Lopez
+    //D. administracion de estaciones
+    Route::get('/estaciones', 'Estaciones@index')->name('estaciones');
+
 
 
 });
