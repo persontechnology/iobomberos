@@ -57,14 +57,67 @@ return [
      * Default html builder parameters.
      */
     'parameters' => [
-        'dom'     => 'Bfrtip',
+        'dom'     => 'Blfrtip',
         'order'   => [[0, 'desc']],
+        'sPaginationType'=> 'full_numbers',
+        'autoWidth' => false,
+        'lengthMenu'=> [
+            [ 10, 25, 50, -1 ],
+            [ '10 filas', '25 filas', '50 filas', 'Mostrar todo' ]
+        ],
         'buttons' => [
-            'create',
-            'export',
-            'print',
-            'reset',
-            'reload',
+          [
+            'extend'=>'copy',
+            'className'=> 'btn btn-light btn-sm',
+            'text'=> '<i class="fas fa-copy"></i> Copiar'
+          ],
+          [
+            'extend'=> 'export',
+            'className'=> 'btn btn-light btn-sm',
+            'text'=> '<i class="fas fa-download"></i> Exportar'
+          ],
+          [
+            'extend'=>'print',
+            'className'=> 'btn btn-light btn-sm',
+            'text'=>'<i class="fas fa-print"></i> Imprimir',
+             'messageTop' => 'User Report',
+            
+          ],
+          [
+            'extend'=>'reset',
+            'className'=> 'btn btn-light btn-sm',
+            'text'=>'<i class="fas fa-undo-alt"></i> Resetear'
+          ],
+          [
+            'extend'=>'reload',
+            'className'=> 'btn btn-light btn-sm',
+            'text'=>'<i class="fas fa-sync"></i> Recargar'
+          ]
+        ],
+        'language'=> [
+            "sProcessing"=> "Procesando...",
+            "sLengthMenu"=> "Mostrar _MENU_ registros",
+            "sZeroRecords"=> "No se encontraron resultados",
+            "sEmptyTable"=> "Ningún dato disponible en esta tabla",
+            "sInfo"=> "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty"=> "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered"=> "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix"=> "",
+            "sSearch"=> "Buscar:",
+            "sUrl"=> "",
+            "sInfoThousands"=> ",",
+            "sLoadingRecords"=> "Cargando...",
+    
+            "oPaginate"=> [
+                "sFirst"=> "Primero",
+                "sLast"=> "Último",
+                "sNext"=> "Siguiente",
+                "sPrevious"=> "Anterior"
+            ],
+            "oAria"=> [
+                "sSortAscending"=> ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending"=> ": Activar para ordenar la columna de manera descendente"
+            ]
         ],
     ],
 ];

@@ -180,6 +180,10 @@ return [
         Yajra\DataTables\HtmlServiceProvider::class,
         Yajra\DataTables\ButtonsServiceProvider::class,
         
+        // PDF
+        Barryvdh\Snappy\ServiceProvider::class,
+        // EXCEL
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
 
     ],
@@ -232,6 +236,12 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        // PDF
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
+        // EXCEL
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

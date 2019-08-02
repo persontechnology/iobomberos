@@ -17,6 +17,33 @@ Breadcrumbs::for('permisos', function ($trail,$rol) {
 });
 
 
+//A:Deivid
+//D:Breadcrums de usuarios
+Breadcrumbs::for('usuarios', function ($trail) {
+    $trail->parent('home');
+    $trail->push('G. de Usuarios', route('usuarios'));
+});
+Breadcrumbs::for('usuariosNuevo', function ($trail) {
+    $trail->parent('usuarios');
+    $trail->push('Nuevo usuario', route('usuariosNuevo'));
+});
+Breadcrumbs::for('informacionUsuario', function ($trail,$user) {
+    $trail->parent('usuarios');
+    $trail->push('Información de usuario', route('informacionUsuario',$user->id));
+});
+Breadcrumbs::for('editarUsuario', function ($trail,$user) {
+    $trail->parent('usuarios');
+    $trail->push('Actualizar usuario', route('editarUsuario',$user->id));
+});
+Breadcrumbs::for('editarRolUsuario', function ($trail,$user) {
+    $trail->parent('usuarios');
+    $trail->push('Roles de usuario', route('editarRolUsuario',$user->id));
+});
+Breadcrumbs::for('usuariosImportar', function ($trail) {
+    $trail->parent('usuarios');
+    $trail->push('Importar usuarios', route('usuariosImportar'));
+});
+
 //A:Fabian Lopez
 //D:Breadcrums de estaciones
 

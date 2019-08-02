@@ -1,11 +1,11 @@
 <?php
 
-namespace iobom\DataTables\Sistema;
+namespace iobom\DataTables\Usuarios;
 
-use Spatie\Permission\Models\Role;
+use iobom\User;
 use Yajra\DataTables\Services\DataTable;
-
-class RolesDataTable extends DataTable
+use Illuminate\Support\Facades\Auth;
+class PorRolDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -16,21 +16,23 @@ class RolesDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->addColumn('action', function($rol){
-                return view('sistema.roles.acciones',['rol'=>$rol])->render();
-            });
-        
+        ->addColumn('roles',function($user){
+            return view('usuario.usuarios.roles',['user'=>$user])->render();
+        })
+        ->addColumn('action', function($user){
+            return view('usuario.usuarios.acciones',['user'=>$user])->render();
+        });
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \iobom\User $model
+     * @param \cactu\User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Role $model)
+    public function query(User $model)
     {
-        return $model->newQuery()->select('id', 'name');
+        return $model->role($this->rol)->where('id','!=',Auth::user()->id)->select($this->getColumns());
     }
 
     /**
@@ -41,21 +43,28 @@ class RolesDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->columns($this->getColumns())
+                    ->columns($this->getColumnsTable())
                     ->minifiedAjax()
                     ->addAction(['width' => '80px','exportable' => false,'printable' => false,'title'=>'Acciones'])
                     ->parameters($this->getBuilderParameters());
     }
 
-    /**
-     * Get columns.
-     *
-     * @return array
-     */
     protected function getColumns()
     {
         return [
-            'name'=>['title'=>'Nombre']
+            'id',
+            'name',
+            'email'
+        ];
+    }
+
+
+    protected function getColumnsTable()
+    {
+        return [
+            'name'=>['title'=>'Usuario'],
+            'email',
+            'roles'
         ];
     }
 
@@ -66,6 +75,6 @@ class RolesDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Sistema_Roles_' . date('YmdHis');
+        return 'Usuarios/PorRol_' . date('YmdHis');
     }
 }
