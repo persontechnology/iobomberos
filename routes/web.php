@@ -31,5 +31,9 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/permisos-sincronizar', 'Permisos@sincronizar')->name('sincronizarPermiso');
     });
 
+    //A:Fabian Lopez
+    //D. administracion de estaciones
+    Route::get('/estaciones', 'Estaciones@index')->name('estaciones');
+
 
 });

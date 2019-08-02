@@ -36,8 +36,21 @@
                             Escritorio
                         </span>
                     </a>
+                </li>               
+                 {{--  menus para las gestiones del proyecto  --}}
+                <li class="nav-item nav-item-submenu" id="menuGestionInformacion">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-globe-americas"></i>
+                        <span>Gestón de Información</span>
+                    </a>
+                    <ul class="nav nav-group-sub" data-submenu-title="Form components">
+                        <li class="nav-item">
+                            <a href="{{ route('estaciones') }}" class="nav-link" id="menuEstacion">Estaciones</a>
+                        </li>                     
+
+                    </ul>
                 </li>
-               
+              
     
                 @role('Administrador')
                 <li class="nav-item-header">

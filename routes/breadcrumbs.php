@@ -15,3 +15,13 @@ Breadcrumbs::for('permisos', function ($trail,$rol) {
     $trail->parent('roles');
     $trail->push('Permisos', route('permisos',$rol->id));
 });
+
+
+//A:Fabian Lopez
+//D:Breadcrums de estaciones
+
+Breadcrumbs::for('estaciones', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Estaciones', route('estaciones'));
+});
+
