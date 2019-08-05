@@ -11,6 +11,15 @@ Breadcrumbs::for('login', function ($trail) {
     $trail->push('Ingresar al sistema', route('login'));
 });
 
+Breadcrumbs::for('resetPassword', function ($trail) {
+    $trail->parent('login');
+    $trail->push('Restablecer contraseña', url('/password/reset'));
+});
+Breadcrumbs::for('register', function ($trail) {
+    $trail->parent('inicio');
+    $trail->push('Registrar', route('register'));
+});
+
 // Home
 Breadcrumbs::for('home', function ($trail) {
     $trail->push('Administración', route('home'));

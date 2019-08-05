@@ -1,11 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.app',['Confirmar Email'])
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
+            <div class="col-md-4">
+                <img src="{{ asset('admin/img/bomberos.png') }}" alt="" class="img-responsive img-fluid d-none d-sm-block">
+            </div>
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Verify Your Email Address') }}</div>
+                <div class="card-header bg-dark">{{ __('Verify Your Email Address') }}</div>
 
                 <div class="card-body">
                     @if (session('resent'))
@@ -21,4 +24,14 @@
         </div>
     </div>
 </div>
+
+@push('linksCabeza')
+    <script src="{{ asset('admin/plus/validate/jquery.validate.min.js') }}"></script>
+@endpush
+
+@prepend('linksPie')
+ 
+@endprepend
+
+
 @endsection

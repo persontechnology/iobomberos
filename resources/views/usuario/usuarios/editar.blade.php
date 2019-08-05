@@ -4,7 +4,7 @@
 
 
 @section('content')
-<form method="POST" action="{{ route('actualizarUsuario') }}">
+<form method="POST" action="{{ route('actualizarUsuario') }}" id="actualizarForm">
     @csrf
     <input type="hidden" name="usuario" value="{{ $usuario->id }}" required>
     <div class="card">
@@ -74,12 +74,35 @@
 
 
 @push('linksCabeza')
-
+{{-- validtae --}}
+<script src="{{ asset('admin/plus/validate/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('admin/plus/validate/messages_es.min.js') }}"></script>
 @endpush
 
 @prepend('linksPie')
     <script>
+        $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
         $('#menuUsuarios').addClass('active');
+        $('#actualizarForm').validate({
+            rules: {
+                name:{
+                    required:true,
+                },
+                password: {
+                    required: false,
+                    minlength: 8
+                },
+                password_confirmation: {
+                    required: false,
+                    minlength: 8,
+                    equalTo: "#password"
+                },
+                email: {
+                    required: true,
+                    email: true
+                }
+            },
+        }); 
     </script>
     
 @endprepend

@@ -1,9 +1,5 @@
 <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
     
-    <a href="{{asset('img/'.$user->email.'.png')}}" class="btn btn-success"  data-toggle="tooltip" data-placement="top" title="Código QR {{ $user->name }}">
-        <i class="fas fa-qrcode"></i>
-    </a>
-
     <a href="{{ route('informacionUsuario',$user->id) }}" class="btn btn-dark"  data-toggle="tooltip" data-placement="top" title="Información {{ $user->name }}">
         <i class="fas fa-eye"></i>
     </a>

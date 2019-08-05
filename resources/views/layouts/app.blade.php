@@ -64,7 +64,7 @@
 		}
 
 		$.validator.setDefaults({
-            errorElement: "em",
+            errorElement: "span",
             errorPlacement: function ( error, element ) {
                 // Add the `invalid-feedback` class to the error element
                 error.addClass( "invalid-feedback" );
@@ -80,9 +80,6 @@
             },
             unhighlight: function (element, errorClass, validClass) {
                 $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
-            },
-            submitHandler: function () {
-                console.log('...');
             }
         });
 		

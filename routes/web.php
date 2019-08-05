@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/verificar-email-de-registro', 'HomeController@verificarEmail')->name('verificarEmail');
 
     //A:Deivid
     //D. roles y permisos de sistema solo acesso Administrador
