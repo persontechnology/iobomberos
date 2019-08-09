@@ -7,7 +7,7 @@ use iobom\Http\Controllers\Controller;
 use iobom\DataTables\Emergencias\EmergenciaDataTable;
 use iobom\Models\Emergencia\Emergencia;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 class Emergencias extends Controller
 {
     public function __construct()
@@ -30,4 +30,43 @@ class Emergencias extends Controller
         ]);
         return redirect()->route('emergencia')->with('success','Emergencia registrado exitosamente');
     }
+
+    public function editar($idEmergencia)
+    {
+        $emergencia=Emergencia::findOrFail($idEmergencia);
+        return view('emergencias.editar',['eme'=>$emergencia]);
+    }
+    
+    
+    public function actualizar(Request $request)
+    {
+        $request->validate([
+            'emergencia'=>'required|exists:emergencia,id',
+            'nombre' => 'required|max:191|unique:emergencia,nombre,'.$request->emergencia,
+        ]);
+        $eme=Emergencia::findOrFail($request->emergencia);
+        $eme->nombre=$request->nombre;
+        $eme->actualizadoPor=Auth::id();
+        $eme->save();
+        return redirect()->route('emergencia')->with('success','Cambios guardado');
+    }
+
+    
+    public function eliminar(Request $request)
+    {
+        $request->validate([
+            'emergencia'=>'required|exists:emergencia,id',
+        ]);
+        try {
+            DB::beginTransaction();
+            $emergencia=Emergencia::findOrFail($request->emergencia);
+            $emergencia->delete();
+            DB::commit();
+            return response()->json(['success'=>'Registro eliminado exitosamente']);
+        } catch (\Exception $th) {
+            DB::rollBack();
+            return response()->json(['default'=>'No se puede eliminar emergencia']);
+        }
+    }
+    
 }

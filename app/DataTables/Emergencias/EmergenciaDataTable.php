@@ -16,7 +16,9 @@ class EmergenciaDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->addColumn('action', 'emergencias/emergencia.action');
+            ->addColumn('action', function($em){
+                return view('emergencias.acciones',['eme'=>$em])->render();
+            });
     }
 
     /**

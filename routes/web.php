@@ -75,8 +75,11 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::namespace('Emergencias')->group(function () {
         // emergencias
         Route::get('/emergencia', 'Emergencias@index')->name('emergencia');
-        Route::post('/emergencia-guardar', 'Emergencias@guardar')->name('emergenciaGuardar');
-                 
+        Route::post('/emergencia-guardar', 'Emergencias@guardar')->name('emergenciaGuardar');      
+        Route::get('/emergencia-editar/{id}', 'Emergencias@editar')->name('editarEmergencia');
+        Route::post('/emergencia-actualizar', 'Emergencias@actualizar')->name('emergenciaActualizar');
+        Route::post('/emergencia-eliminar', 'Emergencias@eliminar')->name('eliminarEmergencia');
+        
     });
 
 

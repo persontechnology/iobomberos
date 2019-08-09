@@ -59,14 +59,13 @@
         });
 
         function eliminar(arg){
-            var url="{{ route('eliminarUsuario') }}";
-            var id=$(arg).data('id');
+        
             swal({
-                title: "¿Estás seguro?",
-                text: "Tu no podrás recuperar esta información.!",
+                title: "¿Estás seguro",
+                text: "Que desea eliminar esta emergencia?",
                 type: "error",
                 showCancelButton: true,
-                confirmButtonClass: "btn-success",
+                confirmButtonClass: "btn-dark",
                 cancelButtonClass: "btn-danger",
                 confirmButtonText: "¡Sí, bórralo!",
                 cancelButtonText:"Cancelar",
@@ -75,7 +74,7 @@
             function(){
                 swal.close();
                 $.blockUI({message:'<h1>Espere por favor.!</h1>'});
-                $.post( url, { user: id })
+                $.post( "{{ route('eliminarEmergencia') }}", { emergencia: $(arg).data('id') })
                 .done(function( data ) {
                     if(data.success){
                         $('#dataTableBuilder').DataTable().draw(false);
