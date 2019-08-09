@@ -19,7 +19,7 @@ Route::get('/', function () {
     #$A=Artisan::call('config:cache');
     #$A=Artisan::call('storage:link');
     #$A=Artisan::call('key:generate');
-    #$A=Artisan::call('migrate --seed');
+    #$A=Artisan::call('migrate:fresh --seed');
 });
 
 Auth::routes(['verify' => true]);
