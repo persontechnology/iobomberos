@@ -12,7 +12,14 @@
 */
 
 Route::get('/', function () {
+
     return view('welcome');
+    #$A=Artisan::call('cache:clear');
+    #$A=Artisan::call('config:clear');
+    #$A=Artisan::call('config:cache');
+    #$A=Artisan::call('storage:link');
+    #$A=Artisan::call('key:generate');
+    #$A=Artisan::call('migrate --seed');
 });
 
 Auth::routes(['verify' => true]);
