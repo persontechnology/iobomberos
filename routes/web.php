@@ -70,4 +70,17 @@ Route::middleware(['verified', 'auth'])->group(function () {
 
 
 
+    // A:Deivid
+    // D:gestion de emergencias
+    Route::namespace('Emergencias')->group(function () {
+        // emergencias
+        Route::get('/emergencia', 'Emergencias@index')->name('emergencia');
+        Route::post('/emergencia-guardar', 'Emergencias@guardar')->name('emergenciaGuardar');
+                 
+    });
+
+
+
+
+
 });

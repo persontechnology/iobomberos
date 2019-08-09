@@ -53,6 +53,12 @@
                             <a href="{{ route('usuarios') }}" class="nav-link" id="menuUsuarios">Personal operativo</a>
                         </li> 
 
+
+                        <li class="nav-item">
+                            <a href="{{ route('emergencia') }}" class="nav-link" id="menuEmergencia">Emergencia</a>
+                        </li> 
+
+
                     </ul>
                 </li>
               

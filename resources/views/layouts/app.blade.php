@@ -85,12 +85,19 @@
 		
 	</script>
 
+	<style>
+		.sidebar-dark .nav-sidebar>.nav-item-open>.nav-link:not(.disabled), .sidebar-dark .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light .card[class*=bg-]:not(.bg-light):not(.bg-white):not(.bg-transparent) .nav-sidebar>.nav-item-open>.nav-link:not(.disabled), .sidebar-light .card[class*=bg-]:not(.bg-light):not(.bg-white):not(.bg-transparent) .nav-sidebar>.nav-item>.nav-link.active {
+			background-color: #E57373;
+			color: #fff;
+		}
+	</style>
+
 </head>
 
 <body>
 
 	{{--  Cabecera  --}}
-	<div class="navbar navbar-expand-md navbar-dark">
+	<div class="navbar navbar-expand-md navbar-dark bg-danger-800">
 		<div class="navbar-brand">
 			<a href="{{ url('/') }}" class="d-inline-block">
 				<img src="{{ asset('admin/img/logo_light.png') }}" alt="">
@@ -190,16 +197,19 @@
 				
 
 				@if ($errors->any())
-					<div class="alert text-violet-800 alpha-violet border-0 alert-dismissible">
+					<div class="alert alert-danger border-0 alert-dismissible">
 						<button type="button" class="close" data-dismiss="alert">
 							<i class="fas fa-times"></i>
 						</button>
 						
 						@foreach ($errors->all() as $error)
-							<li>{{ $error }}</li>
+						<span class="font-weight-semibold"><li>{{ $error }}</li></span>
 						@endforeach
 						
 					</div>
+
+					
+
 				@endif
 				
                 @yield('content')

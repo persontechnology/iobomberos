@@ -6,16 +6,17 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-4">
-                <img src="{{ asset('admin/img/bomberos.png') }}" alt="" class="img-responsive img-fluid d-none d-sm-block">
-        </div>
+       
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-dark">
-                    {{ __('Login') }}
+                <div class="card-header text-center bg-dark">
+                    <img src="{{ asset('img/escudo.png') }}" alt="" height="150px;">
+                    <br>
+                    <strong class="">Acceder al sistema</strong>
                 </div>
 
                 <div class="card-body">
+                  
                     <form method="POST" action="{{ route('login') }}" id="loginForm">
                         @csrf
 
@@ -61,7 +62,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-dark">
                                     {{ __('Login') }}
                                 </button>
 
@@ -72,8 +73,11 @@
                                 @endif
                             </div>
                         </div>
+                        
                     </form>
+                    
                 </div>
+                
             </div>
         </div>
     </div>
