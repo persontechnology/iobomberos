@@ -13,11 +13,11 @@ class EmergenciaTableSeeder extends Seeder
     public function run()
     {
         $data = array(
-            'Atencion Prehospitalaria',
-            'Contra Incendio',
-            'Falsa Alarma',
-            'Rescate',
-            'Desastres',
+            'ATENCION PREHOSPITALARIA',
+            'CONTRA INCENDIO',
+            'FALSA ALARMA',
+            'RESCATE',
+            'DESASTRES'
         );
 
         foreach ($data as $nombre) {

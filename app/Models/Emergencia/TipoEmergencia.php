@@ -4,18 +4,20 @@ namespace iobom\Models\Emergencia;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Emergencia extends Model
+class TipoEmergencia extends Model
 {
-    protected $table='emergencia';
+    
+    protected $table='tipoEmergencia';
     
     protected $fillable = [
         'nombre',
+        'emergencia_id',
         'creadoPor',
         'actualizadoPor',
     ];
 
-    public function tipos()
+    public function emergencia()
     {
-        return $this->hasMany(TipoEmergencia::class);
+        return $this->belongsTo(Emergencia::class, 'emergencia_id');
     }
 }
