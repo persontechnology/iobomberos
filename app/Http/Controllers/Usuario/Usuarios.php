@@ -16,6 +16,7 @@ use iobom\DataTables\Usuarios\PorRolDataTable;
 use PDF;
 use Maatwebsite\Excel\Facades\Excel;
 use iobom\DataTables\Usuarios\UsuarioDataTable;
+use iobom\Models\Estacion;
 
 class Usuarios extends Controller
 {
@@ -36,24 +37,29 @@ class Usuarios extends Controller
     {
         $roles=Role::all();
         $user=Auth::user();
-        return view('usuario.usuarios.nuevo',['roles'=>$roles]);
+        $estaciones=Estacion::all();
+        return view('usuario.usuarios.nuevo',['roles'=>$roles,'estaciones'=>$estaciones]);
     }
 
     // Autor:Deivid
     // Desc:guardar nuevo usuario con roles
     public function guardar(RqGuardar $request)
     {
-        $user= User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $user= new User();
+         $user->name = $request->name;
+         $user->telefono = $request->telefono;
+         $user->email = $request->email;           
+         $user->password = Hash::make($request->password);
+  
+        $user->estacion_id=$request->estacion_id;
+        $user->telefono = $request->telefono;
+
         $user->creadoPor=Auth::user()->id;
         $user->save();
         $user->assignRole($request->roles);
 
          
-        $request->session()->flash('success','Usuario ingresado');
+        $request->session()->flash('success','Personal operativo registrado exitosamente');
         return redirect()->route('usuarios');
     }
 
@@ -71,7 +77,7 @@ class Usuarios extends Controller
             if(Auth::user()->id!=$user->id){
                 $user->delete();
                 DB::commit();
-                return response()->json(['success'=>'Usuario eliminado']);
+                return response()->json(['success'=>'Personal operativo eliminado exitosamente']);
                 
             }else{
                 return response()->json(['default'=>'No se puede autoeliminarse']);
@@ -114,7 +120,8 @@ class Usuarios extends Controller
     public function editar($idUsuario)
     {
         $user=User::findOrFail($idUsuario);
-        return view('usuario.usuarios.editar',['usuario'=>$user]);
+        $estaciones=Estacion::all();
+        return view('usuario.usuarios.editar',['usuario'=>$user,'estaciones'=>$estaciones]);
     }
     
     public function actualizar(RqActualizar $request)
@@ -122,12 +129,16 @@ class Usuarios extends Controller
         $user=User::findOrFail($request->usuario);
         $user->name=$request->name;
         $user->email=$request->email;
+        $user->telefono=$request->telefono;
         if($request->password){
             $user->password=Hash::make($request->password);
         }
+        $user->estado = $request->estado;
+         $user->estacion_id=$request->estacion_id;
+        $user->telefono = $request->telefono;
         $user->actualizadoPor=Auth::user()->id;
         $user->save();
-        $request->session()->flash('success','Usuario actualizado');
+        $request->session()->flash('success','Personal operativo editado exitosamente');
 
         return redirect()->route('editarUsuario',$user->id);
     }

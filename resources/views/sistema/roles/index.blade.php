@@ -10,7 +10,7 @@
     <div class="input-group mb-1">
         <input type="text" name="rol" value="{{ old('rol') }}" class="form-control" placeholder="Ingrese nuevo rol.." aria-label="Ingrese nuevo rol.." aria-describedby="basic-addon2">
         <div class="input-group-append">
-            <button class="btn btn-success" type="submit">Guardar</button>
+            <button class="btn btn-dark" type="submit">Guardar</button>
         </div>
     </div>
 </form>
@@ -37,10 +37,10 @@
             var id=$(arg).data('id');
             swal({
                 title: "¿Estás seguro?",
-                text: "Tu no podrás recuperar esta información.!",
+                text: "Que desea eliminar este rol!",
                 type: "error",
                 showCancelButton: true,
-                confirmButtonClass: "btn-success",
+                confirmButtonClass: "btn-dark",
                 cancelButtonClass: "btn-danger",
                 confirmButtonText: "¡Sí, bórralo!",
                 cancelButtonText:"Cancelar",

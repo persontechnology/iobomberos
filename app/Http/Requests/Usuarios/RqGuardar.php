@@ -27,6 +27,8 @@ class RqGuardar extends FormRequest
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'telefono' => 'required',
+            'estacion_id' => 'required',         
             "roles"    => "nullable|array",
             "roles.*"  => "nullable|exists:roles,id",
         ];

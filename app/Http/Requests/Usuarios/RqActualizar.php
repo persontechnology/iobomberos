@@ -25,7 +25,7 @@ class RqActualizar extends FormRequest
     {
         return [
             'usuario'=>'required|exists:users,id',
-            'name' => 'required|string|max:1',
+            'name' => 'required|string|min:1',
             'email' => 'required|string|email|max:255|unique:users,email,'.$this->input('usuario'),
             'password' => 'nullable|string|min:8|confirmed',
         ];

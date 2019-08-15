@@ -1,6 +1,6 @@
 @extends('layouts.app',['title'=>'Emergencia'])
 
-@section('breadcrumbs', Breadcrumbs::render('usuarios'))
+@section('breadcrumbs', Breadcrumbs::render('emergencias'))
 
 @section('barraLateral')
 
@@ -27,9 +27,7 @@
                 {!! $dataTable->table()  !!}
             </div>
     </div>
-    <div class="card-footer text-muted">
-        Footer
-    </div>
+
 </div>
 
 
@@ -61,8 +59,8 @@
         function eliminar(arg){
         
             swal({
-                title: "¿Estás seguro",
-                text: "Que desea eliminar esta emergencia?",
+                title: "¿Estás seguro?",
+                text: "Que desea eliminar esta emergencia !",
                 type: "error",
                 showCancelButton: true,
                 confirmButtonClass: "btn-dark",

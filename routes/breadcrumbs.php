@@ -41,7 +41,7 @@ Breadcrumbs::for('permisos', function ($trail,$rol) {
 //D:Breadcrums de usuarios
 Breadcrumbs::for('usuarios', function ($trail) {
     $trail->parent('home');
-    $trail->push('G. de Usuarios', route('usuarios'));
+    $trail->push('G. Personal operativo', route('usuarios'));
 });
 Breadcrumbs::for('usuariosNuevo', function ($trail) {
     $trail->parent('usuarios');
@@ -80,4 +80,29 @@ Breadcrumbs::for('nuevaEstacion', function ($trail) {
 Breadcrumbs::for('editarEstacion', function ($trail,$estacion) {
     $trail->parent('estaciones');
     $trail->push('Editar estación', route('editarEstacion',$estacion->id));
+});
+
+//A:Fabian Lopez
+//D:Breadcrums de emergencias
+Breadcrumbs::for('emergencias', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Emergencias', route('emergencia'));
+});
+
+Breadcrumbs::for('editarEmergencia', function ($trail, $emergencia) {
+    $trail->parent('emergencias');
+    $trail->push('Editar Emergencia', route('editarEmergencia',$emergencia->id));
+});
+
+
+//A:Fabian Lopez
+//D:Breadcrums de Tipos emergencias
+
+Breadcrumbs::for('tipoEmergencias', function ($trail, $emergencia) {
+    $trail->parent('emergencias');
+    $trail->push('Tipo Emergencia de '.$emergencia->nombre , route('tipoEmergencia',$emergencia->id));
+});
+Breadcrumbs::for('editarTipoEmergencias', function ($trail, $tipoEmergencia) {
+    $trail->parent('tipoEmergencias',$tipoEmergencia->emergencia);
+    $trail->push('Editar Tipo Emergencia', route('editarTipoEmergencia',$tipoEmergencia->id));
 });

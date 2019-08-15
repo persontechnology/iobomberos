@@ -71,7 +71,7 @@
 		    </div>	        
 	        </fieldset>
 	        <div class="text-right">
-	            <button type="submit" class="btn btn-primary">Guardar <i class="icon-paperplane ml-2"></i>
+	            <button type="submit" class="btn btn-dark">Guardar <i class="icon-paperplane ml-2"></i>
 	            </button>
 	        </div>
     	</form>
@@ -94,6 +94,7 @@
 @endpush
 
 @prepend('linksPie')
+
   <script type="text/javascript">
        $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
         $('#menuEstacion').addClass('active');

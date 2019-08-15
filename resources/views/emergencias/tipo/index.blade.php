@@ -1,6 +1,6 @@
 @extends('layouts.app',['title'=>'Emergencia'])
 
-@section('breadcrumbs', Breadcrumbs::render('usuarios'))
+@section('breadcrumbs', Breadcrumbs::render('tipoEmergencias',$emergencia))
 
 @section('barraLateral')
 
@@ -62,8 +62,8 @@
         function eliminar(arg){
         
             swal({
-                title: "¿Estás seguro",
-                text: "Que desea eliminar el tipo de emergencia?",
+                title: "¿Estás seguro?",
+                text: "Que desea eliminar el tipo de emergencia !",
                 type: "error",
                 showCancelButton: true,
                 confirmButtonClass: "btn-dark",

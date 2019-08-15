@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="card-footer text-muted">
-            <button class="btn btn-success">Actualizar roles</button>
+            <button class="btn btn-dark">Actualizar roles</button>
         </div>
     </div>
 </form>

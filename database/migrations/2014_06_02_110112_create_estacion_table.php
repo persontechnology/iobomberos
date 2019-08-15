@@ -19,7 +19,7 @@ class CreateEstacionTable extends Migration
             $table->string('direccion',255)->nullable();
             $table->string('latitud',255)->nullable();
             $table->string('longitud',255)->nullable();
-             $table->string('foto')->nullable();
+            $table->string('foto')->nullable();
             $table->timestamps();
             $table->bigInteger('creadoPor')->nullable();
             $table->bigInteger('actualizadoPor')->nullable();

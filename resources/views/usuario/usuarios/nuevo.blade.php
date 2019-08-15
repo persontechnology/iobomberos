@@ -14,6 +14,26 @@
         <div class="card-body">
                 <div class="row">
                     <div class="col-md-8">
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">Estaciones</label>
+        
+                            <div class="col-md-6">
+                                @if($estaciones)
+                                <select class="form-control @error('estacion_id') is-invalid @enderror" name="estacion_id" id="estacion_id" >
+                                    @foreach($estaciones as $esta)
+                                    <option value="{{ $esta->id }}" {{ (old("estacion_id") == $esta->id ? "selected":"") }} >{{$esta->nombre}}</option>
+                                    @endforeach
+                                </select>
+        
+                                @error('estacion_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                                @endif
+                            </div>
+                        </div>
             
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
@@ -22,6 +42,20 @@
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Nombre">
         
                                 @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="telefono" class="col-md-4 col-form-label text-md-right">Teléfono</label>
+        
+                            <div class="col-md-6">
+                                <input id="telefono" type="text" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{old('telefono')}}" placeholder="Teléfono">
+        
+                                @error('telefono')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -42,6 +76,7 @@
                                 @enderror
                             </div>
                         </div>
+                     
         
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
@@ -93,7 +128,7 @@
                 </div>
         </div>
         <div class="card-footer text-muted">
-                <button type="submit" class="btn btn-success">
+                <button type="submit" class="btn btn-dark">
                     {{ __('Guardar') }}
                 </button>
         </div>
@@ -121,6 +156,12 @@
             rules: {
                 name:{
                     required:true,
+                },
+                telefono:{
+                    required:true,
+                    minlength: 6,
+                    maxlength: 10,
+                    number:true,
                 },
                 password: {
                     required: true,

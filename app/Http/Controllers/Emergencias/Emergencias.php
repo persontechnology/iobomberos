@@ -28,7 +28,7 @@ class Emergencias extends Controller
             'nombre'=>$request->nombre,
             'creadoPor'=>Auth::id()
         ]);
-        return redirect()->route('emergencia')->with('success','Emergencia registrado exitosamente');
+        return redirect()->route('emergencia')->with('success','Emergencia registrada exitosamente');
     }
 
     public function editar($idEmergencia)
@@ -48,7 +48,7 @@ class Emergencias extends Controller
         $eme->nombre=$request->nombre;
         $eme->actualizadoPor=Auth::id();
         $eme->save();
-        return redirect()->route('emergencia')->with('success','Cambios guardado');
+        return redirect()->route('emergencia')->with('success','Emergencia editada exitosamente');
     }
 
     
@@ -62,7 +62,7 @@ class Emergencias extends Controller
             $emergencia=Emergencia::findOrFail($request->emergencia);
             $emergencia->delete();
             DB::commit();
-            return response()->json(['success'=>'Registro eliminado exitosamente']);
+            return response()->json(['success'=>'Emergencia eliminada exitosamente']);
         } catch (\Exception $th) {
             DB::rollBack();
             return response()->json(['default'=>'No se puede eliminar emergencia']);

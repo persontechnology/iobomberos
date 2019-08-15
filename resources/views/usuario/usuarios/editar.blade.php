@@ -12,7 +12,25 @@
             Complete información
         </div>
         <div class="card-body">
-               
+            <div class="form-group row">
+                <label for="name" class="col-md-4 col-form-label text-md-right">Estaciones</label>
+
+                <div class="col-md-6">
+                    @if($estaciones)
+                    <select class="form-control @error('estacion_id') is-invalid @enderror" name="estacion_id" id="estacion_id" >
+                        @foreach($estaciones as $esta)
+                        <option value="{{ $esta->id }}" {{ (old("estacion_id",$usuario->estacion_id)==$esta->id? "selected":"") }} >{{$esta->nombre}}</option>
+                        @endforeach
+                    </select>
+
+                    @error('estacion_id')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                    @endif
+                </div>
+            </div>   
             <div class="form-group row">
                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
@@ -26,7 +44,20 @@
                     @enderror
                 </div>
             </div>
+         
+            <div class="form-group row">
+                <label for="telefono" class="col-md-4 col-form-label text-md-right">Teléfono</label>
 
+                <div class="col-md-6">
+                    <input id="telefono" type="number" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{old('telefono',$usuario->telefono)}}"  autocomplete="telefono" placeholder="Teléfono">
+
+                    @error('telefono')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
             <div class="form-group row">
                 <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
@@ -40,6 +71,31 @@
                     @enderror
                 </div>
             </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label text-md-right" for="estado">Estado :</label>
+                 <div class="col-md-6"> 
+                    <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input {{ $errors->has('estado') ? ' is-invalid' : '' }}" value="Activo" id="Activo" name="estado"  required {{ old('estado',$usuario->estado)=='Activo'?'checked':'checked' }}>
+                        <label class="custom-control-label" for="Activo">Activo</label>
+                    </div>
+
+                    <div class="custom-control custom-radio ml-1">
+                        <input type="radio" class="custom-control-input {{ $errors->has('estado') ? ' is-invalid' : '' }}" value="Inactivo" id="Inactivo" name="estado"  required {{ old('estado',$usuario->estado)=='Inactivo'?'checked':'' }}>
+                        <label class="custom-control-label" for="Inactivo">Inactivo</label>
+                    </div>
+
+                    <div class="custom-control custom-radio ml-1">
+                        <input type="radio" class="custom-control-input{{ $errors->has('estado') ? ' is-invalid' : '' }}" value="Dado de baja" id="Dado de baja" name="estado" required {{ old('estado',$usuario->estado)=='Dado de baja'?'checked':'' }}>
+                        <label class="custom-control-label" for="Dado de baja">Dado de baja</label>
+                          
+                          @if ($errors->has('estado'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('estado') }}</strong>
+                            </span>
+                          @endif
+                      </div>
+                  </div>
+              </div>
 
             <div class="form-group row">
                 <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
@@ -65,7 +121,7 @@
             
         </div>
         <div class="card-footer text-muted">
-                <button type="submit" class="btn btn-success">
+                <button type="submit" class="btn btn-dark">
                     {{ __('Actualizar') }}
                 </button>
         </div>

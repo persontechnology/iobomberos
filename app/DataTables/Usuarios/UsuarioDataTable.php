@@ -19,9 +19,13 @@ class UsuarioDataTable extends DataTable
             ->addColumn('roles',function($user){
                 return view('usuario.usuarios.roles',['user'=>$user])->render();
             })
+            ->editColumn('estado',function($user){
+               
+                 return view('usuario.usuarios.estado',['user'=>$user])->render();                          
+            })
             ->addColumn('action', function($user){
                 return view('usuario.usuarios.acciones',['user'=>$user])->render();
-            });
+            })->rawColumns(['roles','estado','action']);
     }
 
     /**
@@ -45,7 +49,7 @@ class UsuarioDataTable extends DataTable
         return $this->builder()
                     ->columns($this->getColumnsTable())
                     ->minifiedAjax()
-                    ->addAction(['width' => '80px','exportable' => false,'printable' => false,'title'=>'Acciones'])
+                     ->addAction(['width' => '80px','printable' => false, 'exportable' => false,'title'=>'Acciones'])
                     ->parameters($this->getBuilderParameters());
     }
 
@@ -59,7 +63,9 @@ class UsuarioDataTable extends DataTable
         return [
             'id',
             'name',
-            'email'
+            'telefono',
+            'estado',
+            'email',
         ];
     }
 
@@ -68,7 +74,9 @@ class UsuarioDataTable extends DataTable
     {
         return [
             'name'=>['title'=>'Usuario'],
+             'telefono'=>['title'=>'Teléfono'],
             'email',
+            'estado',
             'roles'
         ];
     }

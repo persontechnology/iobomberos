@@ -63,7 +63,7 @@ class EstacionDataTable extends DataTable
      protected function getColumnsTable()
     {
         return [
-            'id'=>['title'=>'#'],
+           
             'nombre',
             'direccion'=>['title'=>'Dirección'],            
         ];

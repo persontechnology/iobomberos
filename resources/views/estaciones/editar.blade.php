@@ -71,10 +71,11 @@
 		    </div>	        
 	        </fieldset>
 	        <div class="text-right">
-	            <button type="submit" class="btn btn-primary">Actualizar <i class="icon-paperplane ml-2"></i>
+	            <button type="submit" class="btn btn-dark">Actualizar <i class="icon-paperplane ml-2"></i>
 	            </button>
 	        </div>
     	</form>
+    	
     </div>
    
 </div>

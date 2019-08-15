@@ -24,7 +24,7 @@ class Roles extends Controller
             'rol' => 'required|unique:roles,name|max:255',
         ]);
         Role::create(['name' => $request->rol]);
-        $request->session()->flash('success','Rol ingresado');
+        $request->session()->flash('success','Rol registrado exitosamente');
         return redirect()->route('roles');
     }
 
@@ -41,7 +41,7 @@ class Roles extends Controller
 
                 if($rol->name!='Administrador' && $rol->name!='Coordinador' && $rol->name!='Gestor'){
                     $rol->delete();
-                    return response()->json(['success'=>'Rol eliminado']);
+                    return response()->json(['success'=>'Rol eliminado exitosamente']);
                     
                 }else {
                     return response()->json(['default'=>'No puede eliminar este rol.']);

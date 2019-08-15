@@ -55,10 +55,10 @@
             var id=$(arg).data('id');
             swal({
                 title: "¿Estás seguro?",
-                text: "Tu no podrás recuperar esta información.!",
+                text: "Que desea eliminar al personal operativo.!",
                 type: "error",
                 showCancelButton: true,
-                confirmButtonClass: "btn-success",
+                confirmButtonClass: "btn-dark",
                 cancelButtonClass: "btn-danger",
                 confirmButtonText: "¡Sí, bórralo!",
                 cancelButtonText:"Cancelar",

@@ -31,7 +31,7 @@ class Permisos extends Controller
         
         $rol=Role::findOrFail($request->rol);
         $rol->syncPermissions($request->permisos);
-        $request->session()->flash('success','Permisos actualizados');
+        $request->session()->flash('success','Permisos actualizados exitosamente');
         return redirect()->route('permisos',$rol->id);
     }
 }

@@ -34,7 +34,7 @@ class TipoEmergencias extends Controller
             'emergencia_id'=>$request->emergencia,
             'creadoPor'=>Auth::id()
         ]);
-        return redirect()->route('tipoEmergencia',$request->emergencia)->with('success','Tipo de emergencia guardado exitosamente');
+        return redirect()->route('tipoEmergencia',$request->emergencia)->with('success','Tipo de emergencia registrada exitosamente');
     }
 
     public function editar($idTipoEmergencia)
@@ -54,7 +54,7 @@ class TipoEmergencias extends Controller
         $eme->nombre=$request->nombre;
         $eme->actualizadoPor=Auth::id();
         $eme->save();
-        return redirect()->route('tipoEmergencia',$eme->emergencia->id)->with('success','Cambios guardado');
+        return redirect()->route('tipoEmergencia',$eme->emergencia->id)->with('success','Tipo de emergencia editada exitosamente');
     }
 
     
@@ -68,7 +68,7 @@ class TipoEmergencias extends Controller
             $eme=TipoEmergencia::findOrFail($request->teme);
             $eme->delete();
             DB::commit();
-            return response()->json(['success'=>'T. Emergencia eliminado exitosamente']);
+            return response()->json(['success'=>'Tipo de emergencia  eliminada exitosamente']);
         } catch (\Exception $th) {
             DB::rollBack();
             return response()->json(['default'=>'No se puede eliminar tipo de emergencia']);

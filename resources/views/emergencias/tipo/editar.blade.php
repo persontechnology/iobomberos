@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('breadcrumbs', Breadcrumbs::render('editarTipoEmergencias',$tipoEmergencia))
 
 @section('content')
 <div class="container">

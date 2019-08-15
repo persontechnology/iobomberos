@@ -43,7 +43,7 @@ class Estaciones extends Controller
                 $estacion->save();
             }
         }
-        $request->session()->flash('success','Estacíon creada exitosamente ');
+        $request->session()->flash('success','Estacíon registrada exitosamente ');
         return redirect()->route('estaciones');
 	}
 	public function editar($idEstacion)
@@ -70,7 +70,7 @@ class Estaciones extends Controller
                 }
             }         
         }
-        $request->session()->flash('success','Estacíon actualizada exitosamente ');
+        $request->session()->flash('success','Estacíon editada exitosamente ');
         return redirect()->route('estaciones');
 	}
 
@@ -88,7 +88,7 @@ class Estaciones extends Controller
             }
             $estacion->delete();
             DB::commit();
-            return response()->json(['success'=>'Estación eliminada']);
+            return response()->json(['success'=>'Estación eliminada exitosamente']);
 
         } catch (\Exception $th) {
             DB::rollBack();
