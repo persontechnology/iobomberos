@@ -50,6 +50,7 @@ return array(
     'Carbon\\Traits\\Units' => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Units.php',
     'Carbon\\Traits\\Week' => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Week.php',
     'Carbon\\Translator' => $vendorDir . '/nesbot/carbon/src/Carbon/Translator.php',
+    'ClinicasSeeder' => $baseDir . '/database/seeds/ClinicasSeeder.php',
     'Collective\\Html\\Componentable' => $vendorDir . '/laravelcollective/html/src/Componentable.php',
     'Collective\\Html\\Eloquent\\FormAccessible' => $vendorDir . '/laravelcollective/html/src/Eloquent/FormAccessible.php',
     'Collective\\Html\\FormBuilder' => $vendorDir . '/laravelcollective/html/src/FormBuilder.php',

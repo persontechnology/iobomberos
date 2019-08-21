@@ -106,3 +106,16 @@ Breadcrumbs::for('editarTipoEmergencias', function ($trail, $tipoEmergencia) {
     $trail->parent('tipoEmergencias',$tipoEmergencia->emergencia);
     $trail->push('Editar Tipo Emergencia', route('editarTipoEmergencia',$tipoEmergencia->id));
 });
+
+//A:Fabian Lopez
+//D:Breadcrums de clinicas
+
+Breadcrumbs::for('clinicas', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Clínicas', route('clinicas'));
+});
+
+Breadcrumbs::for('editarClinica', function ($trail,$clinica) {
+    $trail->parent('clinicas');
+    $trail->push('Editar clínica', route('editarClinica',$clinica->id));
+});

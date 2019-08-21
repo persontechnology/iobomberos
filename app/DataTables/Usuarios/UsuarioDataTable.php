@@ -5,6 +5,7 @@ namespace iobom\DataTables\Usuarios;
 use iobom\User;
 use Yajra\DataTables\Services\DataTable;
 use Illuminate\Support\Facades\Auth;
+use iobom\Models\Estacion;
 class UsuarioDataTable extends DataTable
 {
     /**
@@ -16,6 +17,14 @@ class UsuarioDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
+             ->editColumn('estacion_id',function($user){
+                return $user->estacion->nombre;
+            })
+           ->filterColumn('estacion_id', function($query, $keyword) {
+            $query->whereHas('estacion', function($query) use ($keyword) {
+                $query->whereRaw("nombre like ?", ["%{$keyword}%"]);
+            });
+            })
             ->addColumn('roles',function($user){
                 return view('usuario.usuarios.roles',['user'=>$user])->render();
             })
@@ -25,7 +34,7 @@ class UsuarioDataTable extends DataTable
             })
             ->addColumn('action', function($user){
                 return view('usuario.usuarios.acciones',['user'=>$user])->render();
-            })->rawColumns(['roles','estado','action']);
+            })->rawColumns(['estacion','roles','estado','action']);
     }
 
     /**
@@ -62,9 +71,10 @@ class UsuarioDataTable extends DataTable
     {
         return [
             'id',
+            'estacion_id',
             'name',
             'telefono',
-            'estado',
+            'estado',  
             'email',
         ];
     }
@@ -73,6 +83,7 @@ class UsuarioDataTable extends DataTable
     protected function getColumnsTable()
     {
         return [
+            'estacion_id'=>['title'=>'Estación'],
             'name'=>['title'=>'Usuario'],
              'telefono'=>['title'=>'Teléfono'],
             'email',

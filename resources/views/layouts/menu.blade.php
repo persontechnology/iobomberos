@@ -55,7 +55,9 @@
                         <li class="nav-item">
                             <a href="{{ route('usuarios') }}" class="nav-link" id="menuUsuarios">Personal operativo</a>
                         </li> 
-
+                        <li class="nav-item">
+                            <a href="{{ route('clinicas') }}" class="nav-link" id="menuClinicas">Clínicas</a>
+                        </li> 
 
 
 

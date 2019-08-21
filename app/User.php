@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
+use iobom\Models\Estacion;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -56,5 +57,9 @@ class User extends Authenticatable implements MustVerifyEmail
             return $user;
         }
         return '';
+    }
+    public function estacion()
+    {
+         return $this->belongsTo(Estacion::class, 'estacion_id');
     }
 }

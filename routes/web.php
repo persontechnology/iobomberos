@@ -88,6 +88,14 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/tipo-emergencia-eliminar', 'TipoEmergencias@eliminar')->name('eliminarTipoEmergencia');
     });
 
+    //A:Fabian Lopez
+    //D. administracion de clinicas
+    Route::get('/clinicas', 'Clinicas@index')->name('clinicas');
+    Route::post('/nueva-clinica', 'Clinicas@guardar')->name('guardarClinica');
+    Route::get('/editar-clinica/{id}', 'Clinicas@editar')->name('editarClinica');
+    Route::post('/actualizar-clinica', 'Clinicas@actualizar')->name('actualizarClinica');
+    Route::post('/eliminar-clinica', 'Clinicas@eliminar')->name('eliminarClinica');
+
 
 
 
