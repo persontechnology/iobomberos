@@ -96,6 +96,13 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::post('/actualizar-clinica', 'Clinicas@actualizar')->name('actualizarClinica');
     Route::post('/eliminar-clinica', 'Clinicas@eliminar')->name('eliminarClinica');
 
+    //A:Fabian Lopez
+    //D. administracion de puntos de referencia
+    Route::get('/puntos-referencia', 'PuntosReferencias@index')->name('puntosReferencia');
+    Route::get('/puntos-referencia-nuevo', 'PuntosReferencias@nuevo')->name('puntosReferenciaNuevo');
+    Route::post('/puntos-referencia-guardar', 'PuntosReferencias@guardar')->name('puntosReferenciaGuardar');
+    Route::get('/puntos-referencia-mapa', 'PuntosReferencias@mapa')->name('puntosReferenciaMapa');
+
 
 
 

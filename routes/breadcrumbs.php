@@ -119,3 +119,21 @@ Breadcrumbs::for('editarClinica', function ($trail,$clinica) {
     $trail->parent('clinicas');
     $trail->push('Editar clínica', route('editarClinica',$clinica->id));
 });
+
+//A:Fabian Lopez
+//D:Breadcrums de punto de referencia
+
+Breadcrumbs::for('puntosReferencias', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Puntos de referencia', route('puntosReferencia'));
+});
+
+Breadcrumbs::for('nuevoPuntoReferencia', function ($trail) {
+    $trail->parent('puntosReferencias');
+    $trail->push('Nuevo punto de referencia', route('puntosReferenciaNuevo'));
+});
+
+Breadcrumbs::for('mapaPuntoReferencia', function ($trail) {
+    $trail->parent('puntosReferencias');
+    $trail->push('Mapa punto de referencia', route('puntosReferenciaMapa'));
+});

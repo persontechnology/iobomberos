@@ -58,8 +58,9 @@
                         <li class="nav-item">
                             <a href="{{ route('clinicas') }}" class="nav-link" id="menuClinicas">Clínicas</a>
                         </li> 
-
-
+                        <li class="nav-item">
+                            <a href="{{ route('puntosReferencia') }}" class="nav-link" id="menuPuntosReferencia">Puntos de referencia</a>
+                        </li> 
 
                     </ul>
                 </li>
