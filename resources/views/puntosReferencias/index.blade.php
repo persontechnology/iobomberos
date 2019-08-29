@@ -44,6 +44,43 @@
    $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
     $('#menuPuntosReferencia').addClass('active');
 </script>
+<script type="text/javascript">
+    
+    function eliminar(arg){
+        var url="{{ route('puntosReferenciaEliminar') }}";
+        var id=$(arg).data('id');
+        swal({
+            title: "¿Estás seguro?",
+            text: "Que desea eliminar la estación.!",
+            type: "error",
+            showCancelButton: true,
+            confirmButtonClass: "btn-dark",
+            cancelButtonClass: "btn-danger",
+            confirmButtonText: "¡Sí, bórralo!",
+            cancelButtonText:"Cancelar",
+            closeOnConfirm: false
+        },
+        function(){
+            swal.close();
+            $.blockUI({message:'<h1>Espere por favor.!</h1>'});
+            $.post( url, { PuntoReferencia: id })
+            .done(function( data ) {
+                if(data.success){
+                    $('#dataTableBuilder').DataTable().draw(false);
+                    notificar("info",data.success);
+                }
+                if(data.default){
+                    notificar("default",data.default);   
+                }
+            }).always(function(){
+                $.unblockUI();
+            }).fail(function(){
+                notificar("error","Ocurrio un error");
+            });
+
+        });
+    }
+</script>
 
 @endprepend
 

@@ -28,7 +28,10 @@
 		  zoom: 12,
 		  mapTypeId: 'hybrid'
 		});
-
+	
+		var imageEstacion="{{ asset('img/ESTACION1.png') }}";
+		var imagePuntos="{{ asset('img/puntos.png') }}";
+	
 		@if($estaciones->count()>0)
 			@foreach($estaciones as $estacion)
 				var latitu={{$estacion->latitud}};
@@ -37,7 +40,9 @@
 			    map: map,
 			     position:{lat:latitu , lng:longi } ,
 			    title:"{{$estacion->nombre}}",
+			    icon:imageEstacion,
 			 	 });
+			    
 				var nombre="{{$estacion->nombre}}";
 				var geocoder = new google.maps.Geocoder;
 			     var infowindow = new google.maps.InfoWindow;
@@ -54,6 +59,7 @@
 			    map: map,
 			     position:{lat:latitu , lng:longi } ,
 			    title:" {{$puntos->direccion}}",
+			    icon:imagePuntos,
 			 	 });
 				var nombre="{{$puntos->direccion}}";
 				var geocoder = new google.maps.Geocoder;

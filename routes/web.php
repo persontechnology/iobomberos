@@ -102,9 +102,23 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('/puntos-referencia-nuevo', 'PuntosReferencias@nuevo')->name('puntosReferenciaNuevo');
     Route::post('/puntos-referencia-guardar', 'PuntosReferencias@guardar')->name('puntosReferenciaGuardar');
     Route::get('/puntos-referencia-mapa', 'PuntosReferencias@mapa')->name('puntosReferenciaMapa');
+    Route::get('/editar-referencia/{id}', 'PuntosReferencias@editar')->name('editarReferencia');
+    Route::post('/puntos-referencia-actualizar', 'PuntosReferencias@actualizar')->name('puntosReferenciaActualizar');
+    Route::post('/puntos-referencia-eliminar', 'PuntosReferencias@eliminar')->name('puntosReferenciaEliminar');
 
+    //A:Fabian Lopez
+    //D. administracion de puntos de Vehiculos
+    Route::namespace('Vehiculos')->group(function () {
+        Route::get('/tipo-vehiculos', 'TipoVehiculos@index')->name('tipoVehiculos');
+        Route::post('/guardar-tipovehiculo', 'TipoVehiculos@guardar')->name('guardarTipoVehiculo');
+        Route::get('/editar-tipovehiculo/{id}', 'TipoVehiculos@editar')->name('editarTipoVehiculo');
+        Route::post('/actualizar-tipovehiculo', 'TipoVehiculos@actualizar')->name('actualizarTipoVehiculo');
+        Route::post('/eliminar-tipovehiculo', 'TipoVehiculos@eliminar')->name('eliminarTipoVehiculo');
 
-
+        Route::get('/vehiculos/{id}', 'Vehiculos@index')->name('vehiculos');
+        Route::get('/importar-vehiculos', 'Vehiculos@importar')->name('imnportarVehiculos');
+        Route::post('/importar-archivo', 'Vehiculos@importarArchivo')->name('imnportarArchivoVehiculos');
+    });
 
 
 });

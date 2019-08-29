@@ -1,17 +1,18 @@
 @extends('layouts.app',['title'=>'Puntos de Referencia'])
 
-@section('breadcrumbs', Breadcrumbs::render('nuevoPuntoReferencia'))
+@section('breadcrumbs', Breadcrumbs::render('editarPuntoReferencia',$puntoReferencia))
 
 @section('content')
 <div class="card" >
 	<div class="card-body">
-	<form method="post" action="{{route('puntosReferenciaGuardar')}}" id="puntosForm" >
+	<form method="post" action="{{route('puntosReferenciaActualizar')}}" id="puntosForm" >
 		@csrf
+		<input type="hidden" name="punto" id="punto" value="{{$puntoReferencia->id}}">
 	<div class="row">
 		<div class="col-sm-3">
 			<div class="form-group ">
 	            <label for="name">{{ __('Latitud') }}</label>	           
-	                <input id="latitud" type="text" class="form-control @error('latitud') is-invalid @enderror" name="latitud" value="{{ old('latitud') }}" required autocomplete="latitud" autofocus placeholder="Latitud" readonly>
+	                <input id="latitud" type="text" class="form-control @error('latitud') is-invalid @enderror" name="latitud" value="{{ old('latitud',$puntoReferencia->latitud) }}" required autocomplete="latitud" autofocus placeholder="Latitud" readonly>
 
 	                @error('latitud')
 	                    <span class="invalid-feedback" role="alert">
@@ -24,7 +25,7 @@
 		<div class="col-sm-3">			
 	        <div class="form-group ">
 	            <label for="name" >{{ __('Longitud') }}</label>	           
-	                <input id="longitud" type="text" class="form-control @error('longitud') is-invalid @enderror" name="longitud" value="{{ old('longitud') }}" required autocomplete="longitud" readonly autofocus placeholder="Longitud">
+	                <input id="longitud" type="text" class="form-control @error('longitud') is-invalid @enderror" name="longitud" value="{{ old('longitud',$puntoReferencia->longitud) }}" required autocomplete="longitud" readonly autofocus placeholder="Longitud">
 	                @error('longitud')
 	                    <span class="invalid-feedback" role="alert">
 	                        <strong>{{ $message }}</strong>
@@ -36,7 +37,7 @@
 	        <div class="form-group ">
 	            <label for="name">{{ __('Dirección') }}</label>
 	          
-	                <input id="direccion" type="text" class="form-control @error('direccion') is-invalid @enderror" name="direccion" value="{{ old('direccion') }}" required autocomplete="direccion" autofocus placeholder="Ingrese la dirección">
+	                <input id="direccion" type="text" class="form-control @error('direccion') is-invalid @enderror" name="direccion" value="{{ old('direccion',$puntoReferencia->direccion) }}" required autocomplete="direccion" autofocus placeholder="Ingrese la dirección">
 
 	                @error('direccion')
 	                    <span class="invalid-feedback" role="alert">
@@ -51,15 +52,12 @@
 	            <button type="submit" class="btn btn-dark">Guardar <i class="icon-paperplane ml-2"></i>
 	            </button>
 	        </div>
-		</div>
-
-
-			
+		</div>	
 		
 	</form>
 		
 	</div>
-	</div>
+</div>
 </div>
 
 	<div id="map"></div>
@@ -84,7 +82,12 @@
 	var map;
 	var marker;
 	function initMap() {
+		@if($puntoReferencia->latitud!=""&&$puntoReferencia->longitud!="")
+		var myLatLng={lat: {{$puntoReferencia->latitud}}, lng: {{$puntoReferencia->longitud}}}
+		@else
 		var myLatLng={lat: -0.8335256701588568, lng: -78.62189341068114}
+		
+		@endif
 		map = new google.maps.Map(document.getElementById('map'), {
 		  center: myLatLng,
 		  zoom: 10,
@@ -92,7 +95,7 @@
 		});
 		var imageEstacion="{{ asset('img/ESTACION2.png') }}";
 		var imagePuntos="{{ asset('img/puntos.png') }}";
-		var imageCrear="{{ asset('img/crear.png') }}";
+		var imageCrear="{{ asset('img/editar.png') }}";
 		@if($estaciones->count()>0)
 			@foreach($estaciones as $estacion)
 				var latitu={{$estacion->latitud}};
@@ -128,7 +131,7 @@
 		    animation: google.maps.Animation.DROP,
 		    draggable:true,
 		    position: myLatLng,
-		    title:"Puntos de referencia",
+		    title:"Dirección: {{$puntoReferencia->direccion}}",
 		    icon:imageCrear,
 		  });
 		  marker.setMap(map);
@@ -194,8 +197,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0Ko6qUa0EFuDWr77BpNJOdxD
 
 <style type="text/css">
 	  #map {
-        height: 60%;
-        
+        height: 60%;       
 
       }
 </style>

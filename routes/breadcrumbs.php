@@ -137,3 +137,21 @@ Breadcrumbs::for('mapaPuntoReferencia', function ($trail) {
     $trail->parent('puntosReferencias');
     $trail->push('Mapa punto de referencia', route('puntosReferenciaMapa'));
 });
+Breadcrumbs::for('editarPuntoReferencia', function ($trail,$puntosReferencia) {
+    $trail->parent('puntosReferencias');
+    $trail->push('Editar punto de referencia', route('editarReferencia',$puntosReferencia->id));
+});
+
+//A:Fabian Lopez
+//D:Breadcrums de tipos de vehículo
+
+Breadcrumbs::for('tipoVehiculo', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Tipos de vehículo', route('tipoVehiculos'));
+});
+
+
+Breadcrumbs::for('editarTipoVehiculo', function ($trail,$tipoVehiculo) {
+    $trail->parent('tipoVehiculo');
+    $trail->push('Editar tipo vehículo', route('editarTipoVehiculo',$tipoVehiculo->id));
+});

@@ -65,7 +65,14 @@
                     </ul>
                 </li>
               
-    
+                <li class="nav-item">
+                    <a href="{{ route('tipoVehiculos') }}" class="nav-link" id="menuVehiculos">
+                        <i class="icon-truck"></i>
+                        <span>
+                            Vehículos
+                        </span>
+                    </a>
+                </li>
                 @role('Administrador')
                 <li class="nav-item-header">
                     <div class="text-uppercase font-size-xs line-height-xs">SISTEMA</div> 

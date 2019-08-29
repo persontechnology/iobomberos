@@ -14,7 +14,8 @@ class PermisosTableSeeder extends Seeder
     {
         $permisos = array(
             'G. de personal',
-            'G. de estaciones'
+            'G. de estaciones',
+            'G. de vehículos'
         );
         foreach ($permisos as $permiso) {
             Permission::firstOrCreate(['name' => $permiso]);
