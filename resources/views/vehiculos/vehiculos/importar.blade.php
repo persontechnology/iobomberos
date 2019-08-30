@@ -52,7 +52,7 @@
                 
         </div>
         <div class="card-footer text-muted">
-            <button type="submit" class="btn btn-success">Importar usuarios</button>
+            <button type="submit" class="btn btn-dark">Importar vehículos</button>
         </div>
     </div>
 </form>
