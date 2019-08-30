@@ -6,12 +6,10 @@
 
 <div class="card">
     <div class="card-header">
-    	<h4 class="card-title">
-         	Crear nueva estación
-    	</h4>
+    	Complete información
     </div>
     <div class="card-body"> 
-	  	<form action="{{route('actualizarEstacion')}}" method="post"  enctype="multipart/form-data">
+	  	<form action="{{route('actualizarEstacion')}}" method="post" id="formEditar"  enctype="multipart/form-data">
 	        @csrf
 	        <fieldset class="mb-3">
 			<div class="row">
@@ -20,7 +18,7 @@
 		            <div class="form-group row">
 		                <label class="col-form-label col-lg-3">Nombre <span class="text-danger">*</span></label>
 		                <div class="col-lg-9">
-		                    <input type="text"  id="nombre" name="nombre" value="{{ old('nombre',$estacion->nombre) }}" required class="form-control @error('nombre') is-invalid @enderror" >
+		                    <input type="text"  id="nombre" placeholder="Nombre" name="nombre" value="{{ old('nombre',$estacion->nombre) }}" required class="form-control @error('nombre') is-invalid @enderror" >
 		                    @error('nombre')
 		                        <span class="invalid-feedback" role="alert">
 		                            <strong>{{ $message }}</strong>
@@ -31,7 +29,7 @@
 		            <div class="form-group row">
 		                <label class="col-form-label col-lg-3">Dirección <span class="text-danger">*</span></label>
 		                <div class="col-lg-9">
-		                    <input type="text"  id="direccion" name="direccion" value="{{ old('direccion',$estacion->direccion) }}" required class="form-control @error('direccion') is-invalid @enderror" >
+		                    <input type="text"  id="direccion" placeholder="Dirección" name="direccion" value="{{ old('direccion',$estacion->direccion) }}" required class="form-control @error('direccion') is-invalid @enderror" >
 		                    @error('direccion')
 		                        <span class="invalid-feedback" role="alert">
 		                            <strong>{{ $message }}</strong>
@@ -71,7 +69,7 @@
 		    </div>	        
 	        </fieldset>
 	        <div class="text-right">
-	            <button type="submit" class="btn btn-dark">Actualizar <i class="icon-paperplane ml-2"></i>
+	            <button type="submit" class="btn btn-dark">Actualizar
 	            </button>
 	        </div>
     	</form>
@@ -91,15 +89,33 @@
 <script src="{{ asset('admin/plus/bootstrap-fileinput/js/locales/es.js') }}"></script>
 {{-- fin file input --}}
   
+{{-- validate --}}
+{{-- validate --}}
+<script src="{{ asset('admin/plus/validate/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('admin/plus/validate/messages_es.min.js') }}"></script>
   
 @endpush
 
 @prepend('linksPie')
-  <script type="text/javascript">
-       $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
-        $('#menuEstacion').addClass('active');
-  </script>
+
  <script>
+	$('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
+	$('#menuEstacion').addClass('active'); 
+
+	$( "#formEditar" ).validate({
+		rules: {
+			nombre: {
+				required: true,
+				maxlength: 191
+			},
+			descripcion: {
+				required: true,
+				direccion: 191
+			},
+		},
+	});
+
+
  @if($estacion->foto)
   var foto="<img class='kv-preview-data file-preview-image' src='{{ Storage::url('public/estaciones/'.$estacion->foto) }}'>";
 @else
@@ -212,9 +228,7 @@ function puntosEspecificos($lat,$long) {
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0Ko6qUa0EFuDWr77BpNJOdxD-QLstjBk&callback=initMap">
 </script>
-<script>
-    $('#menuNinios').addClass('active');
-</script>
+
 @endprepend
 <style type="text/css">
   #map {

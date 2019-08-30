@@ -8,7 +8,7 @@
 <form action="{{ route('guardarRol') }}" method="post">
     @csrf
     <div class="input-group mb-1">
-        <input type="text" name="rol" value="{{ old('rol') }}" class="form-control" placeholder="Ingrese nuevo rol.." aria-label="Ingrese nuevo rol.." aria-describedby="basic-addon2">
+        <input type="text" name="rol" value="{{ old('rol') }}" class="form-control @error('rol') is-invalid @enderror" placeholder="Ingrese nuevo rol.." aria-label="Ingrese nuevo rol.." aria-describedby="basic-addon2" required>
         <div class="input-group-append">
             <button class="btn btn-dark" type="submit">Guardar</button>
         </div>

@@ -9,7 +9,7 @@
 
     <div class="navbar-collapse collapse" id="navbar-footer">
         <span class="navbar-text">
-            &copy; 2019 - {{ date('Y') }}. <a href="#">{{ config('app.name','BOMBEROS') }}</a> por <a href="http://www.soysoftware.com" target="_blank">Soysoftware</a>
+            &copy; 2019 - {{ date('Y') }}. <a href="#">{{ config('app.name','BOMBEROS') }}</a> por <a href="http://www.soysoftware.com" target="_blank">Romel & Jessica</a>
         </span>
 
         <ul class="navbar-nav ml-lg-auto">
@@ -21,7 +21,7 @@
             </li>
             <li class="nav-item">
                 <a href="" class="navbar-nav-link font-weight-semibold">
-                    <span class="text-pink-400"><i class="icon-cart2 mr-2"></i> Comprar</span>
+                    <span class="text-pink-400"><i class="icon-share2 mr-2"></i> Acerca del sistema</span>
                 </a>
             </li>
         </ul>

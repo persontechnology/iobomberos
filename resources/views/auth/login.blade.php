@@ -12,7 +12,7 @@
                 <div class="card-header text-center bg-dark">
                     <img src="{{ asset('img/escudo.png') }}" alt="" height="150px;">
                     <br>
-                    <strong class="">Acceder al sistema</strong>
+                    <strong class="">Ingresar al sistema</strong>
                 </div>
 
                 <div class="card-body">
@@ -51,8 +51,7 @@
                         <div class="form-group row">
                             <div class="col-md-6 offset-md-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}> no funciona
-
+                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                     <label class="form-check-label" for="remember">
                                         {{ __('Remember Me') }}
                                     </label>

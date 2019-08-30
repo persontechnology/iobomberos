@@ -1,16 +1,27 @@
 @extends('layouts.app',['title'=>'Restablecer contraseña'])
+
 @section('breadcrumbs', Breadcrumbs::render('resetPassword'))
 @section('content')
+
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-4">
-                <img src="{{ asset('admin/img/bomberos.png') }}" alt="" class="img-responsive img-fluid d-none d-sm-block">
-        </div>
+       
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-dark">{{ __('Reset Password') }}</div>
+                <div class="card-header text-center bg-dark">
+                    <img src="{{ asset('img/escudo.png') }}" alt="" height="150px;">
+                    <br>
+                    <strong class="">Restablecer contraseña</strong>
+                </div>
 
                 <div class="card-body">
+                  
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
                     <form method="POST" action="{{ route('password.update') }}" id="resetForm">
                         @csrf
 
@@ -48,7 +59,7 @@
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control bg-dark" name="password_confirmation" required autocomplete="new-password" placeholder="********">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="********">
                             </div>
                         </div>
 
@@ -60,7 +71,9 @@
                             </div>
                         </div>
                     </form>
+                    
                 </div>
+                
             </div>
         </div>
     </div>
@@ -95,5 +108,4 @@
         
     </script>
 @endprepend
-
 @endsection
