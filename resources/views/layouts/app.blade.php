@@ -130,11 +130,11 @@
                     <a class="navbar-nav-link" id="menuLogin" href="{{ route('login') }}">{{ __('Login') }}</a>
                 </li>
 
-                @if (Route::has('register'))
+                {{-- @if (Route::has('register'))
                     <li class="nav-item">
                         <a class="navbar-nav-link" id="menuRegistro" href="{{ route('register') }}">{{ __('Register') }}</a>
                     </li>
-                @endif
+                @endif --}}
             </ul>
         </div>
         @endauth

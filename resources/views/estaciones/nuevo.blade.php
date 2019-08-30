@@ -6,12 +6,10 @@
 
 <div class="card">
     <div class="card-header">
-    	<h4 class="card-title">
-         	Crear nueva estación
-    	</h4>
+        Complete información
     </div>
     <div class="card-body"> 
-	  	<form action="{{route('guardarEstacion')}}" method="post"  enctype="multipart/form-data">
+	  	<form action="{{route('guardarEstacion')}}" method="post" id="formNuevo"  enctype="multipart/form-data">
 	        @csrf
 	        <fieldset class="mb-3">
 			<div class="row">
@@ -20,7 +18,7 @@
 		            <div class="form-group row">
 		                <label class="col-form-label col-lg-3">Nombre <span class="text-danger">*</span></label>
 		                <div class="col-lg-9">
-		                    <input type="text"  id="nombre" name="nombre" value="{{ old('nombre') }}" required class="form-control @error('nombre') is-invalid @enderror" >
+		                    <input type="text" placeholder="Nombre" id="nombre" name="nombre" value="{{ old('nombre') }}" required class="form-control @error('nombre') is-invalid @enderror" >
 		                    @error('nombre')
 		                        <span class="invalid-feedback" role="alert">
 		                            <strong>{{ $message }}</strong>
@@ -31,7 +29,7 @@
 		            <div class="form-group row">
 		                <label class="col-form-label col-lg-3">Dirección <span class="text-danger">*</span></label>
 		                <div class="col-lg-9">
-		                    <input type="text"  id="direccion" name="direccion" value="{{ old('direccion') }}" required class="form-control @error('direccion') is-invalid @enderror" >
+		                    <input type="text"  id="direccion" placeholder="Dirección" name="direccion" value="{{ old('direccion') }}" required class="form-control @error('direccion') is-invalid @enderror" >
 		                    @error('direccion')
 		                        <span class="invalid-feedback" role="alert">
 		                            <strong>{{ $message }}</strong>
@@ -53,7 +51,7 @@
 		            </div>
 		        </div>
 		        <div class="col-sm-6">
-		        	<p class="text-center">Ubicación de la estación</p>
+		        	<label for="Ubicación de la estación"></label>
 		        	<div class="input-group">
 						 <div class="input-group-prepend">
 						    <span class="input-group-text">lat</span>
@@ -71,7 +69,7 @@
 		    </div>	        
 	        </fieldset>
 	        <div class="text-right">
-	            <button type="submit" class="btn btn-dark">Guardar <i class="icon-paperplane ml-2"></i>
+	            <button type="submit" class="btn btn-dark">Guardar
 	            </button>
 	        </div>
     	</form>
@@ -89,34 +87,49 @@
 <script src="{{ asset('admin/plus/bootstrap-fileinput/themes/fas/theme.min.js') }}"></script>
 <script src="{{ asset('admin/plus/bootstrap-fileinput/js/locales/es.js') }}"></script>
 {{-- fin file input --}}
+
+{{-- validate --}}
+<script src="{{ asset('admin/plus/validate/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('admin/plus/validate/messages_es.min.js') }}"></script>
   
   
 @endpush
 
 @prepend('linksPie')
 
-  <script type="text/javascript">
-       $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
-        $('#menuEstacion').addClass('active');
-  </script>
  <script>
- 
-$("#foto").fileinput({
-  
-   
-    maxImageWidth: 1200,
-    maxImageHeight: 650,
-    resizePreference: 'height',
-    autoReplace: true,
-    maxFileCount: 1,
-    resizeImage: true,
-    resizeIfSizeMoreThan: 1000,
-    theme:'fas',
-    language:'es',
-    showUpload: false
-})
+	$('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
+	$('#menuEstacion').addClass('active'); 
+	$("#foto").fileinput({
+	
+	
+		maxImageWidth: 1200,
+		maxImageHeight: 650,
+		resizePreference: 'height',
+		autoReplace: true,
+		maxFileCount: 1,
+		resizeImage: true,
+		resizeIfSizeMoreThan: 1000,
+		theme:'fas',
+		language:'es',
+		showUpload: false
+	})
 
-    </script>
+
+	$( "#formNuevo" ).validate({
+		rules: {
+			nombre: {
+				required: true,
+				maxlength: 191
+			},
+			descripcion: {
+				required: true,
+				direccion: 191
+			},
+		},
+	});
+
+</script>
 <script>
 	/*Inicializa el mapa en haciendo referencia al departamento*/
 	var map;
@@ -155,53 +168,51 @@ $("#foto").fileinput({
 	-1.2768936132798347
 	-78.63767815143547
 	*/
-function geocodeLatLng(geocoder, map, infowindow,marker) {
-    var lati = $('#latitud').val();
-    var longi =$('#longitud').val();
-    var latlng = {lat: parseFloat(lati), lng: parseFloat(longi)};
-    geocoder.geocode({'location': latlng}, function(results, status) {
-      if (status === 'OK') {
-        if (results[0]) {
-          map.setZoom(11);
-          marker.setMap(null);
-          var marker1 = new google.maps.Marker({
-		    map: map,
-		    draggable: true,
-		    animation: google.maps.Animation.DROP,
-		    draggable:true,
-		    position: latlng,			    
-		  });
-		  marker1.setMap(map);
-		  marker1.addListener('dragend', function() {
-		    var destinationLat = marker1.getPosition().lat();
-		    var destinationLng = marker1.getPosition().lng(); 
-		    puntosEspecificos(destinationLat,destinationLng);
-		    infowindow.setContent(null)
-			infowindow.open(null)
-		  });
-          infowindow.setContent(results[0].formatted_address);
-          infowindow.open(map, marker1);        
-        } else {
-          notificar("warning","Resultados no encontrados");
-        }
-      } else {
-        notificar("info","La latitud y longitud son icorrectas");
-      }
-    });
-}
+	function geocodeLatLng(geocoder, map, infowindow,marker) {
+		var lati = $('#latitud').val();
+		var longi =$('#longitud').val();
+		var latlng = {lat: parseFloat(lati), lng: parseFloat(longi)};
+		geocoder.geocode({'location': latlng}, function(results, status) {
+		if (status === 'OK') {
+			if (results[0]) {
+			map.setZoom(11);
+			marker.setMap(null);
+			var marker1 = new google.maps.Marker({
+				map: map,
+				draggable: true,
+				animation: google.maps.Animation.DROP,
+				draggable:true,
+				position: latlng,			    
+			});
+			marker1.setMap(map);
+			marker1.addListener('dragend', function() {
+				var destinationLat = marker1.getPosition().lat();
+				var destinationLng = marker1.getPosition().lng(); 
+				puntosEspecificos(destinationLat,destinationLng);
+				infowindow.setContent(null)
+				infowindow.open(null)
+			});
+			infowindow.setContent(results[0].formatted_address);
+			infowindow.open(map, marker1);        
+			} else {
+			notificar("warning","Resultados no encontrados");
+			}
+		} else {
+			notificar("info","La latitud y longitud son icorrectas");
+		}
+		});
+	}
 
-function puntosEspecificos($lat,$long) {
-	$('#latitud').val($lat);
-	$('#longitud').val($long);
-}
+	function puntosEspecificos($lat,$long) {
+		$('#latitud').val($lat);
+		$('#longitud').val($long);
+	}
 </script>
 
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0Ko6qUa0EFuDWr77BpNJOdxD-QLstjBk&callback=initMap">
 </script>
-<script>
-    $('#menuNinios').addClass('active');
-</script>
+
 @endprepend
 <style type="text/css">
   #map {

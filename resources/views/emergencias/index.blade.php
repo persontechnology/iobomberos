@@ -1,4 +1,4 @@
-@extends('layouts.app',['title'=>'Emergencia'])
+@extends('layouts.app',['title'=>'Emergencias'])
 
 @section('breadcrumbs', Breadcrumbs::render('emergencias'))
 

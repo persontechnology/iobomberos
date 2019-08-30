@@ -2,14 +2,7 @@
 
 @section('breadcrumbs', Breadcrumbs::render('permisos',$rol))
 
-@section('barraLateral')
 
-    <div class="breadcrumb justify-content-center">
-        <a href="{{ route('roles') }}" class="breadcrumb-elements-item">
-            <i class="fas fa-arrow-left"></i> Atras
-        </a>
-    </div>
-@endsection
 
 @section('content')
 
@@ -26,7 +19,7 @@
                     <thead>
                     <tr>
                         <th scope="col">Nombre</th>
-                        <th scope="col">Asignado</th>
+                        <th scope="col">Asignar</th>
                     </tr>
                     </thead>
                     <tbody>

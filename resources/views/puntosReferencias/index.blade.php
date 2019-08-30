@@ -5,7 +5,7 @@
 
     <div class="breadcrumb justify-content-center">
         <a href="{{ route('puntosReferenciaNuevo') }}" class="breadcrumb-elements-item">
-            <i class="fas fa-plus-circle"></i> Nuevo P. referencia
+            <i class="fas fa-plus"></i> Nuevo P. referencia
         </a>
          <a href="{{ route('puntosReferenciaMapa') }}" class="breadcrumb-elements-item">
             <i class="icon-map"></i> Ver mapa

@@ -4,7 +4,7 @@
 
     <div class="breadcrumb justify-content-center">
         <a href="{{ route('nuevaEstacion') }}" class="breadcrumb-elements-item">
-            <i class="fas fa-plus-circle"></i> Nueva estación
+            <i class="fas fa-plus"></i> Nueva estación
         </a>
     </div>
 @endsection

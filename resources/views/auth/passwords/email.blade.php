@@ -2,16 +2,20 @@
 
 @section('breadcrumbs', Breadcrumbs::render('resetPassword'))
 @section('content')
+
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-4">
-                <img src="{{ asset('admin/img/bomberos.png') }}" alt="" class="img-responsive img-fluid d-none d-sm-block">
-        </div>
+       
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-dark">{{ __('Reset Password') }}</div>
+                <div class="card-header text-center bg-dark">
+                    <img src="{{ asset('img/escudo.png') }}" alt="" height="150px;">
+                    <br>
+                    <strong class="">Restablecer contraseña</strong>
+                </div>
 
                 <div class="card-body">
+                  
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
@@ -43,7 +47,9 @@
                             </div>
                         </div>
                     </form>
+                    
                 </div>
+                
             </div>
         </div>
     </div>
