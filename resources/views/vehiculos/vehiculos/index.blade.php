@@ -1,19 +1,14 @@
 @extends('layouts.app',['title'=>'Vehículos'])
 
-@section('breadcrumbs', Breadcrumbs::render('tipoVehiculo')) 
+@section('breadcrumbs', Breadcrumbs::render('vehiculos',$tipo)) 
 
 @section('barraLateral')
 
     <div class="breadcrumb justify-content-center">
-            <a href="{{ route('usuariosNuevo') }}" class="breadcrumb-elements-item">
-                <i class="fas fa-plus"></i>
-                Nuevo vehículo
-            </a>
-            <a href="{{ route('imnportarVehiculos') }}" class="breadcrumb-elements-item">
-                <i class="fas fa-file-excel"></i>
-                Importar vehículos
-            </a>
-     
+        <a href="#" class="breadcrumb-elements-item">
+            <i class="fas fa-plus"></i>
+            Nuevo vehículo
+        </a>     
     </div>
 @endsection
 
@@ -21,7 +16,9 @@
 
 <div class="card">
     <div class="card-header">
-     
+        <h4 class="card-title">
+            Vehículos del tipo <span class="badge badge-flat border-success text-success-600"> {{$tipo->nombre.' '.$tipo->codigo  }} </span>
+        </h4>
     </div>
     <div class="card-body">
             <div class="table-responsive">
@@ -74,7 +71,7 @@
             function(){
                 swal.close();
                 $.blockUI({message:'<h1>Espere por favor.!</h1>'});
-                $.post( "{{ route('eliminarTipoVehiculo') }}", { tipo: $(arg).data('id') })
+                $.post( "{{ route('eliminarVehiculo') }}", { vehiculo: $(arg).data('id') })
                 .done(function( data ) {
                     if(data.success){
                         $('#dataTableBuilder').DataTable().draw(false);

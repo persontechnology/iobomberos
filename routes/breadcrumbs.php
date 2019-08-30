@@ -155,3 +155,10 @@ Breadcrumbs::for('editarTipoVehiculo', function ($trail,$tipoVehiculo) {
     $trail->parent('tipoVehiculo');
     $trail->push('Editar tipo vehículo', route('editarTipoVehiculo',$tipoVehiculo->id));
 });
+//A:Fabian Lopez
+//D:Breadcrums vehículo
+
+Breadcrumbs::for('vehiculos', function ($trail,$tipoVehiculo) {
+    $trail->parent('tipoVehiculo');
+    $trail->push('Vehículos', route('vehiculos',$tipoVehiculo->id));
+});
