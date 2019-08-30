@@ -11,6 +11,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use iobom\Imports\VehiculosImport;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use iobom\Models\Estacion;
+use iobom\Http\Requests\Vehiculo\RqCrear;
 
 class Vehiculos extends Controller
 {
@@ -26,9 +28,27 @@ class Vehiculos extends Controller
     	return $dataTable->with('idTipo',$tipo->id)
         ->render('vehiculos.vehiculos.index',compact('tipo')); 
     }
-    public function guardar(Request $request)
+    public function nuevo($idTipo)
     {
-    	
+       $tipo=TipoVehiculo::findOrFail($idTipo); 
+       $estaciones=Estacion::all(); 
+      return view('vehiculos.vehiculos.nuevo',["tipo"=>$tipo,"estaciones"=>$estaciones]);
+    }
+    public function guardar(RqCrear $request)
+    {
+    	$tipo=TipoVehiculo::findOrFail($request->tipo); 
+      $vehiculo= new Vehiculo();
+      $vehiculo->estacion_id=$request->estacion;
+      $vehiculo->tipoVehiculo_id=$tipo->id;
+      $vehiculo->placa=$request->placa;
+      $vehiculo->codigo=$request->codigo;
+      $vehiculo->marca=$request->marca;
+      $vehiculo->modelo=$request->modelo;
+      $vehiculo->cilindraje=$request->cilindraje;
+      $vehiculo->anio=$request->anio;
+      $vehiculo->motor=$request->motor;
+      $vehiculo->save();
+      return redirect()->route('vehiculos',$tipo->id)->with('success', 'Vehículos registrados exitosamente');
 
     }
     public function editar($idTipoVehiculo)

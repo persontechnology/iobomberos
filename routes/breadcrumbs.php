@@ -162,3 +162,8 @@ Breadcrumbs::for('vehiculos', function ($trail,$tipoVehiculo) {
     $trail->parent('tipoVehiculo');
     $trail->push('Vehículos', route('vehiculos',$tipoVehiculo->id));
 });
+
+Breadcrumbs::for('nuevoVehiculos', function ($trail,$tipoVehiculo) {
+    $trail->parent('vehiculos',$tipoVehiculo);
+    $trail->push('Nuevo vehículos', route('nuevoVehiculo',$tipoVehiculo->id));
+});

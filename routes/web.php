@@ -116,9 +116,11 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/eliminar-tipovehiculo', 'TipoVehiculos@eliminar')->name('eliminarTipoVehiculo');
 
         Route::get('/vehiculos/{id}', 'Vehiculos@index')->name('vehiculos');
+        Route::get('/nuevo-vehiculos/{id}', 'Vehiculos@nuevo')->name('nuevoVehiculo');
         Route::get('/importar-vehiculos', 'Vehiculos@importar')->name('imnportarVehiculos');
         Route::post('/importar-archivo', 'Vehiculos@importarArchivo')->name('imnportarArchivoVehiculos');
         Route::post('/eliminar-vehiculo', 'Vehiculos@eliminar')->name('eliminarVehiculo');
+        Route::post('/guardar-vehiculo', 'Vehiculos@guardar')->name('guardarVehiculo');
     });
 
 
