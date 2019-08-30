@@ -7,6 +7,7 @@ use iobom\Models\Estacion;
 use iobom\Models\Vehiculo;
 
 use Yajra\DataTables\Services\DataTable;
+use Illuminate\Support\Facades\Storage;
 
 class VehiculosDataTable extends DataTable
 {
@@ -19,17 +20,22 @@ class VehiculosDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-              ->editColumn('estacion_id',function(Estacion $estacion){
-                
-                return $estacion->nombre;
+            ->editColumn('estacion_id',function(Vehiculo $vehiculo){              
+                return $vehiculo->estacion->nombre;
             })
-            /*->filterColumn('id',function($query, $keyword){
-                $query->whereRaw("(select count(1) from actividad,modeloProgramatico where modeloProgramatico.id = actividad.modeloProgramatico_id  and CONCAT(modeloProgramatico.codigo,'',actividad.codigo) like ?) >= 1", ["%{$keyword}%"]);
+            ->filterColumn('estacion_id', function($query, $keyword) {
+                $query->whereHas('estacion', function($query) use ($keyword) {
+                    $query->whereRaw("nombre like ?", ["%{$keyword}%"]);
+                });
+            })
+            ->editColumn('codigo',function(Vehiculo $vehiculo){              
+                return $vehiculo->tipoVehiculo->codigo.''.$vehiculo->codigo;
+            })         
             
-            })*/
-            ->addColumn('action', function($query){
-                
-            });
+             ->addColumn('action', function($modelo){
+                return view('vehiculos.vehiculos.acciones',['vehiculo'=>$modelo])->render();
+            })
+              ->rawColumns(['action']);
     }
 
     /**
@@ -38,9 +44,10 @@ class VehiculosDataTable extends DataTable
      * @param \iobom\User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Vehiculo $model)
+    public function query(TipoVehiculo $model)
     {
-        return $model->where('tipoVehiculo_id',$this->id)->select($this->getColumns());
+        $idTipo=$this->idTipo;
+        return $model->find($idTipo)->vehiculos()->select($this->getColumns());
     }
 
     /**
@@ -83,7 +90,7 @@ class VehiculosDataTable extends DataTable
     {
         return [
                      
-            'estacion_id'=>['title'=>'Estación'],           
+            'estacion_id'=>['title'=>'Estación','data'=>'estacion_id'],           
             'placa',
             'codigo',
             'marca',
