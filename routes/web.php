@@ -62,12 +62,14 @@ Route::middleware(['verified', 'auth'])->group(function () {
     //A:Fabian Lopez
     //D. administracion de estaciones
     Route::get('/estaciones', 'Estaciones@index')->name('estaciones');
-    Route::get('/nuevaEstacion', 'Estaciones@nueva')->name('nuevaEstacion');
+    Route::get('/nueva-estacion', 'Estaciones@nueva')->name('nuevaEstacion');
     Route::post('/guardarEstacion', 'Estaciones@guardar')->name('guardarEstacion');
-    Route::get('/editarEstacion/{id}', 'Estaciones@editar')->name('editarEstacion');
-    Route::post('/actualizarEstacion', 'Estaciones@actualizar')->name('actualizarEstacion');
-    Route::post('/eliminarEstacion', 'Estaciones@eliminar')->name('eliminarEstacion');
-
+    Route::get('/editar-estacion/{id}', 'Estaciones@editar')->name('editarEstacion');
+    Route::post('/actualizar-estacion', 'Estaciones@actualizar')->name('actualizarEstacion');
+    Route::post('/eliminar-estacion', 'Estaciones@eliminar')->name('eliminarEstacion');
+    Route::get('/cambio-de-personal', 'Estaciones@cambioPersonal')->name('cambioPersonal');
+    Route::post('/actualizar-personal-en-estacion', 'Estaciones@actualizarPersonalEstacion')->name('actualizarPersonalEstacion');
+    
 
 
     // A:Deivid

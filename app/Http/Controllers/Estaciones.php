@@ -11,6 +11,7 @@ use iobom\Http\Requests\Estaciones\RqEditar;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use iobom\User;
 
 class Estaciones extends Controller
 {
@@ -94,5 +95,27 @@ class Estaciones extends Controller
             DB::rollBack();
             return response()->json(['default'=>'No se puede eliminar la estación']);
         }
+    }
+
+
+    public function cambioPersonal()
+    {
+        $estaciones=Estacion::all();
+        $usuarios=User::all();
+        $data = array('estaciones' => $estaciones,'usuarios'=>$usuarios );
+        return view('estaciones.cambioPersonal',$data);
+    }
+
+    public function actualizarPersonalEstacion(Request $request)
+    {
+        $request->validate([
+            'estacion' => 'required|exists:estacion,id',
+            'user' => 'required|exists:users,id',
+        ]);
+        $user=User::findOrFail($request->user);
+        $estacion=Estacion::findOrFail($request->estacion);
+        $user->estacion_id=$estacion->id;
+        $user->save();
+        return  response()->json(['success'=>'Actualizado exitosamente']);
     }
 }

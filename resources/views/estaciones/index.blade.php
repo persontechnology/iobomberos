@@ -6,6 +6,9 @@
         <a href="{{ route('nuevaEstacion') }}" class="breadcrumb-elements-item">
             <i class="fas fa-plus"></i> Nueva estación
         </a>
+        <a href="{{ route('cambioPersonal') }}" class="breadcrumb-elements-item">
+            <i class="fas fa-user-clock"></i> Cambio de personal
+        </a>
     </div>
 @endsection
 @section('content')
