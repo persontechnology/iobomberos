@@ -5,7 +5,7 @@
 @section('barraLateral')
 
     <div class="breadcrumb justify-content-center">
-        <a href="#" class="breadcrumb-elements-item">
+        <a href="{{route('nuevoVehiculo',$tipo->id)}}" class="breadcrumb-elements-item">
             <i class="fas fa-plus"></i>
             Nuevo vehículo
         </a>     
