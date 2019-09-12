@@ -41,7 +41,7 @@
                 <li class="nav-item nav-item-submenu" id="menuGestionInformacion">
                     <a href="#" class="nav-link">
                         <i class="fas fa-list"></i>
-                        <span>Gestón de Información</span>
+                        <span>Gestión de Información</span>
                     </a>
                     <ul class="nav nav-group-sub" data-submenu-title="Form components">
                         <li class="nav-item">

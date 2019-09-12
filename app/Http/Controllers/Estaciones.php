@@ -36,14 +36,19 @@ class Estaciones extends Controller
         $estacion->latitud=$request->latitud;
         $estacion->longitud=$request->longitud;
         $estacion->creadoPor=Auth::id();
-        if ($estacion->save()) {
-            if ($request->hasFile('foto')) {
-                $foto=$estacion->id.'_'.Carbon::now().'.'.$request->foto->extension();
-                $path = $request->foto->storeAs('estaciones', $foto,'public');
-                $estacion->foto=$foto;    
+        $estacion->save();
+        if ($request->hasFile('foto')) {
+            if ($request->file('foto')->isValid()) {
+                $extension = $request->foto->extension();
+                $path = Storage::putFileAs(
+                    'public/estaciones', $request->file('foto'), $estacion->id.'.'.$extension
+                );
+                $estacion->foto=$path;
                 $estacion->save();
             }
         }
+
+
         $request->session()->flash('success','Estacíon registrada exitosamente ');
         return redirect()->route('estaciones');
 	}
@@ -60,17 +65,20 @@ class Estaciones extends Controller
         $estacion->latitud=$request->latitud;
         $estacion->longitud=$request->longitud;
         $estacion->actualizadoPor=Auth::id();
-        if($estacion->save()){
-            if ($request->hasFile('foto')) {
-                if ($request->file('foto')->isValid()) {
-                    Storage::disk('public')->delete('estaciones/'.$estacion->foto);
-                    $foto=$estacion->id.'_'.Carbon::now().'.'.$request->foto->extension();
-                    $path = $request->foto->storeAs('estaciones', $foto,'public');
-                    $estacion->foto=$foto;    
-                    $estacion->save();
-                }
-            }         
+        
+        $estacion->save();
+        if ($request->hasFile('foto')) {
+            if ($request->file('foto')->isValid()) {
+                Storage::disk('public')->delete('estaciones/'.$estacion->foto);
+                $extension = $request->foto->extension();
+                $path = Storage::putFileAs(
+                    'public/estaciones', $request->file('foto'), $estacion->id.'.'.$extension
+                );
+                $estacion->foto=$path;
+                $estacion->save();
+            }
         }
+
         $request->session()->flash('success','Estacíon editada exitosamente ');
         return redirect()->route('estaciones');
 	}
@@ -84,10 +92,10 @@ class Estaciones extends Controller
         try {
             DB::beginTransaction();
             $estacion=Estacion::findOrFail($request->estacion);
-            if($estacion->foto){
-                Storage::disk('public')->delete('estaciones/'.$estacion->foto);
+            $foto=$estacion->foto;
+            if($estacion->delete()){
+                Storage::disk('public')->delete('estaciones/'.$foto);
             }
-            $estacion->delete();
             DB::commit();
             return response()->json(['success'=>'Estación eliminada exitosamente']);
 

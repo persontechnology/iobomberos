@@ -31,6 +31,7 @@ class RqGuardar extends FormRequest
             'estacion_id' => 'required',         
             "roles"    => "nullable|array",
             "roles.*"  => "nullable|exists:roles,id",
+            'foto'=>'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 }

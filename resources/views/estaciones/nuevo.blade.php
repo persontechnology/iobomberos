@@ -3,90 +3,78 @@
 @section('breadcrumbs', Breadcrumbs::render('nuevaEstacion'))
 
 @section('content')
-
+<form action="{{route('guardarEstacion')}}" method="post" id="formNuevo"  enctype="multipart/form-data">
 <div class="card">
     <div class="card-header">
         Complete información
     </div>
     <div class="card-body"> 
-	  	<form action="{{route('guardarEstacion')}}" method="post" id="formNuevo"  enctype="multipart/form-data">
-	        @csrf
-	        <fieldset class="mb-3">
-			<div class="row">
-				<div class="col-sm-6"> 			
+	  
+	    @csrf
+		<div class="row">
+			<div class="col-sm-6"> 			
 
-		            <div class="form-group row">
-		                <label class="col-form-label col-lg-3">Nombre <span class="text-danger">*</span></label>
-		                <div class="col-lg-9">
-		                    <input type="text" placeholder="Nombre" id="nombre" name="nombre" value="{{ old('nombre') }}" required class="form-control @error('nombre') is-invalid @enderror" >
-		                    @error('nombre')
-		                        <span class="invalid-feedback" role="alert">
-		                            <strong>{{ $message }}</strong>
-		                        </span>
-		                    @enderror
-		                </div>
-		            </div>
-		            <div class="form-group row">
-		                <label class="col-form-label col-lg-3">Dirección <span class="text-danger">*</span></label>
-		                <div class="col-lg-9">
-		                    <input type="text"  id="direccion" placeholder="Dirección" name="direccion" value="{{ old('direccion') }}" required class="form-control @error('direccion') is-invalid @enderror" >
-		                    @error('direccion')
-		                        <span class="invalid-feedback" role="alert">
-		                            <strong>{{ $message }}</strong>
-		                        </span>
-		                    @enderror
-		                </div>
-		            </div>
-
-		            <div class="form-group row">
-		                <label class="col-form-label col-lg-3">Imagen <span class="text-danger">*</span></label>
-		                <div class="col-lg-9">
-		                    <input type="file"  id="foto" name="foto" value="{{ old('foto') }}"  class="form-control @error('foto') is-invalid @enderror" >
-		                    @error('foto')
-		                        <span class="invalid-feedback" role="alert">
-		                            <strong>{{ $message }}</strong>
-		                        </span>
-		                    @enderror
-		                </div>
-		            </div>
-		        </div>
-		        <div class="col-sm-6">
-		        	<label for="Ubicación de la estación"></label>
-		        	<div class="input-group">
-						 <div class="input-group-prepend">
-						    <span class="input-group-text">lat</span>
-						 </div>
-						 <input type="text"  id="latitud" name="latitud" value="{{ old('latitud') }}"  class="form-control @error('latitud') is-invalid @enderror" >
-						 <div class="input-group-prepend">
-						    <span class="input-group-text">Long</span>
-						 </div>
-						 <input   value="{{ old('longitud') }}" id="longitud" name="longitud"  type="text" class="@error('longitud') is-invalid @enderror form-control"  >
-						 <a class="btn btn-dark text-white" id="buscarUbicacion"><i class="icon-search4"></i></a>
+				<div class="form-group row">
+					<label class="col-form-label col-lg-3">Nombre <span class="text-danger">*</span></label>
+					<div class="col-lg-9">
+						<input type="text" placeholder="Nombre" id="nombre" name="nombre" value="{{ old('nombre') }}" required class="form-control @error('nombre') is-invalid @enderror" >
+						@error('nombre')
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+							</span>
+						@enderror
 					</div>
-	        <!-- datso para la ubicacion en google maop -->	  
-					<div id="map"></div>        	
-		        </div>
-		    </div>	        
-	        </fieldset>
-	        <div class="text-right">
-	            <button type="submit" class="btn btn-dark">Guardar
-	            </button>
-	        </div>
-    	</form>
-    </div>
-   
-</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-lg-3">Dirección <span class="text-danger">*</span></label>
+					<div class="col-lg-9">
+						<input type="text"  id="direccion" placeholder="Dirección" name="direccion" value="{{ old('direccion') }}" required class="form-control @error('direccion') is-invalid @enderror" >
+						@error('direccion')
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+							</span>
+						@enderror
+					</div>
+				</div>
 
+				<div class="form-group row">
+					<label class="col-form-label col-lg-3">Imagén</label>
+					<div class="col-lg-9">
+						<input type="file"  id="foto" name="foto" value="{{ old('foto') }}"  class="form-control @error('foto') is-invalid @enderror" >
+						@error('foto')
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+							</span>
+						@enderror
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<p>Ubicación de la estación</p>
+				<div class="input-group">
+						<div class="input-group-prepend">
+						<span class="input-group-text">lat</span>
+						</div>
+						<input type="text"  id="latitud" name="latitud" value="{{ old('latitud') }}"  class="form-control @error('latitud') is-invalid @enderror" >
+						<div class="input-group-prepend">
+						<span class="input-group-text">Long</span>
+						</div>
+						<input   value="{{ old('longitud') }}" id="longitud" name="longitud"  type="text" class="@error('longitud') is-invalid @enderror form-control"  >
+						<a class="btn btn-dark text-white" id="buscarUbicacion"><i class="icon-search4"></i></a>
+				</div>
+				<!-- datso para la ubicacion en google maop -->	  
+				<div id="map"></div>        	
+			</div>
+		</div>	   
+    	
+    </div>
+   <div class="card-footer">
+		<button type="submit" class="btn btn-dark">Guardar</button>
+   </div>
+</div>
+</form>
 
 @push('linksCabeza')
-<link href="{{ asset('admin/plus/bootstrap-fileinput/css/fileinput.min.css') }}" media="all" rel="stylesheet" type="text/css" />
-<script src="{{ asset('admin/plus/bootstrap-fileinput/js/plugins/piexif.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('admin/plus/bootstrap-fileinput/js/plugins/sortable.min.js') }}" type="text/javascript"></script>
-<script src="{{asset('admin/plus/bootstrap-fileinput/js/plugins/purify.min.js')}}" type="text/javascript"></script>
-<script src="{{ asset('admin/plus/bootstrap-fileinput/js/fileinput.min.js') }}"></script>
-<script src="{{ asset('admin/plus/bootstrap-fileinput/themes/fas/theme.min.js') }}"></script>
-<script src="{{ asset('admin/plus/bootstrap-fileinput/js/locales/es.js') }}"></script>
-{{-- fin file input --}}
 
 {{-- validate --}}
 <script src="{{ asset('admin/plus/validate/jquery.validate.min.js') }}"></script>
@@ -100,21 +88,6 @@
  <script>
 	$('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
 	$('#menuEstacion').addClass('active'); 
-	$("#foto").fileinput({
-	
-	
-		maxImageWidth: 1200,
-		maxImageHeight: 650,
-		resizePreference: 'height',
-		autoReplace: true,
-		maxFileCount: 1,
-		resizeImage: true,
-		resizeIfSizeMoreThan: 1000,
-		theme:'fas',
-		language:'es',
-		showUpload: false
-	})
-
 
 	$( "#formNuevo" ).validate({
 		rules: {

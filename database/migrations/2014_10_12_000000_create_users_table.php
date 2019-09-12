@@ -18,11 +18,11 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('telefono')->nullable();
-            //ediatado por fabian lopez nuevo campo telefono
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->string('foto')->nullable();
 
             $table->enum('estado', ['Activo', 'Inactivo','Dado de baja']);
 

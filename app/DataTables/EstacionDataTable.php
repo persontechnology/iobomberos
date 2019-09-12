@@ -16,9 +16,12 @@ class EstacionDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
+            ->editColumn('foto',function($est){
+                return view('estaciones.foto',['est'=>$est])->render();
+            })
             ->addColumn('action', function($estacion){
                 return view('estaciones.acciones',['estacion'=>$estacion])->render();
-        });
+        })->rawColumns(['foto','action']);
     }
 
     /**
@@ -57,13 +60,14 @@ class EstacionDataTable extends DataTable
             'id',
             'nombre',
             'direccion',
+            'foto'
             
         ];
     }
      protected function getColumnsTable()
     {
         return [
-           
+           'foto',
             'nombre',
             'direccion'=>['title'=>'Dirección'],            
         ];

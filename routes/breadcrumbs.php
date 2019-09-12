@@ -45,23 +45,23 @@ Breadcrumbs::for('usuarios', function ($trail) {
 });
 Breadcrumbs::for('usuariosNuevo', function ($trail) {
     $trail->parent('usuarios');
-    $trail->push('Nuevo usuario', route('usuariosNuevo'));
+    $trail->push('Nuevo personal Op.', route('usuariosNuevo'));
 });
 Breadcrumbs::for('informacionUsuario', function ($trail,$user) {
     $trail->parent('usuarios');
-    $trail->push('Información de usuario', route('informacionUsuario',$user->id));
+    $trail->push('Información de personal Op.', route('informacionUsuario',$user->id));
 });
 Breadcrumbs::for('editarUsuario', function ($trail,$user) {
     $trail->parent('usuarios');
-    $trail->push('Actualizar usuario', route('editarUsuario',$user->id));
+    $trail->push('Actualizar personal Op.', route('editarUsuario',$user->id));
 });
 Breadcrumbs::for('editarRolUsuario', function ($trail,$user) {
     $trail->parent('usuarios');
-    $trail->push('Roles de usuario', route('editarRolUsuario',$user->id));
+    $trail->push('Roles de personal Op.', route('editarRolUsuario',$user->id));
 });
 Breadcrumbs::for('usuariosImportar', function ($trail) {
     $trail->parent('usuarios');
-    $trail->push('Importar usuarios', route('usuariosImportar'));
+    $trail->push('Importar personal Op.', route('usuariosImportar'));
 });
 
 //A:Fabian Lopez

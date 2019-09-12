@@ -13,7 +13,7 @@
         </div>
         <div class="card-body">
             <div class="form-group row">
-                <label for="name" class="col-md-4 col-form-label text-md-right">Estaciones</label>
+                <label for="name" class="col-md-4 col-form-label text-md-right">Estaciones<i class="text-danger">*</i></label>
 
                 <div class="col-md-6">
                     @if($estaciones)
@@ -32,7 +32,7 @@
                 </div>
             </div>   
             <div class="form-group row">
-                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}<i class="text-danger">*</i></label>
 
                 <div class="col-md-6">
                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name',$usuario->name) }}" required autocomplete="name" autofocus>
@@ -46,7 +46,7 @@
             </div>
          
             <div class="form-group row">
-                <label for="telefono" class="col-md-4 col-form-label text-md-right">Teléfono</label>
+                <label for="telefono" class="col-md-4 col-form-label text-md-right">Teléfono<i class="text-danger">*</i></label>
 
                 <div class="col-md-6">
                     <input id="telefono" type="number" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{old('telefono',$usuario->telefono)}}"  autocomplete="telefono" placeholder="Teléfono">
@@ -59,7 +59,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}<i class="text-danger">*</i></label>
 
                 <div class="col-md-6">
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email',$usuario->email) }}" required autocomplete="email">
@@ -72,17 +72,17 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-4 col-form-label text-md-right" for="estado">Estado :</label>
+                <label class="col-md-4 col-form-label text-md-right" for="estado">Estado<i class="text-danger">*</i></label>
                  <div class="col-md-6"> 
                     <div class="custom-control custom-radio">
                         <input type="radio" class="custom-control-input {{ $errors->has('estado') ? ' is-invalid' : '' }}" value="Activo" id="Activo" name="estado"  required {{ old('estado',$usuario->estado)=='Activo'?'checked':'checked' }}>
                         <label class="custom-control-label" for="Activo">Activo</label>
                     </div>
 
-                    <div class="custom-control custom-radio ml-1">
+                    {{--  <div class="custom-control custom-radio ml-1">
                         <input type="radio" class="custom-control-input {{ $errors->has('estado') ? ' is-invalid' : '' }}" value="Inactivo" id="Inactivo" name="estado"  required {{ old('estado',$usuario->estado)=='Inactivo'?'checked':'' }}>
                         <label class="custom-control-label" for="Inactivo">Inactivo</label>
-                    </div>
+                    </div>  --}}
 
                     <div class="custom-control custom-radio ml-1">
                         <input type="radio" class="custom-control-input{{ $errors->has('estado') ? ' is-invalid' : '' }}" value="Dado de baja" id="Dado de baja" name="estado" required {{ old('estado',$usuario->estado)=='Dado de baja'?'checked':'' }}>
@@ -120,10 +120,8 @@
             </div>
             
         </div>
-        <div class="card-footer text-muted">
-                <button type="submit" class="btn btn-dark">
-                    {{ __('Actualizar') }}
-                </button>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-dark">Guardar cambios</button>
         </div>
     </div>
 </form>

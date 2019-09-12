@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="card-footer text-muted">
-                <button type="submit" class="btn btn-success">
+                <button type="submit" class="btn btn-dark">
                     {{ __('Actualizar roles') }}
                 </button>
         </div>
@@ -53,6 +53,7 @@
 
 @prepend('linksPie')
     <script>
+        $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
         $('#menuUsuarios').addClass('active');
     </script>
     

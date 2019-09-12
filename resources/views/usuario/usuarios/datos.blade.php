@@ -2,8 +2,18 @@
     <table class="table table-bordered">
         
         <tr>
+            <th>Foto</th>
+            <td>
+                @if (Storage::exists($usuario->foto))
+                    <a href="{{ Storage::url($usuario->foto) }}" class="btn-link" data-toggle="tooltip" data-placement="top" title="Ver foto">
+                        <img src="{{ Storage::url($usuario->foto) }}" alt="" class="img-fluid" width="45px;">
+                    </a>
+                @else
+                    <img src="{{ asset('img/user.png') }}" alt="" class="img-fluid" width="45px;">
+                @endif
+            </td>
             <th scope="row">Estado de la cuenta</th>
-            <td colspan="3">
+            <td colspan="">
                 @if($usuario->estado)
                     Activo
                 @else

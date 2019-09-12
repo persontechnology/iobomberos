@@ -1,93 +1,87 @@
-@extends('layouts.app',['title'=>'Editar estacion'])
+@extends('layouts.app',['title'=>'Editar estación'])
 
 @section('breadcrumbs', Breadcrumbs::render('editarEstacion',$estacion))
 
 @section('content')
-
+<form action="{{route('actualizarEstacion')}}" method="post" id="formEditar"  enctype="multipart/form-data">
+@csrf
 <div class="card">
     <div class="card-header">
     	Complete información
     </div>
     <div class="card-body"> 
-	  	<form action="{{route('actualizarEstacion')}}" method="post" id="formEditar"  enctype="multipart/form-data">
-	        @csrf
-	        <fieldset class="mb-3">
-			<div class="row">
-				<div class="col-sm-6">
-					<input type="hidden" name="estacion" id="estacion" value="{{$estacion->id}}">
-		            <div class="form-group row">
-		                <label class="col-form-label col-lg-3">Nombre <span class="text-danger">*</span></label>
-		                <div class="col-lg-9">
-		                    <input type="text"  id="nombre" placeholder="Nombre" name="nombre" value="{{ old('nombre',$estacion->nombre) }}" required class="form-control @error('nombre') is-invalid @enderror" >
-		                    @error('nombre')
-		                        <span class="invalid-feedback" role="alert">
-		                            <strong>{{ $message }}</strong>
-		                        </span>
-		                    @enderror
-		                </div>
-		            </div>
-		            <div class="form-group row">
-		                <label class="col-form-label col-lg-3">Dirección <span class="text-danger">*</span></label>
-		                <div class="col-lg-9">
-		                    <input type="text"  id="direccion" placeholder="Dirección" name="direccion" value="{{ old('direccion',$estacion->direccion) }}" required class="form-control @error('direccion') is-invalid @enderror" >
-		                    @error('direccion')
-		                        <span class="invalid-feedback" role="alert">
-		                            <strong>{{ $message }}</strong>
-		                        </span>
-		                    @enderror
-		                </div>
-		            </div>
-
-		            <div class="form-group row">
-		                <label class="col-form-label col-lg-3">Imagen <span class="text-danger">*</span></label>
-		                <div class="col-lg-9">
-		                    <input type="file"  id="foto" name="foto" value="{{ old('foto') }}"  class="form-control @error('foto') is-invalid @enderror" >
-		                    @error('foto')
-		                        <span class="invalid-feedback" role="alert">
-		                            <strong>{{ $message }}</strong>
-		                        </span>
-		                    @enderror
-		                </div>
-		            </div>
-		        </div>
-		        <div class="col-sm-6">
-		        	<p class="text-center">Ubicación de la estación</p>
-		        	<div class="input-group">
-						 <div class="input-group-prepend">
-						    <span class="input-group-text">lat</span>
-						 </div>
-						 <input type="text"  id="latitud" name="latitud" value="{{ old('latitud',$estacion->latitud) }}"  class="form-control @error('latitud') is-invalid @enderror" >
-						 <div class="input-group-prepend">
-						    <span class="input-group-text">Long</span>
-						 </div>
-						 <input   value="{{ old('longitud',$estacion->longitud) }}" id="longitud" name="longitud"  type="text" class="@error('longitud') is-invalid @enderror form-control"  >
-						 <a class="btn btn-dark text-white" id="buscarUbicacion"><i class="icon-search4"></i></a>
+		<div class="row">
+			<div class="col-sm-6">
+				<input type="hidden" name="estacion" id="estacion" value="{{$estacion->id}}">
+				<div class="form-group row">
+					<label class="col-form-label col-lg-3">Nombre<span class="text-danger">*</span></label>
+					<div class="col-lg-9">
+						<input type="text"  id="nombre" placeholder="Nombre" name="nombre" value="{{ old('nombre',$estacion->nombre) }}" required class="form-control @error('nombre') is-invalid @enderror" >
+						@error('nombre')
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+							</span>
+						@enderror
 					</div>
-	        <!-- datso para la ubicacion en google maop -->	  
-					<div id="map"></div>        	
-		        </div>
-		    </div>	        
-	        </fieldset>
-	        <div class="text-right">
-	            <button type="submit" class="btn btn-dark">Actualizar
-	            </button>
-	        </div>
-    	</form>
-    	
-    </div>
-   
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-lg-3">Dirección<span class="text-danger">*</span></label>
+					<div class="col-lg-9">
+						<input type="text"  id="direccion" placeholder="Dirección" name="direccion" value="{{ old('direccion',$estacion->direccion) }}" required class="form-control @error('direccion') is-invalid @enderror" >
+						@error('direccion')
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+							</span>
+						@enderror
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-form-label col-lg-3">Imagén</label>
+					<div class="col-lg-9">
+						<input type="file"  id="foto" name="foto" value="{{ old('foto') }}"  class="form-control @error('foto') is-invalid @enderror" >
+						@error('foto')
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+							</span>
+						@enderror
+						
+						<br>
+						@if (Storage::exists($estacion->foto))
+							<a href="{{ Storage::url($estacion->foto) }}" class="btn-link" data-toggle="tooltip" data-placement="top" title="Ver foto">
+								<img src="{{ Storage::url($estacion->foto) }}" alt="" class="img-fluid">
+							</a>
+						@endif	
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<p>Ubicación de la estación</p>
+				<div class="input-group">
+						<div class="input-group-prepend">
+						<span class="input-group-text">lat</span>
+						</div>
+						<input type="text"  id="latitud" name="latitud" value="{{ old('latitud',$estacion->latitud) }}"  class="form-control @error('latitud') is-invalid @enderror" >
+						<div class="input-group-prepend">
+						<span class="input-group-text">Long</span>
+						</div>
+						<input   value="{{ old('longitud',$estacion->longitud) }}" id="longitud" name="longitud"  type="text" class="@error('longitud') is-invalid @enderror form-control"  >
+						<a class="btn btn-dark text-white" id="buscarUbicacion"><i class="icon-search4"></i></a>
+				</div>
+				<!-- datso para la ubicacion en google maop -->	  
+				<div id="map"></div>        	
+			</div>
+		</div>
+	</div>
+	<div class="card-footer">
+		<button type="submit" class="btn btn-dark">Guardar cambios</button>
+	</div>
 </div>
+</form>
 
 
 @push('linksCabeza')
-<link href="{{ asset('admin/plus/bootstrap-fileinput/css/fileinput.min.css') }}" media="all" rel="stylesheet" type="text/css" />
-<script src="{{ asset('admin/plus/bootstrap-fileinput/js/plugins/piexif.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('admin/plus/bootstrap-fileinput/js/plugins/sortable.min.js') }}" type="text/javascript"></script>
-<script src="{{asset('admin/plus/bootstrap-fileinput/js/plugins/purify.min.js')}}" type="text/javascript"></script>
-<script src="{{ asset('admin/plus/bootstrap-fileinput/js/fileinput.min.js') }}"></script>
-<script src="{{ asset('admin/plus/bootstrap-fileinput/themes/fas/theme.min.js') }}"></script>
-<script src="{{ asset('admin/plus/bootstrap-fileinput/js/locales/es.js') }}"></script>
-{{-- fin file input --}}
+
   
 {{-- validate --}}
 {{-- validate --}}
@@ -116,27 +110,6 @@
 	});
 
 
- @if($estacion->foto)
-  var foto="<img class='kv-preview-data file-preview-image' src='{{ Storage::url('public/estaciones/'.$estacion->foto) }}'>";
-@else
-var foto="<img class='kv-preview-data file-preview-image' src='{{ asset('global_assets/images/estacion.jpg') }}'>";
-@endif
-
-$("#foto").fileinput({  
-   
-    maxImageWidth: 1200,
-    maxImageHeight: 650,
-    resizePreference: 'height',
-    autoReplace: true,
-    maxFileCount: 1,
-    resizeImage: true,
-    resizeIfSizeMoreThan: 1000,
-    theme:'fas',
-    language:'es',
-    showUpload: false,
-    initialPreview: [foto],
-    allowedFileExtensions: ["jpg", "png", "gif"],
-})
 
  </script>
  <script>

@@ -11,6 +11,7 @@ use Spatie\Permission\Models\Role;
 use iobom\Http\Requests\Usuarios\RqGuardar;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use iobom\Http\Requests\Usuarios\RqActualizar;
 use iobom\DataTables\Usuarios\PorRolDataTable;
 use PDF;
@@ -57,8 +58,17 @@ class Usuarios extends Controller
         $user->creadoPor=Auth::user()->id;
         $user->save();
         $user->assignRole($request->roles);
-
-         
+        if ($request->hasFile('foto')) {
+            if ($request->file('foto')->isValid()) {
+                $extension = $request->foto->extension();
+                $path = Storage::putFileAs(
+                    'public/usuarios', $request->file('foto'), $user->id.'.'.$extension
+                );
+                $user->foto=$path;
+                $user->save();
+            }
+        }
+        
         $request->session()->flash('success','Personal operativo registrado exitosamente');
         return redirect()->route('usuarios');
     }
@@ -75,7 +85,10 @@ class Usuarios extends Controller
             $user=User::findOrFail($request->user);
             $this->authorize('eliminarUsuario', $user);
             if(Auth::user()->id!=$user->id){
-                $user->delete();
+                $foto=$user->foto;
+                if($user->delete()){
+                    Storage::disk('public')->delete('estaciones/'.$foto);
+                }
                 DB::commit();
                 return response()->json(['success'=>'Personal operativo eliminado exitosamente']);
                 
@@ -85,7 +98,7 @@ class Usuarios extends Controller
             
         } catch (\Exception $th) {
             DB::rollBack();
-            return response()->json(['default'=>'No se puede eliminar usuario']);
+            return response()->json(['default'=>'No se puede eliminar personal operativo']);
         }
     }
 
@@ -134,13 +147,26 @@ class Usuarios extends Controller
             $user->password=Hash::make($request->password);
         }
         $user->estado = $request->estado;
-         $user->estacion_id=$request->estacion_id;
+        $user->estacion_id=$request->estacion_id;
         $user->telefono = $request->telefono;
         $user->actualizadoPor=Auth::user()->id;
         $user->save();
+
+        if ($request->hasFile('foto')) {
+            if ($request->file('foto')->isValid()) {
+                Storage::disk('public')->delete('estaciones/'.$user->foto);
+                $extension = $request->foto->extension();
+                $path = Storage::putFileAs(
+                    'public/usuarios', $request->file('foto'), $user->id.'.'.$extension
+                );
+                $user->foto=$path;
+                $user->save();
+            }
+        }
+
         $request->session()->flash('success','Personal operativo editado exitosamente');
 
-        return redirect()->route('editarUsuario',$user->id);
+        return redirect()->route('usuarios');
     }
 
     // A:Deivid
@@ -191,6 +217,6 @@ class Usuarios extends Controller
     public function procesarImportacion(Request $request)
     {
         Excel::import(new UsuariosImport, $request->file('archivo'));
-        return redirect()->route('usuarios')->with('success', 'Usuarios importados');
+        return redirect()->route('usuarios')->with('success', 'Personal operativo importados');
     }
 }

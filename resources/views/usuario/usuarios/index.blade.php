@@ -7,16 +7,16 @@
     <div class="breadcrumb justify-content-center">
             <a href="{{ route('usuariosNuevo') }}" class="breadcrumb-elements-item">
                 <i class="fas fa-plus"></i>
-                Nuevo usuario
+                Nuevo personal Op.
             </a>
             <a href="{{ route('usuariosImportar') }}" class="breadcrumb-elements-item">
                 <i class="fas fa-file-excel"></i>
-                Importar usuarios
+                Importar personal Op.
             </a>
         <div class="breadcrumb-elements-item dropdown p-0">
             <a href="#" class="breadcrumb-elements-item dropdown-toggle" data-toggle="dropdown">
                 <i class="fas fa-users"></i>
-                Ver usuarios por roles
+                Ver personal Op. por roles
             </a>
 
             <div class="dropdown-menu dropdown-menu-right">

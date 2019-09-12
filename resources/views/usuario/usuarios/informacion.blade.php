@@ -41,6 +41,7 @@
 
 @prepend('linksPie')
     <script>
+        $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
         $('#menuUsuarios').addClass('active');
     </script>
     

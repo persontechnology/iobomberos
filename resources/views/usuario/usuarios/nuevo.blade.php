@@ -5,7 +5,7 @@
 
 
 @section('content')
-<form method="POST" action="{{ route('guardarUsuario') }}" id="formNuevoUsuario">
+<form method="POST" action="{{ route('guardarUsuario') }}" id="formNuevoUsuario" enctype="multipart/form-data">
     @csrf
     <div class="card">
         <div class="card-header">
@@ -16,7 +16,7 @@
                     <div class="col-md-8">
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">Estaciones</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">Estaciones<i class="text-danger">*</i></label>
         
                             <div class="col-md-6">
                                 @if($estaciones)
@@ -36,7 +36,7 @@
                         </div>
             
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}<i class="text-danger">*</i></label>
         
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Nombre">
@@ -50,7 +50,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="telefono" class="col-md-4 col-form-label text-md-right">Teléfono</label>
+                            <label for="telefono" class="col-md-4 col-form-label text-md-right">Teléfono<i class="text-danger">*</i></label>
         
                             <div class="col-md-6">
                                 <input id="telefono" type="text" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{old('telefono')}}" placeholder="Teléfono">
@@ -64,7 +64,7 @@
                         </div>
         
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}<i class="text-danger">*</i></label>
         
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Email">
@@ -79,7 +79,7 @@
                      
         
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}<i class="text-danger">*</i></label>
         
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="********">
@@ -93,13 +93,21 @@
                         </div>
         
                         <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}<i class="text-danger">*</i></label>
         
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="********">
                             </div>
                         </div>
-            
+
+                        
+                        <div class="form-group row">
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Foto de perfil') }}</label>
+        
+                            <div class="col-md-6">
+                                <input type="file" class="form-control-file" id="exampleFormControlFile1" name="foto" accept="mage/*">
+                            </div>
+                        </div>
                         
                     </div>
                     <div class="col-md-4">
