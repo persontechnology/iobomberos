@@ -17,7 +17,7 @@
                     <tr class="bg-dark">
                         <th scope="col">Nombre de usuario</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Contraseña</th>
+                        <th scope="col">Teléfono</th>
                         <th scope="col">Rol</th>
                     </tr>
                     </thead>
@@ -35,12 +35,12 @@
                 
             <div class="form-group">
                 <label for="exampleFormControlFile1">Selecionar archivo que contenga información de usuarios</label>
-                <input type="file" name="archivo" class="form-control-file" id="exampleFormControlFile1">
+                <input type="file" name="archivo" class="form-control-file" id="exampleFormControlFile1" required>
             </div>
                 
         </div>
         <div class="card-footer text-muted">
-            <button type="submit" class="btn btn-success">Importar usuarios</button>
+            <button type="submit" class="btn btn-dark">Importar usuarios</button>
         </div>
     </div>
 </form>

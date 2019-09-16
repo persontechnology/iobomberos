@@ -43,7 +43,7 @@ class TipoEmergenciaDataTable extends DataTable
         return $this->builder()
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->addAction(['width' => '80px'])
+                    ->addAction(['width' => '80px','printable' => false, 'exportable' => false,'title'=>'Acciones'])
                     ->parameters($this->getBuilderParameters());
     }
 

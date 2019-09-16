@@ -69,7 +69,7 @@ class Estaciones extends Controller
         $estacion->save();
         if ($request->hasFile('foto')) {
             if ($request->file('foto')->isValid()) {
-                Storage::disk('public')->delete('estaciones/'.$estacion->foto);
+                Storage::delete($estacion->foto);
                 $extension = $request->foto->extension();
                 $path = Storage::putFileAs(
                     'public/estaciones', $request->file('foto'), $estacion->id.'.'.$extension
@@ -94,7 +94,7 @@ class Estaciones extends Controller
             $estacion=Estacion::findOrFail($request->estacion);
             $foto=$estacion->foto;
             if($estacion->delete()){
-                Storage::disk('public')->delete('estaciones/'.$foto);
+                Storage::delete($foto);
             }
             DB::commit();
             return response()->json(['success'=>'Estación eliminada exitosamente']);

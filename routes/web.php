@@ -111,18 +111,24 @@ Route::middleware(['verified', 'auth'])->group(function () {
     //A:Fabian Lopez
     //D. administracion de puntos de Vehiculos
     Route::namespace('Vehiculos')->group(function () {
+        // tipos de vehiculos
         Route::get('/tipo-vehiculos', 'TipoVehiculos@index')->name('tipoVehiculos');
-        Route::post('/guardar-tipovehiculo', 'TipoVehiculos@guardar')->name('guardarTipoVehiculo');
-        Route::get('/editar-tipovehiculo/{id}', 'TipoVehiculos@editar')->name('editarTipoVehiculo');
-        Route::post('/actualizar-tipovehiculo', 'TipoVehiculos@actualizar')->name('actualizarTipoVehiculo');
-        Route::post('/eliminar-tipovehiculo', 'TipoVehiculos@eliminar')->name('eliminarTipoVehiculo');
-
+        Route::post('/guardar-tipo-vehiculo', 'TipoVehiculos@guardar')->name('guardarTipoVehiculo');
+        Route::get('/editar-tipo-vehiculo/{id}', 'TipoVehiculos@editar')->name('editarTipoVehiculo');
+        Route::post('/actualizar-tipo-vehiculo', 'TipoVehiculos@actualizar')->name('actualizarTipoVehiculo');
+        Route::post('/eliminar-tipo-vehiculo', 'TipoVehiculos@eliminar')->name('eliminarTipoVehiculo');
+        
+        // vehiculos
         Route::get('/vehiculos/{id}', 'Vehiculos@index')->name('vehiculos');
         Route::get('/nuevo-vehiculos/{id}', 'Vehiculos@nuevo')->name('nuevoVehiculo');
-        Route::get('/importar-vehiculos', 'Vehiculos@importar')->name('imnportarVehiculos');
+        Route::post('/guardar-vehiculo', 'Vehiculos@guardar')->name('guardarVehiculo');
+        Route::get('/editar-vehiculos/{id}', 'Vehiculos@editar')->name('editarVehiculo');
+        Route::post('/actualizar-vehiculo', 'Vehiculos@actualizar')->name('actualizarVehiculo');
+
+        Route::get('/importar-vehiculos', 'Vehiculos@importar')->name('importarVehiculos');
         Route::post('/importar-archivo', 'Vehiculos@importarArchivo')->name('imnportarArchivoVehiculos');
         Route::post('/eliminar-vehiculo', 'Vehiculos@eliminar')->name('eliminarVehiculo');
-        Route::post('/guardar-vehiculo', 'Vehiculos@guardar')->name('guardarVehiculo');
+        
     });
 
 

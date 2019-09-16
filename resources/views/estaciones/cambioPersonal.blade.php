@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('breadcrumbs', Breadcrumbs::render('actualizarPersonalEstacion'))
 @section('content')
 <div class="container">
     <div class="row">
@@ -15,8 +15,14 @@
                         
                         @if ($user->estacion->id==$est->id)
                         <div class="list-group-item" id="{{ $user->id }}">
-                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start bg-secondary">
-                                    <img src="https://cdn1.iconfinder.com/data/icons/flat-character-color-1/60/flat-design-character_6-512.png" class="img-fluid" width="25px" alt="">
+
+                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start bg-secondary">
+                                
+                                @if (Storage::exists($user->foto))
+                                    <img src="{{ Storage::url($user->foto) }}" alt="" class="img-fluid" width="25px;">
+                                @else
+                                    <img src="{{ asset('img/user.png') }}" alt="" class="img-fluid" width="25px;">
+                                @endif
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">{{ $user->name }} {{ $user->id }}</h5>
                                     <small>{{ $user->email }}</small>
@@ -29,7 +35,7 @@
                                         {{ $rol }},
                                     @endforeach
                                 </small>
-                                </a>
+                            </a>
                         </div>
                         @endif
                         
@@ -84,8 +90,8 @@
 @prepend('linksPie')
     <script>
         
-        $('#menuEscritorio').addClass('active');
-       
+        $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
+        $('#menuEstacion').addClass('active');
        
     </script>
     

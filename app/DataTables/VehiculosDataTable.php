@@ -92,10 +92,10 @@ class VehiculosDataTable extends DataTable
                      
             'estacion_id'=>['title'=>'Estación','data'=>'estacion_id'],           
             'placa',
-            'codigo',
+            'codigo'=>['title'=>'Código'],
             'marca',
             'modelo',
-            'anio',
+            'anio'=>['title'=>'Año'],
             'motor',
             'estado',
            

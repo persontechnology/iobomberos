@@ -17,6 +17,7 @@ use iobom\DataTables\Usuarios\PorRolDataTable;
 use PDF;
 use Maatwebsite\Excel\Facades\Excel;
 use iobom\DataTables\Usuarios\UsuarioDataTable;
+use iobom\Imports\UsersImport;
 use iobom\Models\Estacion;
 
 class Usuarios extends Controller
@@ -53,7 +54,6 @@ class Usuarios extends Controller
          $user->password = Hash::make($request->password);
   
         $user->estacion_id=$request->estacion_id;
-        $user->telefono = $request->telefono;
 
         $user->creadoPor=Auth::user()->id;
         $user->save();
@@ -85,10 +85,11 @@ class Usuarios extends Controller
             $user=User::findOrFail($request->user);
             $this->authorize('eliminarUsuario', $user);
             if(Auth::user()->id!=$user->id){
-                $foto=$user->foto;
+                
                 if($user->delete()){
-                    Storage::disk('public')->delete('estaciones/'.$foto);
+                    Storage::delete($user->foto);
                 }
+                
                 DB::commit();
                 return response()->json(['success'=>'Personal operativo eliminado exitosamente']);
                 
@@ -148,13 +149,12 @@ class Usuarios extends Controller
         }
         $user->estado = $request->estado;
         $user->estacion_id=$request->estacion_id;
-        $user->telefono = $request->telefono;
         $user->actualizadoPor=Auth::user()->id;
         $user->save();
 
         if ($request->hasFile('foto')) {
             if ($request->file('foto')->isValid()) {
-                Storage::disk('public')->delete('estaciones/'.$user->foto);
+                Storage::delete($user->foto);
                 $extension = $request->foto->extension();
                 $path = Storage::putFileAs(
                     'public/usuarios', $request->file('foto'), $user->id.'.'.$extension
@@ -216,7 +216,7 @@ class Usuarios extends Controller
 
     public function procesarImportacion(Request $request)
     {
-        Excel::import(new UsuariosImport, $request->file('archivo'));
+        Excel::import(new UsersImport, $request->file('archivo'));
         return redirect()->route('usuarios')->with('success', 'Personal operativo importados');
     }
 }

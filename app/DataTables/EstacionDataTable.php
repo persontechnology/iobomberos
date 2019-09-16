@@ -67,7 +67,7 @@ class EstacionDataTable extends DataTable
      protected function getColumnsTable()
     {
         return [
-           'foto',
+            'foto'=>['exportable'=>false,'printable' => false,'title'],
             'nombre',
             'direccion'=>['title'=>'Dirección'],            
         ];

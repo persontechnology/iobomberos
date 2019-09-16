@@ -81,6 +81,11 @@ Breadcrumbs::for('editarEstacion', function ($trail,$estacion) {
     $trail->parent('estaciones');
     $trail->push('Editar estación', route('editarEstacion',$estacion->id));
 });
+Breadcrumbs::for('actualizarPersonalEstacion', function ($trail) {
+    $trail->parent('estaciones');
+    $trail->push('Cambio de personal', route('actualizarPersonalEstacion'));
+});
+
 
 //A:Fabian Lopez
 //D:Breadcrums de emergencias
@@ -149,12 +154,15 @@ Breadcrumbs::for('tipoVehiculo', function ($trail) {
     $trail->parent('home');
     $trail->push('Tipos de vehículo', route('tipoVehiculos'));
 });
-
-
 Breadcrumbs::for('editarTipoVehiculo', function ($trail,$tipoVehiculo) {
     $trail->parent('tipoVehiculo');
     $trail->push('Editar tipo vehículo', route('editarTipoVehiculo',$tipoVehiculo->id));
 });
+Breadcrumbs::for('importarVehiculos', function ($trail) {
+    $trail->parent('tipoVehiculo');
+    $trail->push('Importar vehículos', route('importarVehiculos'));
+});
+
 //A:Fabian Lopez
 //D:Breadcrums vehículo
 
@@ -166,4 +174,8 @@ Breadcrumbs::for('vehiculos', function ($trail,$tipoVehiculo) {
 Breadcrumbs::for('nuevoVehiculos', function ($trail,$tipoVehiculo) {
     $trail->parent('vehiculos',$tipoVehiculo);
     $trail->push('Nuevo vehículos', route('nuevoVehiculo',$tipoVehiculo->id));
+});
+Breadcrumbs::for('editarVehiculo', function ($trail,$vehiculo) {
+    $trail->parent('vehiculos',$vehiculo->tipoVehiculo);
+    $trail->push('Editar vehículo', route('editarVehiculo',$vehiculo->id));
 });

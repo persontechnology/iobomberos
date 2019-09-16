@@ -15,14 +15,12 @@ class RolesTableSeeder extends Seeder
 
         $roles = array(
             'Administrador',
+            'Operador',
+            'Sargento',
+            'Cabo',
             'Teniente',
-            'Capitan',
-            'Secretaria',
-            'Personal de Guardia',
-            'Paramedico',
-            'Personal a mando',
-            'Logistica',
-            'Jefa de sistemas',
+            'Sub-Oficial',
+            'Paramédico ',
         );
         foreach ($roles as $rol) {
             Role::firstOrCreate(['name' => $rol]);

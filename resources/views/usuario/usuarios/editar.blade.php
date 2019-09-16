@@ -4,7 +4,7 @@
 
 
 @section('content')
-<form method="POST" action="{{ route('actualizarUsuario') }}" id="actualizarForm">
+<form method="POST" action="{{ route('actualizarUsuario') }}" id="actualizarForm" enctype="multipart/form-data">
     @csrf
     <input type="hidden" name="usuario" value="{{ $usuario->id }}" required>
     <div class="card">
@@ -118,6 +118,21 @@
                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation"  autocomplete="new-password">
                 </div>
             </div>
+              
+            <div class="form-group row">
+                <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Foto de perfil') }}</label>
+
+                <div class="col-md-6">
+                    <input type="file" class="form-control-file" id="exampleFormControlFile1" name="foto" accept="image/*">
+                    @if (Storage::exists($usuario->foto))
+                        <a href="{{ Storage::url($usuario->foto) }}" class="btn-link" data-toggle="tooltip" data-placement="top" title="Ver foto">
+                            <img src="{{ Storage::url($usuario->foto) }}" alt="" class="img-fluid mt-2">
+                        </a>
+                    @endif
+                </div>
+                {{ $usuario->foto }}
+            </div>
+
             
         </div>
         <div class="card-footer">

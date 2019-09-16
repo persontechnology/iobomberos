@@ -5,7 +5,7 @@
 @section('barraLateral')
  <div class="breadcrumb justify-content-center">
            
-    <a href="{{ route('imnportarVehiculos') }}" class="breadcrumb-elements-item">
+    <a href="{{ route('importarVehiculos') }}" class="breadcrumb-elements-item">
         <i class="fas fa-file-excel"></i>
         Importar vehículos
     </a>
@@ -22,7 +22,7 @@
             <label for="nombre">Nombre del tipo de vehículo</label>
             <div class="input-group mb-3">
                 <input type="text" name="nombre" value="{{ old('nombre') }}" class="form-control @error('nombre') is-invalid @enderror" placeholder="Ingrese nombre.." aria-label="Recipient's username" aria-describedby="basic-addon2" required>
-               <input type="text" name="codigo" value="{{ old('codigo') }}" class="form-control @error('codigo') is-invalid @enderror" placeholder="Ingrese codigo.." aria-label="Recipient's username" aria-describedby="basic-addon2" required>
+               <input type="text" name="codigo" value="{{ old('codigo') }}" class="form-control @error('codigo') is-invalid @enderror" placeholder="Ingrese código.." aria-label="Recipient's username" aria-describedby="basic-addon2" required>
                 <div class="input-group-append">
                     <button class="btn btn-dark" type="submit">Guardar</button>
                 </div>

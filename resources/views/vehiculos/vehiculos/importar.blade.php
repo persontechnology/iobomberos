@@ -1,6 +1,6 @@
-@extends('layouts.app',['title'=>'Importar usuarios'])
+@extends('layouts.app',['title'=>'Importar vehículos'])
 
-@section('breadcrumbs', Breadcrumbs::render('usuariosImportar'))
+@section('breadcrumbs', Breadcrumbs::render('importarVehiculos'))
 
 @section('content')
 
@@ -47,7 +47,7 @@
                 
             <div class="form-group">
                 <label for="exampleFormControlFile1">Selecionar archivo que contenga información de usuarios</label>
-                <input type="file" name="archivo" class="form-control-file" id="exampleFormControlFile1">
+                <input type="file" name="archivo" class="form-control-file" id="exampleFormControlFile1" required>
             </div>
                 
         </div>
@@ -63,7 +63,7 @@
 
 @prepend('linksPie')
     <script>
-        $('#menuUsuarios').addClass('active');
+        $('#menuVehiculos').addClass('active');
     </script>
 @endprepend
 

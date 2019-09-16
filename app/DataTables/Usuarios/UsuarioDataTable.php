@@ -87,7 +87,7 @@ class UsuarioDataTable extends DataTable
     protected function getColumnsTable()
     {
         return [
-            'foto',
+            'foto'=>['exportable'=>false,'printable' => false,'title'],
             'name'=>['title'=>'Personal Op.'],
             'email',
             'telefono'=>['title'=>'Teléfono'],

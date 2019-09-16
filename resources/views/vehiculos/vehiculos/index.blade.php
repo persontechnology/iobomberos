@@ -17,7 +17,7 @@
 <div class="card">
     <div class="card-header">
         <h4 class="card-title">
-            Vehículos del tipo <span class="badge badge-flat border-success text-success-600"> {{$tipo->nombre.' '.$tipo->codigo  }} </span>
+            Vehículos de tipo <span class="badge badge-flat border-success text-success-600"> {{ $tipo->nombre.'-'.$tipo->codigo  }} </span>
         </h4>
     </div>
     <div class="card-body">

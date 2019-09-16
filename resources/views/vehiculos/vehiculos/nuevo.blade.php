@@ -1,9 +1,6 @@
-@extends('layouts.app',['title'=>'Nuevo usuario'])
+@extends('layouts.app',['title'=>'Nuevo vehiculo'])
 
 @section('breadcrumbs', Breadcrumbs::render('nuevoVehiculos',$tipo))
-
-
-
 @section('content')
 <form method="POST" action="{{ route('guardarVehiculo') }}" id="formNuevoUsuario">
     @csrf
@@ -16,7 +13,7 @@
                     <div class="col-md-6">
                         <input type="hidden" value="{{$tipo->id}}" name="tipo" id="tipo">
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">Estaciones</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">Estaciones<i class="text-danger">*</i></label>
         
                             <div class="col-md-6">
                                 @if($estaciones)
@@ -36,7 +33,7 @@
                         </div>
             
                         <div class="form-group row">
-                            <label for="placa" class="col-md-4 col-form-label text-md-right">{{ __('Placa') }}</label>
+                            <label for="placa" class="col-md-4 col-form-label text-md-right">{{ __('Placa') }}<i class="text-danger">*</i></label>
         
                             <div class="col-md-6">
                                 <input id="placa" type="text" class="form-control @error('placa') is-invalid @enderror" name="placa" value="{{ old('placa') }}" required autocomplete="placa" autofocus placeholder="Placa">
@@ -49,10 +46,10 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="codigo" class="col-md-4 col-form-label text-md-right">{{ __('Codigo') }}</label>
+                            <label for="codigo" class="col-md-4 col-form-label text-md-right">Código<i class="text-danger">*</i></label>
         
                             <div class="col-md-6">
-                                <input id="codigo" type="number" class="form-control @error('codigo') is-invalid @enderror" name="codigo" value="{{ old('codigo') }}" required autocomplete="codigo" autofocus placeholder="Codigo">
+                                <input id="codigo" type="number" class="form-control @error('codigo') is-invalid @enderror" name="codigo" value="{{ old('codigo') }}" required autocomplete="codigo" autofocus placeholder="Código">
         
                                 @error('codigo')
                                     <span class="invalid-feedback" role="alert">
@@ -63,7 +60,7 @@
                         </div>
 
                           <div class="form-group row">
-                            <label for="marca" class="col-md-4 col-form-label text-md-right">{{ __('Marca') }}</label>
+                            <label for="marca" class="col-md-4 col-form-label text-md-right">{{ __('Marca') }}<i class="text-danger">*</i></label>
         
                             <div class="col-md-6">
                                 <input id="marca" type="text" class="form-control @error('marca') is-invalid @enderror" name="marca" value="{{ old('marca') }}" required autocomplete="marca" autofocus placeholder="Marca">
@@ -76,7 +73,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="modelo" class="col-md-4 col-form-label text-md-right">{{ __('Modelo') }}</label>
+                            <label for="modelo" class="col-md-4 col-form-label text-md-right">{{ __('Modelo') }}<i class="text-danger">*</i></label>
         
                             <div class="col-md-6">
                                 <input id="modelo" type="text" class="form-control @error('modelo') is-invalid @enderror" name="modelo" value="{{ old('modelo') }}" required autocomplete="modelo" autofocus placeholder="Modelo">
@@ -92,10 +89,10 @@
                         <div class="col-sm-6">
 
                         <div class="form-group row">
-                            <label for="cilindraje" class="col-md-4 col-form-label text-md-right">Cilindraje</label>
+                            <label for="cilindraje" class="col-md-4 col-form-label text-md-right">Cilindraje<i class="text-danger">*</i></label>
         
                             <div class="col-md-6">
-                                <input id="cilindraje" type="text" class="form-control @error('cilindraje') is-invalid @enderror" name="cilindraje" value="{{old('cilindraje')}}" placeholder="Cilindraje">
+                                <input id="cilindraje" type="text" class="form-control @error('cilindraje') is-invalid @enderror" name="cilindraje" value="{{old('cilindraje')}}" placeholder="Cilindraje" required>
         
                                 @error('cilindraje')
                                     <span class="invalid-feedback" role="alert">
@@ -106,10 +103,10 @@
                         </div>
                         
                         <div class="form-group row">
-                            <label for="anio" class="col-md-4 col-form-label text-md-right">Año</label>
+                            <label for="anio" class="col-md-4 col-form-label text-md-right">Año<i class="text-danger">*</i></label>
         
                             <div class="col-md-6">
-                                <input id="anio" type="number" class="form-control @error('anio') is-invalid @enderror" name="anio" value="{{old('anio')}}" placeholder="Año">
+                                <input id="anio" type="number" class="form-control @error('anio') is-invalid @enderror" name="anio" value="{{old('anio')}}" placeholder="Año" required>
         
                                 @error('anio')
                                     <span class="invalid-feedback" role="alert">
@@ -120,10 +117,10 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="motor" class="col-md-4 col-form-label text-md-right">Motor</label>
+                            <label for="motor" class="col-md-4 col-form-label text-md-right">Motor<i class="text-danger">*</i></label>
         
                             <div class="col-md-6">
-                                <input id="motor" type="text" class="form-control @error('motor') is-invalid @enderror" name="motor" value="{{old('motor')}}" placeholder="Motor">
+                                <input id="motor" type="text" class="form-control @error('motor') is-invalid @enderror" name="motor" value="{{old('motor')}}" placeholder="Motor" required>
         
                                 @error('motor')
                                     <span class="invalid-feedback" role="alert">

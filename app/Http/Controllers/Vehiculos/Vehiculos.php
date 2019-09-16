@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use iobom\Imports\VehiculosImport;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use iobom\Http\Requests\Vehiculo\RqActualizar;
 use iobom\Models\Estacion;
 use iobom\Http\Requests\Vehiculo\RqCrear;
 
@@ -37,27 +38,42 @@ class Vehiculos extends Controller
     public function guardar(RqCrear $request)
     {
     	$tipo=TipoVehiculo::findOrFail($request->tipo); 
-      $vehiculo= new Vehiculo();
-      $vehiculo->estacion_id=$request->estacion;
-      $vehiculo->tipoVehiculo_id=$tipo->id;
-      $vehiculo->placa=$request->placa;
-      $vehiculo->codigo=$request->codigo;
-      $vehiculo->marca=$request->marca;
-      $vehiculo->modelo=$request->modelo;
-      $vehiculo->cilindraje=$request->cilindraje;
-      $vehiculo->anio=$request->anio;
-      $vehiculo->motor=$request->motor;
-      $vehiculo->save();
-      return redirect()->route('vehiculos',$tipo->id)->with('success', 'Vehículos registrados exitosamente');
+        $vehiculo= new Vehiculo();
+        $vehiculo->estacion_id=$request->estacion;
+        $vehiculo->tipoVehiculo_id=$tipo->id;
+        $vehiculo->placa=$request->placa;
+        $vehiculo->codigo=$request->codigo;
+        $vehiculo->marca=$request->marca;
+        $vehiculo->modelo=$request->modelo;
+        $vehiculo->cilindraje=$request->cilindraje;
+        $vehiculo->anio=$request->anio;
+        $vehiculo->motor=$request->motor;
+        $vehiculo->save();
+        return redirect()->route('vehiculos',$tipo->id)->with('success', 'Vehículo registrado exitosamente');
 
     }
-    public function editar($idTipoVehiculo)
+    public function editar($idVehiculo)
     {
-    	
+        $vehiculo=Vehiculo::findOrFail($idVehiculo);
+        $estaciones=Estacion::all(); 
+        $tipoVehiculos=TipoVehiculo::all();
+    	return view('vehiculos.vehiculos.editar',compact('vehiculo','estaciones','tipoVehiculos'));
     }
-     public function actualizar(Request $request)
+    
+    public function actualizar(RqActualizar $request)
     {
-         
+        $vehiculo=Vehiculo::findOrFail($request->vehiculo);
+        $vehiculo->estacion_id=$request->estacion;
+        $vehiculo->tipoVehiculo_id=$request->tipoVehiculo;
+        $vehiculo->placa=$request->placa;
+        $vehiculo->codigo=$request->codigo;
+        $vehiculo->marca=$request->marca;
+        $vehiculo->modelo=$request->modelo;
+        $vehiculo->cilindraje=$request->cilindraje;
+        $vehiculo->anio=$request->anio;
+        $vehiculo->motor=$request->motor;
+        $vehiculo->save();
+        return redirect()->route('vehiculos',$request->tipoVehiculo)->with('success', 'Vehículo actualizado exitosamente');
     }
 
     

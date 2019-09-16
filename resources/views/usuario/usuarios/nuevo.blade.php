@@ -105,7 +105,7 @@
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Foto de perfil') }}</label>
         
                             <div class="col-md-6">
-                                <input type="file" class="form-control-file" id="exampleFormControlFile1" name="foto" accept="mage/*">
+                                <input type="file" class="form-control-file" id="exampleFormControlFile1" name="foto" accept="image/*">
                             </div>
                         </div>
                         
