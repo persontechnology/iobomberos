@@ -58,7 +58,6 @@ class PuntosReferenciasDataTable extends DataTable
             'id',
             'latitud',
             'longitud',
-            'direccion'
         ];
     }
 

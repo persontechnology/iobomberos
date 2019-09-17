@@ -19,17 +19,16 @@ class CreateVehiculoTable extends Migration
             $table->string('codigo',255);
             $table->string('marca',255);
             $table->string('modelo',255);
-             $table->string('cilindraje',255);
-             $table->integer('anio');
-             $table->string('motor')->unique();
-             $table->enum('estado', ['Disponible', 'Ejecución','Mantenimiento','Dado de baja']);
-             $table->string('detalle',255)->nullable();
-               $table->unsignedBigInteger('estacion_id');
+            $table->string('cilindraje',255);
+            $table->integer('anio');
+            $table->string('motor')->unique();
+            $table->enum('estado', ['Disponible', 'Ejecución','Mantenimiento','Dado de baja']);
+            $table->string('detalle',255)->nullable();
+            $table->unsignedBigInteger('estacion_id');
             $table->foreign('estacion_id')->references('id')->on('estacion');
-              $table->unsignedBigInteger('tipoVehiculo_id');
+            $table->unsignedBigInteger('tipoVehiculo_id');
             $table->foreign('tipoVehiculo_id')->references('id')->on('tipoVehiculo');
             $table->timestamps();
-            
             $table->bigInteger('creadoPor')->nullable();
             $table->bigInteger('actualizadoPor')->nullable();
         });

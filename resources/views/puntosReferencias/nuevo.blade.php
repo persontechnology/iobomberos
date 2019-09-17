@@ -3,66 +3,74 @@
 @section('breadcrumbs', Breadcrumbs::render('nuevoPuntoReferencia'))
 
 @section('content')
-<div class="card" >
-	<div class="card-body">
-	<form method="post" action="{{route('puntosReferenciaGuardar')}}" id="puntosForm" >
-		@csrf
-	<div class="row">
-		<div class="col-sm-3">
-			<div class="form-group ">
-	            <label for="name">{{ __('Latitud') }}</label>	           
-	                <input id="latitud" type="text" class="form-control @error('latitud') is-invalid @enderror" name="latitud" value="{{ old('latitud') }}" required autocomplete="latitud" autofocus placeholder="Latitud" readonly>
 
-	                @error('latitud')
-	                    <span class="invalid-feedback" role="alert">
-	                        <strong>{{ $message }}</strong>
-	                    </span>
-	                @enderror
-	            
-	        </div>
+<form method="post" action="{{route('puntosReferenciaGuardar')}}" id="puntosForm" >
+	@csrf
+	<div class="card">
+		<div class="card-header">
+			Complete información
 		</div>
-		<div class="col-sm-3">			
-	        <div class="form-group ">
-	            <label for="name" >{{ __('Longitud') }}</label>	           
-	                <input id="longitud" type="text" class="form-control @error('longitud') is-invalid @enderror" name="longitud" value="{{ old('longitud') }}" required autocomplete="longitud" readonly autofocus placeholder="Longitud">
-	                @error('longitud')
-	                    <span class="invalid-feedback" role="alert">
-	                        <strong>{{ $message }}</strong>
-	                    </span>
-	                @enderror	     
-	        </div>
-		</div>
-		<div class="col-sm-4">			
-	        <div class="form-group ">
-	            <label for="name">{{ __('Dirección') }}</label>
-	          
-	                <input id="direccion" type="text" class="form-control @error('direccion') is-invalid @enderror" name="direccion" value="{{ old('direccion') }}" required autocomplete="direccion" autofocus placeholder="Ingrese la dirección">
-
-	                @error('direccion')
-	                    <span class="invalid-feedback" role="alert">
-	                        <strong>{{ $message }}</strong>
-	                    </span>
-	                @enderror
-	         
-	        </div>
-		</div>
-		<div class="col-sm-2">
-			<div class="text-right mt-4">
-	            <button type="submit" class="btn btn-dark">Guardar <i class="icon-paperplane ml-2"></i>
-	            </button>
-	        </div>
-		</div>
-
-
+		<div class="card-body">
 			
-		
-	</form>
-		
-	</div>
-	</div>
-</div>
+			<div id="map" style="width: 100%;height: 500px;"></div>
+			
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="parroquias">Parroquias</label>
+					<select id="parroquias" class="form-control" onchange="obtenerBarrio(this);">
+						<option value=""> Selecione una parroquia</option>
+						@foreach ($parroquias as $parroquia)
+							<option value="{{ $parroquia->id }}">{{ $parroquia->nombre }}</option>
+						@endforeach
+					</select>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="barrio">Barrios</label>
+					<select id="barrio" name="barrio" class="form-control" required>
+					</select>
+				</div>	
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="name">{{ __('Latitud') }}</label>	           
+					<input id="latitud" type="text" class="form-control @error('latitud') is-invalid @enderror" name="latitud" value="{{ old('latitud') }}" required autocomplete="latitud" autofocus placeholder="Latitud" readonly>
 
-	<div id="map"></div>
+					@error('latitud')
+						<span class="invalid-feedback" role="alert">
+							<strong>{{ $message }}</strong>
+						</span>
+					@enderror
+				</div>
+				<div class="form-group col-md-6">
+					<label for="name" >{{ __('Longitud') }}</label>	           
+					<input id="longitud" type="text" class="form-control @error('longitud') is-invalid @enderror" name="longitud" value="{{ old('longitud') }}" required autocomplete="longitud" readonly autofocus placeholder="Longitud">
+					@error('longitud')
+						<span class="invalid-feedback" role="alert">
+							<strong>{{ $message }}</strong>
+						</span>
+					@enderror	
+				</div>
+			</div>
+			
+
+			<div class="form-group">
+				<label for="referencia" >{{ __('Referencia') }}</label>	           
+				<textarea id="referencia" class="form-control @error('referencia') is-invalid @enderror" name="referencia" value="{{ old('referencia') }}" placeholder="Referencia" required></textarea>
+				@error('referencia')
+					<span class="invalid-feedback" role="alert">
+						<strong>{{ $message }}</strong>
+					</span>
+				@enderror	
+			</div>
+			
+		</div>
+		<div class="card-footer">
+			<button type="submit" class="btn btn-dark">Guardar <i class="icon-paperplane ml-2"></i></button>
+		</div>
+	</div>
+</form>
+
+
 
 @push('linksCabeza')
  <script src="{{ asset('admin/plus/validate/jquery.validate.min.js') }}"></script>
@@ -72,11 +80,32 @@
 @prepend('linksPie')
 
 <script type="text/javascript">
-   $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
+   	$('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
     $('#menuPuntosReferencia').addClass('active');
-      $( "#puntosForm" ).validate({
-            
-        });
+	$( "#puntosForm" ).validate();
+
+	function obtenerBarrio(arg)
+	{
+		$('#barrio').html('');
+		var id=arg.value;
+		if(id){
+			
+			$.blockUI({message:'<h1>Espere por favor.!</h1>'});
+			$.post("{{ route('obtenerBarrios') }}", { parroquia: id })
+			.done(function( data ) {
+				var fila;
+				$.each(data, function(i, item) {
+					fila+='<option value="'+item.id+'">'+item.nombre+'</option>'
+				});
+				$('#barrio').append(fila);
+			}).always(function(){
+				$.unblockUI();
+			}).fail(function(){
+				notificar("error","Ocurrio un error");
+			});
+		}
+	}
+	  
 </script>
 
 <script>

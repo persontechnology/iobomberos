@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePuntoReferenciaTable extends Migration
+class CreateBarriosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreatePuntoReferenciaTable extends Migration
      */
     public function up()
     {
-        Schema::create('puntoReferencia', function (Blueprint $table) {
+        Schema::create('barrios', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('latitud',191);
-            $table->string('longitud',191);
-            $table->string('direccion',191);
             $table->timestamps();
-            $table->bigInteger('creadoPor')->nullable();
-            $table->bigInteger('actualizadoPor')->nullable();
+            $table->string('nombre');
+            $table->string('codigo');
+            $table->unsignedBigInteger('parroquia_id');
+            $table->foreign('parroquia_id')->references('id')->on('parroquias');
         });
     }
 
@@ -31,6 +30,6 @@ class CreatePuntoReferenciaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('puntoReferencia');
+        Schema::dropIfExists('barrios');
     }
 }

@@ -107,6 +107,9 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('/editar-referencia/{id}', 'PuntosReferencias@editar')->name('editarReferencia');
     Route::post('/puntos-referencia-actualizar', 'PuntosReferencias@actualizar')->name('puntosReferenciaActualizar');
     Route::post('/puntos-referencia-eliminar', 'PuntosReferencias@eliminar')->name('puntosReferenciaEliminar');
+    // parroquias y barrios
+    Route::post('/obtener-barrios-x-parroquia', 'PuntosReferencias@obtenerBarrios')->name('obtenerBarrios');
+    
 
     //A:Fabian Lopez
     //D. administracion de puntos de Vehiculos

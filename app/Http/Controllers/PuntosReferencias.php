@@ -8,6 +8,8 @@ use iobom\DataTables\PuntosReferenciasDataTable;
 use Illuminate\Support\Facades\Auth;
 use iobom\Models\Estacion;
 use Illuminate\Support\Facades\DB;
+use iobom\Models\Barrio;
+use iobom\Models\Parroquia;
 
 class PuntosReferencias extends Controller
 {
@@ -20,19 +22,22 @@ class PuntosReferencias extends Controller
     public function nuevo()
     {   $estaciones=Estacion::get();
         $puntos=PuntoReferencia::get();
-       return view('puntosReferencias.nuevo',['estaciones'=>$estaciones,'puntos'=>$puntos]);
+        $parroquias=Parroquia::all();
+        $data=array('estaciones'=>$estaciones,'puntos'=>$puntos,'parroquias'=>$parroquias);
+       return view('puntosReferencias.nuevo',$data);
     }
     public function guardar(Request $request)
     {
     	$request->validate([
-            'latitud' => 'required|max:191',
-            'longitud' => 'required|max:191',
-            'direccion' => 'required|max:191',
+            'latitud' => 'required|max:255',
+            'longitud' => 'required|max:255',
+            'referencia' => 'required|max:255',
         ]);
     	$puntoReferencia= new PuntoReferencia();
     	$puntoReferencia->latitud=$request->latitud;
     	$puntoReferencia->longitud=$request->longitud;
-    	$puntoReferencia->direccion=$request->direccion;
+        $puntoReferencia->referencia=$request->referencia;
+        $puntoReferencia->barrio_id=$request->barrio;
     	$puntoReferencia->creadoPor=Auth::id();
     	$puntoReferencia->save();
     	 return redirect()->route('puntosReferencia')->with('success','Punto de referencia registrado exitosamente');
@@ -83,5 +88,12 @@ class PuntosReferencias extends Controller
             DB::rollBack();
             return response()->json(['default'=>'No se puede eliminar el punto de referencia']);
         }
+    }
+
+
+    public function obtenerBarrios(Request $request)
+    {
+        $parroquia=Parroquia::findOrFail($request->parroquia);
+        return response()->json($parroquia->barrios);
     }
 }
