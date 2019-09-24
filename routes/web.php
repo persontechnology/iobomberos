@@ -134,5 +134,16 @@ Route::middleware(['verified', 'auth'])->group(function () {
         
     });
 
+    Route::namespace('Descargos')->group(function () {
+        //insumos
+        Route::get('/insumos', 'Insumos@index')->name('insumos');
+        Route::post('/insumos-guardar', 'Insumos@guardar')->name('insumosGuardar');
+        Route::get('/insumos-editar/{id}', 'Insumos@editar')->name('editarInsumo');
+        Route::post('/insumos-actualizar', 'Insumos@actualizar')->name('insumosActualizar');
+        Route::post('/insumos-eliminar', 'Insumos@eliminar')->name('eliminarInsumo');
+        
+        
+    });
+    
 
 });

@@ -3,64 +3,77 @@
 @section('breadcrumbs', Breadcrumbs::render('editarPuntoReferencia',$puntoReferencia))
 
 @section('content')
-<div class="card" >
-	<div class="card-body">
-	<form method="post" action="{{route('puntosReferenciaActualizar')}}" id="puntosForm" >
-		@csrf
-		<input type="hidden" name="punto" id="punto" value="{{$puntoReferencia->id}}">
-	<div class="row">
-		<div class="col-sm-3">
-			<div class="form-group ">
-	            <label for="name">{{ __('Latitud') }}</label>	           
-	                <input id="latitud" type="text" class="form-control @error('latitud') is-invalid @enderror" name="latitud" value="{{ old('latitud',$puntoReferencia->latitud) }}" required autocomplete="latitud" autofocus placeholder="Latitud" readonly>
 
-	                @error('latitud')
-	                    <span class="invalid-feedback" role="alert">
-	                        <strong>{{ $message }}</strong>
-	                    </span>
-	                @enderror
-	            
-	        </div>
-		</div>
-		<div class="col-sm-3">			
-	        <div class="form-group ">
-	            <label for="name" >{{ __('Longitud') }}</label>	           
-	                <input id="longitud" type="text" class="form-control @error('longitud') is-invalid @enderror" name="longitud" value="{{ old('longitud',$puntoReferencia->longitud) }}" required autocomplete="longitud" readonly autofocus placeholder="Longitud">
-	                @error('longitud')
-	                    <span class="invalid-feedback" role="alert">
-	                        <strong>{{ $message }}</strong>
-	                    </span>
-	                @enderror	     
-	        </div>
-		</div>
-		<div class="col-sm-4">			
-	        <div class="form-group ">
-	            <label for="name">{{ __('Dirección') }}</label>
-	          
-	                <input id="direccion" type="text" class="form-control @error('direccion') is-invalid @enderror" name="direccion" value="{{ old('direccion',$puntoReferencia->direccion) }}" required autocomplete="direccion" autofocus placeholder="Ingrese la dirección">
 
-	                @error('direccion')
-	                    <span class="invalid-feedback" role="alert">
-	                        <strong>{{ $message }}</strong>
-	                    </span>
-	                @enderror
-	         
-	        </div>
+<form method="post" action="{{route('puntosReferenciaActualizar')}}" id="puntosForm" >
+	@csrf
+	<input type="hidden" name="punto" id="punto" value="{{$puntoReferencia->id}}">
+	<div class="card">
+		<div class="card-header">
+			Complete información
 		</div>
-		<div class="col-sm-2">
-			<div class="text-right mt-4">
-	            <button type="submit" class="btn btn-dark">Guardar <i class="icon-paperplane ml-2"></i>
-	            </button>
-	        </div>
-		</div>	
-		
-	</form>
-		
+		<div class="card-body">
+			
+			<div id="map" style="width: 100%;height: 500px;"></div>
+			
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="parroquias">Parroquias</label>
+					
+					<select id="parroquias" class="form-control" onchange="obtenerBarrio(this);">
+						<option value=""> Selecione una parroquia</option>
+						@foreach ($parroquias as $parroquia)
+							<option value="{{ $parroquia->id }}" {{ $puntoReferencia->barrio->parroquia->id==$parroquia->id?'selected':'' }}>{{ $parroquia->nombre }}</option>
+						@endforeach
+					</select>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="barrio">Barrios</label>
+					<select id="barrio" name="barrio" class="form-control" required>
+					</select>
+				</div>	
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="name">{{ __('Latitud') }}</label>	           
+					<input id="latitud" type="text" class="form-control @error('latitud') is-invalid @enderror" name="latitud" value="{{ old('latitud',$puntoReferencia->latitud) }}" required autocomplete="latitud" autofocus placeholder="Latitud" readonly>
+
+					@error('latitud')
+						<span class="invalid-feedback" role="alert">
+							<strong>{{ $message }}</strong>
+						</span>
+					@enderror
+				</div>
+				<div class="form-group col-md-6">
+					<label for="name" >{{ __('Longitud') }}</label>	           
+					<input id="longitud" type="text" class="form-control @error('longitud') is-invalid @enderror" name="longitud" value="{{ old('longitud',$puntoReferencia->longitud) }}" required autocomplete="longitud" readonly autofocus placeholder="Longitud">
+					@error('longitud')
+						<span class="invalid-feedback" role="alert">
+							<strong>{{ $message }}</strong>
+						</span>
+					@enderror	
+				</div>
+			</div>
+			
+
+			<div class="form-group">
+				<label for="referencia" >{{ __('Referencia') }}</label>	           
+				<textarea id="referencia" class="form-control @error('referencia') is-invalid @enderror" name="referencia" placeholder="Referencia" required>{{ old('referencia',$puntoReferencia->referencia) }}</textarea>
+				@error('referencia')
+					<span class="invalid-feedback" role="alert">
+						<strong>{{ $message }}</strong>
+					</span>
+				@enderror	
+			</div>
+			
+		</div>
+		<div class="card-footer">
+			<button type="submit" class="btn btn-dark">Guardar cambios</button>
+		</div>
 	</div>
-</div>
-</div>
+</form>
 
-	<div id="map"></div>
+
 
 @push('linksCabeza')
  <script src="{{ asset('admin/plus/validate/jquery.validate.min.js') }}"></script>
@@ -70,11 +83,46 @@
 @prepend('linksPie')
 
 <script type="text/javascript">
-   $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
+   	$('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
     $('#menuPuntosReferencia').addClass('active');
-      $( "#puntosForm" ).validate({
-            
-        });
+	$( "#puntosForm" ).validate();
+
+	var barrio="{{ $puntoReferencia->barrio->id }}";
+
+	function obtenerBarrio(arg)
+	{
+		$('#barrio').html('');
+		var id=arg.value;
+		if(id){
+			
+			listarBarrios(id)
+		}
+	}
+
+	function listarBarrios(id){
+		$.blockUI({message:'<h1>Espere por favor.!</h1>'});
+		$.post("{{ route('obtenerBarrios') }}", { parroquia: id })
+		.done(function( data ) {
+			var fila;
+			$.each(data, function(i, item) {
+				if(item.id==barrio){
+					var opcion='<option value="'+item.id+'" selected>'+item.nombre+'</option>';
+				}else{
+					var opcion='<option value="'+item.id+'">'+item.nombre+'</option>';
+				}
+				
+				fila+=opcion;
+			});
+			$('#barrio').append(fila);
+		}).always(function(){
+			$.unblockUI();
+		}).fail(function(){
+			notificar("error","Ocurrio un error");
+		});
+	}
+
+	listarBarrios("{{ $puntoReferencia->barrio->parroquia->id }}");
+	  
 </script>
 
 <script>
@@ -88,6 +136,7 @@
 		var myLatLng={lat: -0.8335256701588568, lng: -78.62189341068114}
 		
 		@endif
+		
 		map = new google.maps.Map(document.getElementById('map'), {
 		  center: myLatLng,
 		  zoom: 10,
@@ -95,7 +144,7 @@
 		});
 		var imageEstacion="{{ asset('img/ESTACION2.png') }}";
 		var imagePuntos="{{ asset('img/puntos.png') }}";
-		var imageCrear="{{ asset('img/editar.png') }}";
+		var imageCrear="{{ asset('img/crear.png') }}";
 		@if($estaciones->count()>0)
 			@foreach($estaciones as $estacion)
 				var latitu={{$estacion->latitud}};
@@ -131,7 +180,7 @@
 		    animation: google.maps.Animation.DROP,
 		    draggable:true,
 		    position: myLatLng,
-		    title:"Dirección: {{$puntoReferencia->direccion}}",
+		    title:"Puntos de referencia",
 		    icon:imageCrear,
 		  });
 		  marker.setMap(map);
@@ -197,7 +246,8 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0Ko6qUa0EFuDWr77BpNJOdxD
 
 <style type="text/css">
 	  #map {
-        height: 60%;       
+        height: 60%;
+        
 
       }
 </style>

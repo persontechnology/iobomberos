@@ -52,20 +52,20 @@
 		@endif	
 
 		@if($puntos->count()>0)
-			@foreach($puntos as $puntos)
-				var latitu={{$puntos->latitud}};
-				var longi={{$puntos->longitud}};
-				var markerpuntos_{{$puntos->id}} = new google.maps.Marker({
+			@foreach($puntos as $punto)
+				var latitu={{$punto->latitud}};
+				var longi={{$punto->longitud}};
+				var markerpuntos_{{$punto->id}} = new google.maps.Marker({
 			    map: map,
 			     position:{lat:latitu , lng:longi } ,
-			    title:" {{$puntos->direccion}}",
+			    title:" {{$punto->referenica}}",
 			    icon:imagePuntos,
 			 	 });
-				var nombre="{{$puntos->direccion}}";
+				var nombre="{{$punto->referencia}}";
 				var geocoder = new google.maps.Geocoder;
 			     var infowindow1 = new google.maps.InfoWindow;
-			     infowindow1.setContent('<span class="badge bg-blue">'+nombre+'</span>');
-			      infowindow1.open(map, markerpuntos_{{$puntos->id}}); 
+			     infowindow1.setContent(nombre);
+			      infowindow1.open(map, markerpuntos_{{$punto->id}}); 
 
 				@endforeach
 		@endif	

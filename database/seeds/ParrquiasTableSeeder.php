@@ -137,7 +137,7 @@ class ParrquiasTableSeeder extends Seeder
             'Santa Ana Alto---4',
             'Rioblanco Alto---4',
             'Rioblanco de Lasso---4',
-            'Lasso,---4',
+            'Lasso---4',
             'La Florida---4',
             'El Vergel---4',
             'Rayo Cruz---4',

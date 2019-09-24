@@ -17,6 +17,25 @@ class PuntosReferenciasDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
+        ->editColumn('barrio_id',function($pr){
+            return $pr->barrio->nombre;
+        })
+        ->filterColumn('barrio_id',function($query, $keyword){
+            $query->whereHas('barrio', function($query) use ($keyword) {
+                $query->whereRaw("nombre like ?", ["%{$keyword}%"]);
+            });            
+        })
+
+        ->addColumn('parroquia',function($pr){
+            return $pr->barrio->parroquia->nombre;
+        })
+
+        ->filterColumn('parroquia',function($query, $keyword){
+            $query->whereHas('barrio.parroquia', function($query) use ($keyword) {
+                $query->whereRaw("nombre like ?", ["%{$keyword}%"]);
+            });            
+        })
+
         ->addColumn('action', function($query){
                 return view('puntosReferencias.acciones',['puntos'=>$query])->render();
         });
@@ -41,9 +60,9 @@ class PuntosReferenciasDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->columns($this->getColumns())
+                    ->columns($this->getColumnsTable())
                     ->minifiedAjax()
-                    ->addAction(['width' => '80px'])
+                    ->addAction(['width' => '80px','exportable' => false,'printable' => false,'title'=>'Acciones'])
                     ->parameters($this->getBuilderParameters());
     }
 
@@ -58,6 +77,19 @@ class PuntosReferenciasDataTable extends DataTable
             'id',
             'latitud',
             'longitud',
+            'referencia',
+            'barrio_id'
+        ];
+    }
+    protected function getColumnsTable()
+    {
+        return [
+            'referencia',
+            'barrio_id'=>['title'=>'Barrio'],
+            'parroquia',
+            'latitud',
+            'longitud',
+            
         ];
     }
 

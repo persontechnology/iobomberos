@@ -19,7 +19,8 @@ class PermisosTableSeeder extends Seeder
             'G. de personal operativos',
             'G. de clínicas',
             'G. de puntos de referencias',
-            'G. de vehículos'
+            'G. de vehículos',
+            'G. de insumos y medicamentos'
         );
         foreach ($permisos as $permiso) {
             Permission::firstOrCreate(['name' => $permiso]);

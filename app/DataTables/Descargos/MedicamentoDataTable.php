@@ -1,11 +1,11 @@
 <?php
 
-namespace iobom\DataTables;
+namespace iobom\DataTables\Descargos;
 
+use iobom\User;
 use Yajra\DataTables\Services\DataTable;
-use iobom\Models\Clinica;
 
-class ClinicasDataTable extends DataTable
+class MedicamentoDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -16,9 +16,7 @@ class ClinicasDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->addColumn('action', function($clinica){
-                return view('clinicas.acciones',['clinica'=>$clinica])->render();
-        });
+            ->addColumn('action', 'descargos/medicamento.action');
     }
 
     /**
@@ -27,9 +25,9 @@ class ClinicasDataTable extends DataTable
      * @param \iobom\User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Clinica $model)
+    public function query(User $model)
     {
-        return $model->newQuery()->select($this->getColumns());
+        return $model->newQuery()->select('id', 'add-your-columns-here', 'created_at', 'updated_at');
     }
 
     /**
@@ -40,9 +38,9 @@ class ClinicasDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->columns($this->getColumnsTable())
+                    ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->addAction(['width' => '80px','exportable' => false,'printable' => false,'title'=>'Acciones'])
+                    ->addAction(['width' => '80px'])
                     ->parameters($this->getBuilderParameters());
     }
 
@@ -55,16 +53,9 @@ class ClinicasDataTable extends DataTable
     {
         return [
             'id',
-            'nombre',
-          
-        ];
-    }
-     protected function getColumnsTable()
-    {
-        return [
-           
-            'nombre',
-                     
+            'add your columns',
+            'created_at',
+            'updated_at'
         ];
     }
 
@@ -75,6 +66,6 @@ class ClinicasDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Clinicas_' . date('YmdHis');
+        return 'Descargos/Medicamento_' . date('YmdHis');
     }
 }

@@ -90,6 +90,14 @@
 
                         @endcan
 
+                        @can('G. de insumos y medicamentos')
+                            
+                        <li class="nav-item">
+                            <a href="{{ route('insumos') }}" class="nav-link" id="menuMedicamentosInsumos">Insumos y medicamentos</a>
+                        </li> 
+
+                        @endcan
+
 
                     </ul>
                 </li>

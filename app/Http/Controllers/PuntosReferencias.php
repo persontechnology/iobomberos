@@ -8,7 +8,6 @@ use iobom\DataTables\PuntosReferenciasDataTable;
 use Illuminate\Support\Facades\Auth;
 use iobom\Models\Estacion;
 use Illuminate\Support\Facades\DB;
-use iobom\Models\Barrio;
 use iobom\Models\Parroquia;
 
 class PuntosReferencias extends Controller
@@ -36,6 +35,7 @@ class PuntosReferencias extends Controller
             'latitud' => 'required|max:255',
             'longitud' => 'required|max:255',
             'referencia' => 'required|max:255',
+            'barrio'=>'required|exists:barrios,id'
         ]);
     	$puntoReferencia= new PuntoReferencia();
     	$puntoReferencia->latitud=$request->latitud;
@@ -57,21 +57,24 @@ class PuntosReferencias extends Controller
        $puntoReferencia=PuntoReferencia::findOrFail($idPunto);
         $estaciones=Estacion::get();
         $puntos=PuntoReferencia::get();
-       return view('puntosReferencias.editar',['estaciones'=>$estaciones,'puntos'=>$puntos,'puntoReferencia'=>$puntoReferencia]);
+        $parroquias=Parroquia::all();
+       return view('puntosReferencias.editar',['estaciones'=>$estaciones,'puntos'=>$puntos,'puntoReferencia'=>$puntoReferencia,'parroquias'=>$parroquias]);
     }
 
     public function actualizar(Request $request)
     {
         $request->validate([
-            'latitud' => 'required|max:191',
-            'longitud' => 'required|max:191',
-            'direccion' => 'required|max:191',
-            'punto'=>'required'
+            'latitud' => 'required|max:255',
+            'longitud' => 'required|max:255',
+            'referencia' => 'required|max:255',
+            'punto'=>'required|exists:puntoReferencia,id',
+            'barrio'=>'required|exists:barrios,id'
         ]);
         $puntoReferencia= PuntoReferencia::findOrFail($request->punto);
         $puntoReferencia->latitud=$request->latitud;
-        $puntoReferencia->longitud=$request->longitud;
-        $puntoReferencia->direccion=$request->direccion;
+    	$puntoReferencia->longitud=$request->longitud;
+        $puntoReferencia->referencia=$request->referencia;
+        $puntoReferencia->barrio_id=$request->barrio;
         $puntoReferencia->actualizadoPor=Auth::id();
         $puntoReferencia->save();
          return redirect()->route('puntosReferencia')->with('success','Punto de referencia actualizado exitosamente');

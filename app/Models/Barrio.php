@@ -9,4 +9,9 @@ class Barrio extends Model
     protected $fillable = [
         'nombre', 'codigo','parroquia_id'
     ];
+
+    public function parroquia()
+    {
+        return $this->belongsTo(Parroquia::class, 'parroquia_id');
+    }
 }

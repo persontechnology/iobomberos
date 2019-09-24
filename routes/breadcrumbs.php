@@ -179,3 +179,19 @@ Breadcrumbs::for('editarVehiculo', function ($trail,$vehiculo) {
     $trail->parent('vehiculos',$vehiculo->tipoVehiculo);
     $trail->push('Editar vehículo', route('editarVehiculo',$vehiculo->id));
 });
+
+
+
+// A:D.criollo
+// D:descargos de insumos y medicamentos
+// insumos
+
+Breadcrumbs::for('insumos', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Insumos', route('insumos'));
+});
+Breadcrumbs::for('editarInsumo', function ($trail,$insumo) {
+    $trail->parent('insumos');
+    $trail->push('Editar insumo', route('editarInsumo',$insumo->id));
+});
+

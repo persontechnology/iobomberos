@@ -55,7 +55,7 @@
 
 			<div class="form-group">
 				<label for="referencia" >{{ __('Referencia') }}</label>	           
-				<textarea id="referencia" class="form-control @error('referencia') is-invalid @enderror" name="referencia" value="{{ old('referencia') }}" placeholder="Referencia" required></textarea>
+				<textarea id="referencia" class="form-control @error('referencia') is-invalid @enderror" name="referencia" placeholder="Referencia" required>{{ old('referencia') }}</textarea>
 				@error('referencia')
 					<span class="invalid-feedback" role="alert">
 						<strong>{{ $message }}</strong>
@@ -65,7 +65,7 @@
 			
 		</div>
 		<div class="card-footer">
-			<button type="submit" class="btn btn-dark">Guardar <i class="icon-paperplane ml-2"></i></button>
+			<button type="submit" class="btn btn-dark">Guardar</button>
 		</div>
 	</div>
 </form>
@@ -137,28 +137,25 @@
 			@endforeach
 		@endif
 		@if($puntos->count()>0)
-			@foreach($puntos as $puntos)
-				var latitu={{$puntos->latitud}};
-				var longi={{$puntos->longitud}};
-				var markerpuntos_{{$puntos->id}} = new google.maps.Marker({
-			    map: map,
-			    position:{lat:latitu , lng:longi } ,
-			    title:" {{$puntos->direccion}}",
-			    icon:imagePuntos,
-			 	 });
-				
-				
-
-				@endforeach
+			@foreach($puntos as $punto)
+				var latitu={{$punto->latitud}};
+				var longi={{$punto->longitud}};
+				var markerpuntos_{{$punto->id}} = new google.maps.Marker({
+					map: map,
+					position:{lat:latitu , lng:longi } ,
+					title:" {{$punto->referencia}}",
+					icon:imagePuntos,
+				});
+			@endforeach
 		@endif	
 		var marker = new google.maps.Marker({
 		    map: map,
 		    draggable: true,
 		    animation: google.maps.Animation.DROP,
-		    draggable:true,
 		    position: myLatLng,
 		    title:"Puntos de referencia",
-		    icon:imageCrear,
+			icon:imageCrear,
+			
 		  });
 		  marker.setMap(map);
 		  marker.addListener('dragend', function() {
