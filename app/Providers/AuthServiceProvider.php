@@ -4,6 +4,10 @@ namespace iobom\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use iobom\Models\Emergencia\Emergencia;
+use iobom\Models\Estacion;
+use iobom\Policies\EmergenciaPolicy;
+use iobom\Policies\EstacionPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +17,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'iobom\Model' => 'iobom\Policies\ModelPolicy',
+        Estacion::class => EstacionPolicy::class,
+        Emergencia::class=>EmergenciaPolicy::class
     ];
 
     /**
@@ -25,8 +30,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole(['Administrador','Jefa de sistemas']) ? true : null;
-        });
+        // Gate::before(function ($user, $ability) {
+        //     return $user->hasRole(['Administrador','Jefa de sistemas']) ? true : null;
+        // });
     }
 }

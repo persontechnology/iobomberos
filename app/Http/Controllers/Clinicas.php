@@ -12,8 +12,9 @@ class Clinicas extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','permission:G. de estaciones']);
+        $this->middleware(['auth','permission:G. de clínicas']);
     }
+    
     
     public function index(ClinicasDataTable $dataTable)
     {

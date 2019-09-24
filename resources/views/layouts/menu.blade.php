@@ -44,35 +44,56 @@
                         <span>Gestión de Información</span>
                     </a>
                     <ul class="nav nav-group-sub" data-submenu-title="Form components">
+                        @can('G. de estaciones')
+                            
+                        
                         <li class="nav-item">
                             <a href="{{ route('estaciones') }}" class="nav-link" id="menuEstacion">Estaciones</a>
                         </li> 
+
+                        @endcan
                         
+                        @can('G. de emergencias')
                         <li class="nav-item">
-                            <a href="{{ route('emergencia') }}" class="nav-link" id="menuEmergencia">Emergencia</a>
+                            <a href="{{ route('emergencia') }}" class="nav-link" id="menuEmergencia">Emergencias</a>
+                        </li>     
+                        @endcan
+                        
+                        @can('G. de personal operativos')
+                            
+                        <li class="nav-item">
+                            <a href="{{ route('usuarios') }}" class="nav-link" id="menuUsuarios">Personal operativos</a>
                         </li> 
 
-                        <li class="nav-item">
-                            <a href="{{ route('usuarios') }}" class="nav-link" id="menuUsuarios">Personal operativo</a>
-                        </li> 
+                        @endcan
+
+                        @can('G. de clínicas')
                         <li class="nav-item">
                             <a href="{{ route('clinicas') }}" class="nav-link" id="menuClinicas">Clínicas</a>
-                        </li> 
+                        </li>     
+                        @endcan
+                        
+                        @can('G. de puntos de referencias')
+                            
+                        
                         <li class="nav-item">
-                            <a href="{{ route('puntosReferencia') }}" class="nav-link" id="menuPuntosReferencia">Puntos de referencia</a>
+                            <a href="{{ route('puntosReferencia') }}" class="nav-link" id="menuPuntosReferencia">Puntos de referencias</a>
                         </li> 
+
+                        @endcan
+
+                        @can('G. de vehículos')
+                            
+                        <li class="nav-item">
+                            <a href="{{ route('tipoVehiculos') }}" class="nav-link" id="menuVehiculos">Vehículos</a>
+                        </li> 
+
+                        @endcan
+
 
                     </ul>
                 </li>
               
-                <li class="nav-item">
-                    <a href="{{ route('tipoVehiculos') }}" class="nav-link" id="menuVehiculos">
-                        <i class="icon-truck"></i>
-                        <span>
-                            Vehículos
-                        </span>
-                    </a>
-                </li>
                 @role('Administrador')
                 <li class="nav-item-header">
                     <div class="text-uppercase font-size-xs line-height-xs">SISTEMA</div> 

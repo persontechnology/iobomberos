@@ -158,6 +158,7 @@
 @prepend('linksPie')
     <script>
 
+        $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
         $('#menuVehiculos').addClass('active');
         
         $( "#formNuevoUsuario" ).validate({

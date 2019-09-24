@@ -13,9 +13,13 @@ use iobom\Models\Parroquia;
 
 class PuntosReferencias extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth','permission:G. de puntos de referencias']);
+    }
+
     public function index(PuntosReferenciasDataTable $dataTable)
     {
-    	
     	return $dataTable->render('puntosReferencias.index');
     }
     

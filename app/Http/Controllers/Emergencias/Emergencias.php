@@ -12,7 +12,7 @@ class Emergencias extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','permission:G. de emergencia']);
+        $this->middleware(['auth','permission:G. de emergencias']);
     }
 
     public function index(EmergenciaDataTable $dataTable)

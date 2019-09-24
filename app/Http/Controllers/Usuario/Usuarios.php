@@ -24,7 +24,7 @@ class Usuarios extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','permission:G. de personal']);
+        $this->middleware(['auth','permission:G. de personal operativos']);
     }
 
     public function index(UsuarioDataTable $dataTable)
@@ -83,7 +83,7 @@ class Usuarios extends Controller
             DB::beginTransaction();
 
             $user=User::findOrFail($request->user);
-            $this->authorize('eliminarUsuario', $user);
+            
             if(Auth::user()->id!=$user->id){
                 
                 if($user->delete()){

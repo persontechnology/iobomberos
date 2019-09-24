@@ -15,11 +15,16 @@ class RolesTableSeeder extends Seeder
 
         $roles = array(
             'Administrador',
+            'Máxima autoridad',
+            'Jefe de operaciones',
+            'Oficial de guardía',
+            'Clase de guardía',
             'Operador',
-            'Sargento',
-            'Cabo',
-            'Teniente',
-            'Sub-Oficial',
+            'Operativos',
+            'Logística',
+            'Recursos humanos',
+            'Radio operador',
+            'Radio despachador',
             'Paramédico ',
         );
         foreach ($roles as $rol) {
