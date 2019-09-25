@@ -141,6 +141,13 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::get('/insumos-editar/{id}', 'Insumos@editar')->name('editarInsumo');
         Route::post('/insumos-actualizar', 'Insumos@actualizar')->name('insumosActualizar');
         Route::post('/insumos-eliminar', 'Insumos@eliminar')->name('eliminarInsumo');
+
+        // medicamentos
+        Route::get('/medicamentos/{insumo}', 'Medicamentos@index')->name('medicamentos');
+        Route::post('/medicamentos-guardar', 'Medicamentos@guardar')->name('medicamentosGuardar');
+        Route::get('/medicamentos-editar/{id}', 'Medicamentos@editar')->name('editarMedicamento');
+        Route::post('/medicamentos-actualizar', 'Medicamentos@actualizar')->name('medicamentoActualizar');
+        Route::post('/medicamentos-eliminar', 'Medicamentos@eliminar')->name('eliminarMedicamento');
         
         
     });

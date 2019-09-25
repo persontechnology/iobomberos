@@ -2,7 +2,7 @@
 
 namespace iobom\DataTables\Descargos;
 
-use iobom\User;
+use iobom\Models\Descargo\Medicamento;
 use Yajra\DataTables\Services\DataTable;
 
 class MedicamentoDataTable extends DataTable
@@ -16,7 +16,9 @@ class MedicamentoDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->addColumn('action', 'descargos/medicamento.action');
+            ->addColumn('action', function($medi){
+                return view('descargo.medicamentos.accion',['medi'=>$medi])->render();
+            });
     }
 
     /**
@@ -25,9 +27,11 @@ class MedicamentoDataTable extends DataTable
      * @param \iobom\User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(User $model)
+    public function query(Medicamento $model)
     {
-        return $model->newQuery()->select('id', 'add-your-columns-here', 'created_at', 'updated_at');
+        $insumo=$this->insumo;
+        $model=$insumo->medicamentos();
+        return $model->newQuery()->select($this->getColumns());
     }
 
     /**
@@ -38,9 +42,9 @@ class MedicamentoDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->columns($this->getColumns())
+                    ->columns($this->getColumnsTable())
                     ->minifiedAjax()
-                    ->addAction(['width' => '80px'])
+                    ->addAction(['width' => '80px','exportable' => false,'printable' => false,'title'=>'Acciones'])
                     ->parameters($this->getBuilderParameters());
     }
 
@@ -53,9 +57,14 @@ class MedicamentoDataTable extends DataTable
     {
         return [
             'id',
-            'add your columns',
-            'created_at',
-            'updated_at'
+            'nombre'
+        ];
+    }
+
+    protected function getColumnsTable()
+    {
+        return [
+            'nombre',
         ];
     }
 
@@ -66,6 +75,6 @@ class MedicamentoDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Descargos/Medicamento_' . date('YmdHis');
+        return 'Descargos_Medicamento_' . date('YmdHis');
     }
 }

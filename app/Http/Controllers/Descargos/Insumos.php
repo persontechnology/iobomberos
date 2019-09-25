@@ -63,7 +63,7 @@ class Insumos extends Controller
             $estacion=Insumo::findOrFail($request->insumo);
             $estacion->delete();
             DB::commit();
-            return response()->json(['success'=>'Insumo eliminada exitosamente']);
+            return response()->json(['success'=>'Insumo eliminado exitosamente']);
 
         } catch (\Exception $th) {
             DB::rollBack();

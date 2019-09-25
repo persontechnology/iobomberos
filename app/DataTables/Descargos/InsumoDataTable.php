@@ -66,6 +66,6 @@ class InsumoDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Descargos/Insumo_' . date('YmdHis');
+        return 'Descargos_Insumo_' . date('YmdHis');
     }
 }

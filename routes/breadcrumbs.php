@@ -194,4 +194,14 @@ Breadcrumbs::for('editarInsumo', function ($trail,$insumo) {
     $trail->parent('insumos');
     $trail->push('Editar insumo', route('editarInsumo',$insumo->id));
 });
+// medicamentos
+Breadcrumbs::for('medicamentos', function ($trail,$insumo) {
+    $trail->parent('insumos');
+    $trail->push('Medicamentos en '.$insumo->nombre, route('medicamentos',$insumo->id));
+});
+Breadcrumbs::for('editarMedicamento', function ($trail,$medi) {
+    $trail->parent('medicamentos',$medi->insumo);
+    $trail->push('Editar medicamento', route('editarMedicamento',$medi->id));
+});
+
 
