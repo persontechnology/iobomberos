@@ -1,4 +1,4 @@
-@extends('layouts.app',['title'=>'Insumos'])
+@extends('layouts.app',['title'=>'Medicamentos'])
 @section('breadcrumbs', Breadcrumbs::render('medicamentos',$insumo))
 @section('barraLateral')
 
@@ -34,22 +34,33 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('admin/plus/DataTables/datatables.min.css') }}"/>
 <script type="text/javascript" src="{{ asset('admin/plus/DataTables/datatables.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
+{{-- validate --}}
+<script src="{{ asset('admin/plus/validate/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('admin/plus/validate/messages_es.min.js') }}"></script>
 @endpush
 
 @prepend('linksPie')
-  <script type="text/javascript">
-       $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
-        $('#menuMedicamentosInsumos').addClass('active');
-  </script>
-    {!! $dataTable->scripts() !!}
+ 
+    
     <script type="text/javascript">
-        
+        $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
+        $('#menuMedicamentosInsumos').addClass('active');
+
+        $( "#formGuardar" ).validate({
+            rules: {
+                nombre: {
+                    required: true,
+                    maxlength: 191
+                }
+            },
+        });
+
         function eliminar(arg){
             var url="{{ route('eliminarMedicamento') }}";
             var id=$(arg).data('id');
             swal({
                 title: "¿Estás seguro?",
-                text: "Que desea eliminar la estación.!",
+                text: "Que desea eliminar el medicamento.!",
                 type: "error",
                 showCancelButton: true,
                 confirmButtonClass: "btn-dark",
@@ -79,6 +90,7 @@
             });
         }
     </script>
+    {!! $dataTable->scripts() !!}
     
 @endprepend
 

@@ -1,4 +1,4 @@
-@extends('layouts.app',['title'=>'Insumos'])
+@extends('layouts.app',['title'=>'Editar medicamento'])
 @section('breadcrumbs', Breadcrumbs::render('editarMedicamento',$medi))
 @section('barraLateral')
 
@@ -21,19 +21,26 @@
             </div>
         </form>
     </div>
-    <div class="card-body">
-       
-    </div>
 </div>
 
 @push('linksCabeza')
-
+{{-- validate --}}
+<script src="{{ asset('admin/plus/validate/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('admin/plus/validate/messages_es.min.js') }}"></script>
 @endpush
 
 @prepend('linksPie')
   <script type="text/javascript">
        $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
         $('#menuMedicamentosInsumos').addClass('active');
+        $( "#formGuardar" ).validate({
+            rules: {
+                nombre: {
+                    required: true,
+                    maxlength: 191
+                }
+            },
+        });
   </script>
     
     
