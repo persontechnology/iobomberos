@@ -107,10 +107,18 @@ class Estaciones extends Controller
 
     public function cambioPersonal()
     {
-        $estaciones=Estacion::all();
-        $usuarios=User::all();
-        $data = array('estaciones' => $estaciones,'usuarios'=>$usuarios );
+        $estaciones=Estacion::all();       
+        $data = array('estaciones' => $estaciones );
         return view('estaciones.cambioPersonal',$data);
+    }
+
+    public function cargaListado()
+    {
+
+        $estaciones=Estacion::all();
+        $usuarios=User::where('estado',"Activo")->get();
+        $data = array('estaciones' => $estaciones,'usuarios'=>$usuarios );
+        return view('estaciones.lista',$data);
     }
 
     public function actualizarPersonalEstacion(Request $request)

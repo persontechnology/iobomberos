@@ -28,8 +28,7 @@ class UsuarioDataTable extends DataTable
             ->addColumn('roles',function($user){
                 return view('usuario.usuarios.roles',['user'=>$user])->render();
             })
-            ->editColumn('estado',function($user){
-               
+            ->editColumn('estado',function($user){               
                  return view('usuario.usuarios.estado',['user'=>$user])->render();                          
             })
             ->editColumn('foto',function($user){
@@ -38,7 +37,7 @@ class UsuarioDataTable extends DataTable
             })
             ->addColumn('action', function($user){
                 return view('usuario.usuarios.acciones',['user'=>$user])->render();
-            })->rawColumns(['estacion','roles','action','foto']);
+            })->rawColumns(['estacion','roles','estado','action','foto']);
     }
 
     /**
@@ -78,7 +77,8 @@ class UsuarioDataTable extends DataTable
             'estacion_id',
             'name',
             'telefono',
-            'foto',  
+            'foto',
+            'estado',  
             'email',
         ];
     }
@@ -92,6 +92,7 @@ class UsuarioDataTable extends DataTable
             'email',
             'telefono'=>['title'=>'Teléfono'],
             'roles',
+            'estado',
             'estacion_id'=>['title'=>'Estación'],
         ];
     }

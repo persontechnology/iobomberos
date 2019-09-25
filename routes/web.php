@@ -69,7 +69,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::post('/eliminar-estacion', 'Estaciones@eliminar')->name('eliminarEstacion');
     Route::get('/cambio-de-personal', 'Estaciones@cambioPersonal')->name('cambioPersonal');
     Route::post('/actualizar-personal-en-estacion', 'Estaciones@actualizarPersonalEstacion')->name('actualizarPersonalEstacion');
-    
+    Route::get('/lista-estacion', 'Estaciones@cargaListado')->name('listaEstacion');
 
 
     // A:Deivid

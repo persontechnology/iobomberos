@@ -1,85 +1,23 @@
 @extends('layouts.app')
 @section('breadcrumbs', Breadcrumbs::render('actualizarPersonalEstacion'))
 @section('content')
-<div class="container">
-    <div class="row">
-    @foreach ($estaciones as $est)
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header bg-dark">
-                    <h1>{{ $est->nombre }}  {{ $est->id }}</h1>
-                </div>
-                <div class="card-body list-group col milista" id="estacion{{ $est->id }}">
-                        
-                    @foreach ($usuarios as $user)
-                        
-                        @if ($user->estacion->id==$est->id)
-                        <div class="list-group-item" id="{{ $user->id }}">
-
-                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start bg-secondary">
-                                
-                                @if (Storage::exists($user->foto))
-                                    <img src="{{ Storage::url($user->foto) }}" alt="" class="img-fluid" width="25px;">
-                                @else
-                                    <img src="{{ asset('img/user.png') }}" alt="" class="img-fluid" width="25px;">
-                                @endif
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">{{ $user->name }} {{ $user->id }}</h5>
-                                    <small>{{ $user->email }}</small>
-                                </div>
-                                <p class="mb-1">
-                                    {{ $user->telefono }}
-                                </p>
-                                <small>
-                                    @foreach ($user->getRoleNames() as $rol)
-                                        {{ $rol }},
-                                    @endforeach
-                                </small>
-                            </a>
-                        </div>
-                        @endif
-                        
-                    @endforeach
-
-                       
-                </div>
-            </div>
-        </div>
-
-        <script>
-                new Sortable(estacion{{ $est->id }}, {
-                    group: 'shared',
-                    animation: 150,
-                    onChange: function(evt) {
-                        var user=evt.item.id;
-                        var estacion=evt.to.id.split('estacion')[1];
-                        
-                        $.blockUI({message:'<h1>Espere por favor.!</h1>'});
-                        $.post("{{ route('actualizarPersonalEstacion') }}", { estacion: estacion,user:user })
-                        .done(function( data ) {
-                            if(data.success){
-                                notificar("success",data.success);
-                            }
-                            if(data.default){
-                                notificar("default",data.default);   
-                            }
-                        }).always(function(){
-                            $.unblockUI();
-                        }).fail(function(){
-                            notificar("error","Ocurrio un error");
-                        });
-
-
-                    }
-                });
-        </script>
-    @endforeach
-
-    </div>
+<div id="listadosss" class="overflow-auto">
 </div>
-
+<script>
+         cargaListadoss();
+     
+</script>
 @push('linksCabeza')
-
+<script>
+        function cargaListadoss(){
+            $("#listadosss" ).load("{{route('listaEstacion')}}",function( response, status, xhr ){
+                if ( status == "error" ) {
+                    notificar('warning','No se pudo cargar el listado')
+                }
+            }); 
+        }
+     
+</script>
 <script src="{{ asset('admin/plus/sortable/Sortable.min.js') }}"></script>
 
 
@@ -88,6 +26,7 @@
 
 
 @prepend('linksPie')
+   
     <script>
         
         $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
