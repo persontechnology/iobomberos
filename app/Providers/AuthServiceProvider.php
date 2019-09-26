@@ -4,8 +4,10 @@ namespace iobom\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use iobom\Models\Asistencia\Asistencia;
 use iobom\Models\Emergencia\Emergencia;
 use iobom\Models\Estacion;
+use iobom\Policies\AsistenciaPolicy;
 use iobom\Policies\EmergenciaPolicy;
 use iobom\Policies\EstacionPolicy;
 
@@ -18,7 +20,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Estacion::class => EstacionPolicy::class,
-        Emergencia::class=>EmergenciaPolicy::class
+        Emergencia::class=>EmergenciaPolicy::class,
+        Asistencia::class=>AsistenciaPolicy::class
     ];
 
     /**

@@ -21,13 +21,14 @@ class UsuarioDataTable extends DataTable
                 return $user->estacion->nombre;
             })
            ->filterColumn('estacion_id', function($query, $keyword) {
-            $query->whereHas('estacion', function($query) use ($keyword) {
-                $query->whereRaw("nombre like ?", ["%{$keyword}%"]);
-            });
+                $query->whereHas('estacion', function($query) use ($keyword) {
+                    $query->whereRaw("nombre like ?", ["%{$keyword}%"]);
+                });
             })
             ->addColumn('roles',function($user){
                 return view('usuario.usuarios.roles',['user'=>$user])->render();
             })
+            
             ->editColumn('estado',function($user){               
                  return view('usuario.usuarios.estado',['user'=>$user])->render();                          
             })
