@@ -1,9 +1,25 @@
 
 @extends('layouts.app',['title'=>'Lista de personal'])
 @section('breadcrumbs', Breadcrumbs::render('listadoPersonalAsistencia',$estacion))
+
+@section('barraLateral')
+
+    <div class="breadcrumb justify-content-center">
+        <a href="{{ route('exportPdfAsistencia',$asistencia->id) }}" target="_blanck" class="breadcrumb-elements-item">
+            <i class="far fa-file-pdf"></i>
+            Exportar a PDF
+        </a>    
+        <a href="{{ route('usuariosNuevo') }}" class="breadcrumb-elements-item">
+            <i class="fas fa-search"></i>
+            Buscar asistencia por fecha
+        </a>
+            
+    </div>
+@endsection
 @section('content')
 
 <div class="container-fluid">
+    <small id="mensaje" class=""></small>
     <div class="row">
         <div class="col-md-6">
 
@@ -46,7 +62,7 @@
                                                 </td>
                                                 <td>
                                                     <input type="checkbox" data-url="{{ route('estadoAsistenciaPersonal',$personal->asistenciaPersonal->id) }}" data-id="u_{{ $personal->asistenciaPersonal->id }}" value="{{ $personal->asistenciaPersonal->id }}" class="toggle-estado" {{ $personal->asistenciaPersonal->estado==true?'checked':'' }} data-toggle="toggle" data-on="SI" data-off="NO" data-onstyle="success" data-offstyle="warning" data-size="xs">  
-                                                    <input type="text" style="{{ $personal->asistenciaPersonal->estado==true?'display: none':'' }}" class="form-control form-control-sm mt-1" id="u_{{ $personal->asistenciaPersonal->id }}" placeholder="Observacíon">
+                                                    <input type="text" value="{{ $personal->asistenciaPersonal->observacion }}" onkeyup="detalle(this)" data-url="{{ route('obsAsistenciaPersonal') }}" data-id="{{ $personal->asistenciaPersonal->id }}"  style="{{ $personal->asistenciaPersonal->estado==true?'display: none':'' }}" class="form-control form-control-sm mt-1" id="u_{{ $personal->asistenciaPersonal->id }}" placeholder="Observacíon">
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -102,7 +118,9 @@
                                             </td>
                                             <td>
                                                 <input type="checkbox" data-url="{{ route('estadoAsistenciaVehiculo',$vehiculo->asistenciaVehiculo->id) }}" data-id="v_{{ $vehiculo->asistenciaVehiculo->id }}" value="{{ $vehiculo->asistenciaVehiculo->id }}" class="toggle-estado" {{ $vehiculo->asistenciaVehiculo->estado==true?'checked':'' }} data-toggle="toggle" data-on="SI" data-off="NO" data-onstyle="success" data-offstyle="warning" data-size="xs">  
-                                                <input type="text" style="{{ $vehiculo->asistenciaVehiculo->estado==true?'display: none':'' }}" class="form-control form-control-sm mt-1" id="v_{{ $vehiculo->asistenciaVehiculo->id }}" placeholder="Observacíon">
+                                                <input type="text" value="{{ $vehiculo->asistenciaVehiculo->observacion }}" onkeyup="detalle(this)" data-url="{{ route('obsAsistenciaVehiculo') }}" data-id="{{ $vehiculo->asistenciaVehiculo->id }}" style="{{ $vehiculo->asistenciaVehiculo->estado==true?'display: none':'' }}" class="form-control form-control-sm mt-1" id="v_{{ $vehiculo->asistenciaVehiculo->id }}" placeholder="Observacíon">
+                                                
+
                                             </td>
                                         </tr>
                                     @endforeach
@@ -152,42 +170,67 @@
             }else{
                 $('#'+iden).show();
             }
-            
+            $.blockUI({message:'<h1>Espere por favor.!</h1>'});
             $.post(url,{id:valor})
             .done(function(data) {
-                console.log(data)
+                if(data.success){
+                    $('#mensaje').html(data.success)
+                }
             })
             .fail(function(error) {
                 
             })
             .always(function() {
-                
+                $.unblockUI();
             });
         });
 
 
 
         function detalle(arg){
-            var asis=$(arg).data('asis');
+            var id=$(arg).data('id');
+            var url=$(arg).data('url');
             var detalle=$(arg).val();
-            $.post("", { asis:asis,detalle:detalle})
+            $.post(url, { id:id,detalle:detalle})
             .done(function( data ) {
                 if(data.success){
-                    $('#msg_detalle_'+asis).addClass('text-success');
-                    $('#msg_detalle_'+asis).html('Guardado exitosamente');
+                    $('#mensaje').html(data.success)
                 }
-                if(data.default){
-                    $('#msg_detalle_'+asis).addClass('text-danger');
-                    $('#msg_detalle_'+asis).html(data.default);
-                }
-                
             }).always(function(){
                 
-            }).fail(function(){
-                $('#msg_detalle_'+asis).addClass('text-danger');
-                $('#msg_detalle_'+asis).html('Ocurrio un error');
+            }).fail(function(err){
+                
             });
         }
+
+        $('.table').DataTable({
+            "lengthChange": false,
+            "paging": false,
+            "language": {
+                "sProcessing":     "Procesando...",
+                "sLengthMenu":     "Mostrar _MENU_ registros",
+                "sZeroRecords":    "No se encontraron resultados",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":    "",
+                "sSearch":         "Buscar:",
+                "sUrl":            "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":     "Último",
+                    "sNext":     "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
         
     </script>
     

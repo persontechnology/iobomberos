@@ -184,6 +184,7 @@ return [
         Barryvdh\Snappy\ServiceProvider::class,
         // EXCEL
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        
 
 
     ],
