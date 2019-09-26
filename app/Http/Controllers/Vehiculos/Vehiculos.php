@@ -82,6 +82,7 @@ class Vehiculos extends Controller
         $vehiculo->cilindraje=$request->cilindraje;
         $vehiculo->anio=$request->anio;
         $vehiculo->motor=$request->motor;
+        $vehiculo->estado=$request->estado;
         $vehiculo->save();
         if ($request->hasFile('foto')) {
             if ($request->file('foto')->isValid()) {

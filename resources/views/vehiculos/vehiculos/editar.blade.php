@@ -106,6 +106,18 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="form-group row">
+                                <label for="modelo" class="col-md-4 col-form-label text-md-right">{{ __('Estado') }}<i class="text-danger">*</i></label>
+            
+                                <div class="col-md-6">
+                                <select class="form-control" id="estado" name="estado">
+                                        <option value="Disponible" {{$vehiculo->estado=='Disponible' ? 'selected' :''}}>Disponible</option>
+                                        <option  value="Inactivo" {{$vehiculo->estado=='Inactivo' ? 'selected' :''}}>Inactivo</option>
+                                        <option  value="Mantenimiento" {{$vehiculo->estado=='Mantenimiento' ? 'selected' :''}}>Mantenimiento</option>
+                                        <option  value="Dado de baja" {{$vehiculo->estado=='Dado de baja' ? 'selected' :''}}>Dado de baja</option>
+                                    </select>
+                                </div>
+                        </div>
                         </div>
                         <div class="col-sm-6">
 
