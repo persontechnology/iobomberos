@@ -170,7 +170,7 @@
         function detalle(arg){
             var asis=$(arg).data('asis');
             var detalle=$(arg).val();
-            $.post("{{ route('actualizarDetalleAsistencia') }}", { asis:asis,detalle:detalle})
+            $.post("", { asis:asis,detalle:detalle})
             .done(function( data ) {
                 if(data.success){
                     $('#msg_detalle_'+asis).addClass('text-success');
