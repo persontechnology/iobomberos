@@ -1,14 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.app',['title'=>'Cambio Personal'])
 @section('breadcrumbs', Breadcrumbs::render('actualizarPersonalEstacion'))
 @section('content')
-<div id="listadosss" class="overflow-auto">
+<div id="listadosss" >
 </div>
 <script>
          cargaListadoss();
      
 </script>
 @push('linksCabeza')
-<script>
+    <script>
         function cargaListadoss(){
             $("#listadosss" ).load("{{route('listaEstacion')}}",function( response, status, xhr ){
                 if ( status == "error" ) {
@@ -16,14 +16,10 @@
                 }
             }); 
         }
-     
-</script>
-<script src="{{ asset('admin/plus/sortable/Sortable.min.js') }}"></script>
-
-
+        
+    </script>
+    <script src="{{ asset('admin/plus/sortable/Sortable.min.js') }}"></script>
 @endpush
-
-
 
 @prepend('linksPie')
    

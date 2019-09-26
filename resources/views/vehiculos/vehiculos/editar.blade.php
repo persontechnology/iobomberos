@@ -2,7 +2,7 @@
 
 @section('breadcrumbs', Breadcrumbs::render('editarVehiculo',$vehiculo))
 @section('content')
-<form method="POST" action="{{ route('actualizarVehiculo') }}" id="formNuevoUsuario">
+<form method="POST" action="{{ route('actualizarVehiculo') }}" id="formNuevoUsuario" enctype="multipart/form-data">
     @csrf
     <input type="hidden" name="vehiculo" value="{{ $vehiculo->id }}">
     <div class="card">
@@ -149,6 +149,19 @@
                                     </span>
                                 @enderror
                             </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Imagen') }}</label>
+            
+                            <div class="col-md-6">
+                                <input type="file" class="form-control-file" id="exampleFormControlFile1" name="foto" accept="image/*">
+                                @if (Storage::exists($vehiculo->foto))
+                                    <a href="{{ Storage::url($vehiculo->foto) }}" class="btn-link" data-toggle="tooltip" data-placement="top" title="Ver foto">
+                                        <img src="{{ Storage::url($vehiculo->foto) }}" alt="" class="img-fluid mt-2">
+                                    </a>
+                                @endif
+                            </div>
+                            {{ $vehiculo->foto }}
                         </div>
 
                      </div>               

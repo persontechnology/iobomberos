@@ -37,7 +37,7 @@
 <script type="text/javascript" src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
 {{--  validate  --}}
 <script src="{{ asset('admin/plus/validate/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('admin/plus/validate/messages_es.min.js') }}"></script>
+
 
 @endpush
 

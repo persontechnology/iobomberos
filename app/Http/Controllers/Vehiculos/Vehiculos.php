@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 use iobom\Http\Requests\Vehiculo\RqActualizar;
 use iobom\Models\Estacion;
 use iobom\Http\Requests\Vehiculo\RqCrear;
-
+use Illuminate\Support\Facades\Storage;
 class Vehiculos extends Controller
 {
    
@@ -49,6 +49,16 @@ class Vehiculos extends Controller
         $vehiculo->anio=$request->anio;
         $vehiculo->motor=$request->motor;
         $vehiculo->save();
+        if ($request->hasFile('foto')) {
+            if ($request->file('foto')->isValid()) {
+                $extension = $request->foto->extension();
+                $path = Storage::putFileAs(
+                    'public/vehiculos', $request->file('foto'), $vehiculo->id.'.'.$extension
+                );
+                $vehiculo->foto=$path;
+                $vehiculo->save();
+            }
+        }
         return redirect()->route('vehiculos',$tipo->id)->with('success', 'Vehículo registrado exitosamente');
 
     }
@@ -73,6 +83,17 @@ class Vehiculos extends Controller
         $vehiculo->anio=$request->anio;
         $vehiculo->motor=$request->motor;
         $vehiculo->save();
+        if ($request->hasFile('foto')) {
+            if ($request->file('foto')->isValid()) {
+                Storage::delete($vehiculo->foto);
+                $extension = $request->foto->extension();
+                $path = Storage::putFileAs(
+                    'public/vehiculos', $request->file('foto'), $vehiculo->id.'.'.$extension
+                );
+                $vehiculo->foto=$path;
+                $vehiculo->save();
+            }
+        }
         return redirect()->route('vehiculos',$request->tipoVehiculo)->with('success', 'Vehículo actualizado exitosamente');
     }
 

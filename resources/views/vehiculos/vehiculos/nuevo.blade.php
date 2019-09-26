@@ -2,7 +2,7 @@
 
 @section('breadcrumbs', Breadcrumbs::render('nuevoVehiculos',$tipo))
 @section('content')
-<form method="POST" action="{{ route('guardarVehiculo') }}" id="formNuevoUsuario">
+<form method="POST" action="{{ route('guardarVehiculo') }}" id="formNuevoUsuario" enctype="multipart/form-data">
     @csrf
     <div class="card">
         <div class="card-header">
@@ -129,11 +129,14 @@
                                 @enderror
                             </div>
                         </div>
-
-
-
-                     </div>               
-                 
+                        <div class="form-group row">
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Imagen') }}</label>
+        
+                            <div class="col-md-6">
+                                <input type="file" class="form-control-file" id="exampleFormControlFile1" name="foto" accept="image/*">
+                            </div>
+                        </div>
+                     </div>                   
                 </div>
         </div>
         <div class="card-footer text-muted">

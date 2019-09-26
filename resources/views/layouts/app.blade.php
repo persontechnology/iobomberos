@@ -25,6 +25,8 @@
 	<script src="{{ asset('admin/js/bootstrap.bundle.min.js') }}"></script>
 	<script src="{{ asset('admin/js/blockui.min.js') }}"></script>
 	<!-- /core JS files -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js"></script>
 
 	<!-- Theme JS files -->
 	<script src="{{ asset('admin/js/uniform.min.js') }}"></script>
@@ -83,6 +85,10 @@
             }
         });
 		
+		$(document).on('click', '[data-toggle="lightbox"]', function(event){
+			event.preventDefault();
+			$(this).ekkoLightbox();
+		});
 	</script>
 
 	<style>

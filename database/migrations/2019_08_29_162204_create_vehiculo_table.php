@@ -14,9 +14,10 @@ class CreateVehiculoTable extends Migration
     public function up()
     {
         Schema::create('vehiculo', function (Blueprint $table) {
-             $table->bigIncrements('id');
+            $table->bigIncrements('id');
             $table->string('placa')->unique();
             $table->string('codigo',255);
+            $table->string('foto')->nullable();
             $table->string('marca',255);
             $table->string('modelo',255);
             $table->string('cilindraje',255);
@@ -31,6 +32,7 @@ class CreateVehiculoTable extends Migration
             $table->timestamps();
             $table->bigInteger('creadoPor')->nullable();
             $table->bigInteger('actualizadoPor')->nullable();
+
         });
     }
 
