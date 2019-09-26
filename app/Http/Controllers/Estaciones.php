@@ -10,6 +10,7 @@ use iobom\Http\Requests\Estaciones\RqCrear;
 use iobom\Http\Requests\Estaciones\RqEditar;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use iobom\Models\Vehiculo;
 use iobom\User;
 
 class Estaciones extends Controller
@@ -131,6 +132,36 @@ class Estaciones extends Controller
         $estacion=Estacion::findOrFail($request->estacion);
         $user->estacion_id=$estacion->id;
         $user->save();
+        return  response()->json(['success'=>'Actualizado exitosamente']);
+    }
+
+
+    public function cambioVehiculo()
+    {
+        $estaciones=Estacion::all();       
+        $data = array('estaciones' => $estaciones );
+        return view('estaciones.cambioVehiculo',$data);
+    }
+
+    public function cargaListadoVehiculo()
+    {
+
+        $estaciones=Estacion::all();
+        $vehiculos=Vehiculo::where('estado',"Disponible")->orderBy('codigo', 'asc')->get();
+        $data = array('estaciones' => $estaciones,'vehiculos'=>$vehiculos );
+        return view('estaciones.listaVehiculos',$data);
+    }
+
+    public function actualizarVehiculoEstacion(Request $request)
+    {
+        $request->validate([
+            'estacion' => 'required|exists:estacion,id',
+            'vehiculo' => 'required|exists:vehiculo,id',
+        ]);
+        $vehiculo=Vehiculo::findOrFail($request->vehiculo);
+        $estacion=Estacion::findOrFail($request->estacion);
+        $vehiculo->estacion_id=$estacion->id;
+        $vehiculo->save();
         return  response()->json(['success'=>'Actualizado exitosamente']);
     }
 }

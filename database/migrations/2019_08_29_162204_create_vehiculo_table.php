@@ -23,7 +23,7 @@ class CreateVehiculoTable extends Migration
             $table->string('cilindraje',255);
             $table->integer('anio');
             $table->string('motor')->unique();
-            $table->enum('estado', ['Disponible', 'Ejecución','Mantenimiento','Dado de baja']);
+            $table->enum('estado', ['Disponible', 'Inactivo','Mantenimiento','Dado de baja']);
             $table->string('detalle',255)->nullable();
             $table->unsignedBigInteger('estacion_id');
             $table->foreign('estacion_id')->references('id')->on('estacion');

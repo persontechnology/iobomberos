@@ -6,9 +6,23 @@
         <a href="{{ route('nuevaEstacion') }}" class="breadcrumb-elements-item">
             <i class="fas fa-plus"></i> Nueva estación
         </a>
-        <a href="{{ route('cambioPersonal') }}" class="breadcrumb-elements-item">
-            <i class="fas fa-user-clock"></i> Cambio de personal
-        </a>
+       
+        <div class="breadcrumb-elements-item dropdown p-0">
+            <a href="#" class="breadcrumb-elements-item dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <i class="icon-gear mr-2"></i>
+                Cambio de recursos
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(96px, 40px, 0px);">
+                <a href="{{ route('cambioPersonal') }}" class="dropdown-item">
+                        <i class="fas fa-user-clock"></i> Cambio de personal
+                    </a>
+                <a href="{{ route('cambioVehiculo') }}" class="dropdown-item">
+                    <i class="fas fa-car"></i> Cambio de Vehículos </a>
+                
+            </div>
+        </div>
+        
     </div>
 @endsection
 @section('content')

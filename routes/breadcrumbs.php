@@ -85,7 +85,10 @@ Breadcrumbs::for('actualizarPersonalEstacion', function ($trail) {
     $trail->parent('estaciones');
     $trail->push('Cambio de personal', route('actualizarPersonalEstacion'));
 });
-
+Breadcrumbs::for('actualizarVehiculoEstacion', function ($trail) {
+    $trail->parent('estaciones');
+    $trail->push('Cambio de vehículos', route('actualizarVehiculoEstacion'));
+});
 
 //A:Fabian Lopez
 //D:Breadcrums de emergencias
