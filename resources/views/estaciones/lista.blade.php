@@ -1,5 +1,5 @@
 <div class="container ">
-        <div class="row">
+    <div class="row">
         @foreach ($estaciones as $est)
         {{-- Inicio de contenido para lista  de personal --}}
             <div class="col-md-4 ">
@@ -8,13 +8,12 @@
                         <h5>{{ $est->nombre }}  {{ $est->id }}</h5>
                         <div class="header-elements">
                             <div class="list-icons">
-                                <a class="list-icons-item" data-action="collapse"></a> 
-                                <a class="list-icons-item" data-action=""></a>                  		
+                                <a class="list-icons-item" data-action="collapse"></a>                                                 		
                             </div>
                         </div>
                     </div>
                     {{-- crear la lista para ver registros por estacion --}}
-                    <div class="card-body">
+                    <div class="card-body ">
                         <div class="input-group mb-3">
                             <div class="form-group-feedback form-group-feedback-left">
                                 <input type="text" id="buscar_{{ $est->id }}" class="form-control form-control-lg" placeholder="Buscar Registro">
@@ -23,39 +22,39 @@
                                 </div>
                             </div>                              
                         </div>
-                       <ul class="media-list milista estacion1_{{ $est->id }}" id="estacion{{ $est->id }}">
-                        @foreach ($usuarios as $user)
-                            
-                            @if ($user->estacion->id==$est->id)
-                            <li class= "media repuesta1_{{ $est->id }}" id="{{ $user->id }}">
-    
-                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start bg-secondary">
+                        <div class="list-cards   ">
+                            <ul class="media-list ista  estacion1_{{ $est->id }}" id="estacion{{ $est->id }}">
+                                @foreach ($usuarios as $user)                                    
+                                    @if ($user->estacion->id==$est->id)
+                                    <li class= "media repuesta1_{{ $est->id }}" id="{{ $user->id }}">            
+                                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start bg-secondary">
+                                            
+                                            <div class="d-flex w-100  ">
+                                                @if (Storage::exists($user->foto))                                            
+                                                    <img src="{{ Storage::url($user->foto) }}" alt="" class="rounded-circle"  width="45px;">
+                                            
+                                                @else
+                                                    <img src="{{ asset('img/user.png') }}" alt="" class="rounded-circle" width="45px;">
+                                                @endif
+                                                <small class="mb-1">{{ $user->name }}</small>
+                                                
+                                            </div>
+                                            <p class="mb-1">
+                                                {{ $user->telefono }}
+                                            </p>
+                                            <small>
+                                                @foreach ($user->getRoleNames() as $rol)
+                                                    {{ $rol }},
+                                                @endforeach
+                                            </small>
+                                        </a>
+                                    </li>
+                                    @endif
                                     
-                                    <div class="d-flex w-100  ">
-                                        @if (Storage::exists($user->foto))
-                                            <img src="{{ Storage::url($user->foto) }}" alt="" class="img-fluid" width="35px;">
-                                        @else
-                                            <img src="{{ asset('img/user.png') }}" alt="" class="img-fluid" width="35px;">
-                                        @endif
-                                        <small class="mb-1">{{ $user->name }}</small>
-                                        
-                                    </div>
-                                    <p class="mb-1">
-                                        {{ $user->telefono }}
-                                    </p>
-                                    <small>
-                                        @foreach ($user->getRoleNames() as $rol)
-                                            {{ $rol }},
-                                        @endforeach
-                                    </small>
-                                </a>
-                            </li>
-                            @endif
-                            
-                        @endforeach
-                       </ul>
-                           
-                    </div>
+                                @endforeach
+                            </ul>
+                        </div>  
+                    </div>                    
                     {{-- Fin lista de registros --}}
                 </div>
             </div>
@@ -67,8 +66,7 @@
                     filtro(texto,numero[1]);
                 });
             
-                function filtro(texto,numero) {
-                    console.log(texto);    
+                function filtro(texto,numero) {                  
                     var lista = $(".estacion1_"+numero+" > .repuesta1_"+numero+"").hide()
                     .filter(function(){
                         var item = $(this).text();
@@ -109,7 +107,21 @@
                         }
                     });
             </script>
+           
+         
         @endforeach
     
         </div>
     </div>
+    <style>
+        .list-cards {
+            overflow: auto;
+            max-height: 350px;
+            width: auto;
+            }
+            .ista{
+                overflow-y: auto;
+        }
+
+            
+    </style>

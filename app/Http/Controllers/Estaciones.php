@@ -116,7 +116,7 @@ class Estaciones extends Controller
     {
 
         $estaciones=Estacion::all();
-        $usuarios=User::where('estado',"Activo")->get();
+        $usuarios=User::where('estado',"Activo")->orderBy('name', 'asc')->get();
         $data = array('estaciones' => $estaciones,'usuarios'=>$usuarios );
         return view('estaciones.lista',$data);
     }

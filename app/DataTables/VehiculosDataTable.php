@@ -20,6 +20,9 @@ class VehiculosDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
+            ->editColumn('foto', function($modelo){
+                return view('vehiculos.vehiculos.foto',['vehiculos'=>$modelo])->render();
+            })
             ->editColumn('estacion_id',function(Vehiculo $vehiculo){              
                 return $vehiculo->estacion->nombre;
             })
@@ -28,14 +31,19 @@ class VehiculosDataTable extends DataTable
                     $query->whereRaw("nombre like ?", ["%{$keyword}%"]);
                 });
             })
-            ->editColumn('codigo',function(Vehiculo $vehiculo){              
+            ->editColumn('tipoVehiculo_id',function(Vehiculo $vehiculo){              
                 return $vehiculo->tipoVehiculo->codigo.''.$vehiculo->codigo;
+            })
+            ->filterColumn('tipoVehiculo_id', function($query, $keyword) {
+                $query->whereHas('tipoVehiculo', function($query) use ($keyword) {
+                    $query->whereRaw("concat(codigo,'',vehiculo.codigo) like ?", ["%{$keyword}%"]);
+                });
             })         
             
              ->addColumn('action', function($modelo){
                 return view('vehiculos.vehiculos.acciones',['vehiculo'=>$modelo])->render();
             })
-              ->rawColumns(['action']);
+              ->rawColumns(['foto','action']);
     }
 
     /**
@@ -72,7 +80,8 @@ class VehiculosDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id',            
+            'id',
+            'foto',            
             'estacion_id',
             'tipoVehiculo_id',
             'placa',
@@ -89,10 +98,10 @@ class VehiculosDataTable extends DataTable
      protected function getColumnsTable()
     {
         return [
-                     
+            'foto'=>['title'=>'Imagen','data'=>'foto'],         
             'estacion_id'=>['title'=>'Estación','data'=>'estacion_id'],           
             'placa',
-            'codigo'=>['title'=>'Código'],
+            'tipoVehiculo_id'=>['title'=>'Codigo','data'=>'tipoVehiculo_id'],
             'marca',
             'modelo',
             'anio'=>['title'=>'Año'],
