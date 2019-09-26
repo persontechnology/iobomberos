@@ -6,11 +6,7 @@
                 <div class="card ">
                     <div class="card-header bg-dark header-elements-inline">
                         <h5>{{ $est->nombre }}  {{ $est->id }}</h5>
-                        <div class="header-elements">
-                            <div class="list-icons">
-                                <a class="list-icons-item" data-action="collapse"></a>                                                 		
-                            </div>
-                        </div>
+                        
                     </div>
                     {{-- crear la lista para ver registros por estacion --}}
                     <div class="card-body ">

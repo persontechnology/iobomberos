@@ -71,6 +71,9 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::post('/actualizar-personal-en-estacion', 'Estaciones@actualizarPersonalEstacion')->name('actualizarPersonalEstacion');
     Route::get('/lista-estacion', 'Estaciones@cargaListado')->name('listaEstacion');
 
+    Route::get('/cambio-de-vehiculo', 'Estaciones@cambioVehiculo')->name('cambioVehiculo');
+    Route::post('/actualizar-vehiculo-en-estacion', 'Estaciones@actualizarVehiculoEstacion')->name('actualizarVehiculoEstacion');
+    Route::get('/lista-Vehiculo-estacion', 'Estaciones@cargaListadoVehiculo')->name('listaVehiculoEstacion');
 
     // A:Deivid
     // D:gestion de emergencias
