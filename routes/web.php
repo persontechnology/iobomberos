@@ -159,6 +159,9 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::get('/listado-personal-asistencia/{estacion}', 'Asistencias@listadoPersonal')->name('listadoPersonalAsistencia');
         Route::post('/estado-personal-asistencia', 'Asistencias@estadoPersonal')->name('estadoAsistenciaPersonal');
         Route::post('/estado-vehiculo-asistencia', 'Asistencias@estadoVehiculo')->name('estadoAsistenciaVehiculo');
+        Route::post('/observacion-personal-asistencia', 'Asistencias@obsPersonal')->name('obsAsistenciaPersonal');
+        Route::post('/observacion-vehiculo-asistencia', 'Asistencias@obsVehiculo')->name('obsAsistenciaVehiculo');
+        Route::get('/listado-personal-asistencia-exportar-pdf/{asistencia}', 'Asistencias@exportarPdf')->name('exportPdfAsistencia');
         
         
     });
