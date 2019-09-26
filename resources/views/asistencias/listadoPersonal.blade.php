@@ -13,7 +13,6 @@
             <i class="fas fa-search"></i>
             Buscar asistencia por fecha
         </a>
-            
     </div>
 @endsection
 @section('content')

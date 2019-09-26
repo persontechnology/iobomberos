@@ -69,7 +69,7 @@
                             @if ($personal->asistenciaPersonal->estado==true)
                                 SI
                             @else
-                                <strong style="color: red;">NO</strong> <br>
+                                <strong style="color: red;">NO </strong> 
                                 <small>
                                         {{ $personal->asistenciaPersonal->observacion }}
                                 </small>
@@ -111,7 +111,7 @@
                         @if ($vehiculo->asistenciaVehiculo->estado==true)
                             SI
                         @else
-                        <strong style="color: red;">NO</strong> <br>
+                        <strong style="color: red;">NO </strong>
                             <small>
                                 {{ $vehiculo->asistenciaVehiculo->observacion }}
                             </small>
