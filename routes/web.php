@@ -149,8 +149,20 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/medicamentos-actualizar', 'Medicamentos@actualizar')->name('medicamentoActualizar');
         Route::post('/medicamentos-eliminar', 'Medicamentos@eliminar')->name('eliminarMedicamento');
         
+    });
+
+
+
+    Route::namespace('Asistencias')->group(function () {
+        //insumos
+        Route::get('/generar-asistencia', 'Asistencias@index')->name('generarAsistencia');
+        Route::get('/listado-personal-asistencia/{estacion}', 'Asistencias@listadoPersonal')->name('listadoPersonalAsistencia');
+        Route::post('/estado-personal-asistencia', 'Asistencias@estadoPersonal')->name('estadoAsistenciaPersonal');
+        Route::post('/estado-vehiculo-asistencia', 'Asistencias@estadoVehiculo')->name('estadoAsistenciaVehiculo');
+        
         
     });
+    
     
 
 });

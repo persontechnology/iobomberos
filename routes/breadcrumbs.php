@@ -205,3 +205,17 @@ Breadcrumbs::for('editarMedicamento', function ($trail,$medi) {
 });
 
 
+// GENERAR ASISTENCIA
+
+
+Breadcrumbs::for('generarAsistencia', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Generar asistencia', route('generarAsistencia'));
+});
+
+Breadcrumbs::for('listadoPersonalAsistencia', function ($trail,$estacion) {
+    $trail->parent('generarAsistencia');
+    $trail->push('Listado de personal en '.$estacion->nombre, route('listadoPersonalAsistencia',$estacion->id));
+});
+
+

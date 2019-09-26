@@ -101,6 +101,20 @@
 
                     </ul>
                 </li>
+
+                {{--  generar asistencia  --}}
+                @can('Generar asistencia', Model::class)
+                    
+                <li class="nav-item">
+                    <a href="{{ route('generarAsistencia') }}" class="nav-link" id="menuGenerarAsistencia">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>
+                            Generar asistencia
+                        </span>
+                    </a>
+                </li> 
+
+                @endcan
               
                 @role('Administrador')
                 <li class="nav-item-header">
