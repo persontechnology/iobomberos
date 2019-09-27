@@ -12,7 +12,7 @@
                         <div class="card-body ">
                             <div class="input-group mb-3">
                                 <div class="form-group-feedback form-group-feedback-left">
-                                    <input type="text" id="buscar_{{ $est->id }}" class="form-control form-control-lg" placeholder="Buscar Registro">
+                                    <input type="text" id="buscar_{{ $est->id }}" class=" stiloitems form-control form-control-lg" placeholder="Buscar Registro">
                                     <div class="form-control-feedback form-control-feedback-lg">
                                         <i class="icon-search4 text-muted"></i>
                                     </div>
@@ -22,8 +22,8 @@
                                 <ul class="media-list ista  estacion1_{{ $est->id }}" id="estacion{{ $est->id }}">
                                     @foreach ($vehiculos as $vehiculo)                                    
                                         @if ($vehiculo->estacion->id==$est->id)
-                                        <li class= "media repuesta1_{{ $est->id }}" id="{{ $vehiculo->id }}">            
-                                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start bg-secondary">
+                                        <li class= " stiloitems media repuesta1_{{ $est->id }}" id="{{ $vehiculo->id }}">            
+                                            <a href="#" class=" stiloitems1 list-group-item list-group-item-action flex-column align-items-start ">
                                                 
                                                 <div class="d-flex w-100  ">
                                                     @if (Storage::exists($vehiculo->foto))                                            
@@ -106,15 +106,26 @@
         
             </div>
         </div>
-        <style>
-            .list-cards {
-                overflow: auto;
-                max-height: 350px;
-                width: auto;
-                }
-                .ista{
-                    overflow-y: auto;
-            }
-    
-                
-        </style>
+<style>
+    .list-cards {
+        overflow: auto;
+        max-height: 350px;
+        width: auto;
+    }
+    .ista{
+        overflow-y: auto;
+    }
+    .stiloitems{
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 10px;
+        background-color: #F5F5F5;
+            
+    }
+    .stiloitems1:active{
+        -webkit-box-shadow: inset 0 0 6px rgba(237, 23, 12);
+        border-radius: 10px;
+        background-color: #F5F5F5;
+        
+    }
+        
+</style>

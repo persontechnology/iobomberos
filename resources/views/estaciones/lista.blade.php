@@ -12,18 +12,18 @@
                     <div class="card-body ">
                         <div class="input-group mb-3">
                             <div class="form-group-feedback form-group-feedback-left">
-                                <input type="text" id="buscar_{{ $est->id }}" class="form-control form-control-lg" placeholder="Buscar Registro">
+                                <input type="text" id="buscar_{{ $est->id }}" class="form-control form-control-lg stiloitems" placeholder="Buscar Registro">
                                 <div class="form-control-feedback form-control-feedback-lg">
                                     <i class="icon-search4 text-muted"></i>
                                 </div>
                             </div>                              
                         </div>
-                        <div class="list-cards   ">
+                        <div class="list-cards">
                             <ul class="media-list ista  estacion1_{{ $est->id }}" id="estacion{{ $est->id }}">
                                 @foreach ($usuarios as $user)                                    
                                     @if ($user->estacion->id==$est->id)
-                                    <li class= "media repuesta1_{{ $est->id }}" id="{{ $user->id }}">            
-                                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start bg-secondary">
+                                    <li class= "media stiloitems repuesta1_{{ $est->id }}" id="{{ $user->id }}">            
+                                        <a href="#" class=" stiloitems1 list-group-item list-group-item-action flex-column align-items-start ">
                                             
                                             <div class="d-flex w-100  ">
                                                 @if (Storage::exists($user->foto))                                            
@@ -87,8 +87,7 @@
                             .done(function( data ) {
                                 if(data.success){
                                     cargaListadoss();
-                                    notificar("success",data.success);
-                                    
+                                                                       
                                 }
                                 if(data.default){
                                     notificar("default",data.default);   
@@ -114,10 +113,21 @@
             overflow: auto;
             max-height: 350px;
             width: auto;
-            }
-            .ista{
-                overflow-y: auto;
         }
-
+        .ista{
+            overflow-y: auto;
+        }
+        .stiloitems{
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            border-radius: 10px;
+            background-color: #F5F5F5;
+            
+        }
+        .stiloitems1:active{
+            -webkit-box-shadow: inset 0 0 6px rgba(237, 23, 12);
+            border-radius: 10px;
+            background-color: #F5F5F5;
+            
+        }
             
     </style>
