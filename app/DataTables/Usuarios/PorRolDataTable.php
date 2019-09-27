@@ -16,12 +16,28 @@ class PorRolDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-        ->addColumn('roles',function($user){
-            return view('usuario.usuarios.roles',['user'=>$user])->render();
-        })
-        ->addColumn('action', function($user){
-            return view('usuario.usuarios.acciones',['user'=>$user])->render();
-        });
+             ->editColumn('estacion_id',function($user){
+                return $user->estacion->nombre??'';
+            })
+           ->filterColumn('estacion_id', function($query, $keyword) {
+                $query->whereHas('estacion', function($query) use ($keyword) {
+                    $query->whereRaw("nombre like ?", ["%{$keyword}%"]);
+                });
+            })
+            ->addColumn('roles',function($user){
+                return view('usuario.usuarios.roles',['user'=>$user])->render();
+            })
+            
+            ->editColumn('estado',function($user){               
+                 return view('usuario.usuarios.estado',['user'=>$user])->render();                          
+            })
+            ->editColumn('foto',function($user){
+                
+                return view('usuario.usuarios.foto',['user'=>$user])->render();
+            })
+            ->addColumn('action', function($user){
+                return view('usuario.usuarios.acciones',['user'=>$user])->render();
+            })->rawColumns(['estacion','roles','estado','action','foto']);
     }
 
     /**
@@ -53,8 +69,12 @@ class PorRolDataTable extends DataTable
     {
         return [
             'id',
+            'estacion_id',
             'name',
-            'email'
+            'telefono',
+            'foto',
+            'estado',  
+            'email',
         ];
     }
 
@@ -62,9 +82,13 @@ class PorRolDataTable extends DataTable
     protected function getColumnsTable()
     {
         return [
-            'name'=>['title'=>'Usuario'],
+            'foto'=>['exportable'=>false,'printable' => false,'title'],
+            'name'=>['title'=>'Personal Op.'],
             'email',
-            'roles'
+            'telefono'=>['title'=>'Teléfono'],
+            'roles',
+            'estado',
+            'estacion_id'=>['title'=>'Estación'],
         ];
     }
 
@@ -75,6 +99,6 @@ class PorRolDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Usuarios/PorRol_' . date('YmdHis');
+        return 'Usuarios_PorRol_' . date('YmdHis');
     }
 }

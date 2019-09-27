@@ -20,6 +20,7 @@
             </a>
 
             <div class="dropdown-menu dropdown-menu-right">
+                    <a href="{{ route('usuarios') }}" class="dropdown-item"><i class="fas fa-user-lock"></i>Ver todos</a>
                 @foreach ($roles as $rol)
                     <a href="{{ route('usuariosPoRol',$rol->name) }}" class="dropdown-item"><i class="fas fa-user-lock"></i>{{ $rol->name }}</a>
                 @endforeach
