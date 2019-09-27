@@ -1,27 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Asistencia</title>
-
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        
-        table, th, td {
-        border: 1px solid black;
-        }
-        .noBorder {
-            border:none !important;
-        }
-    </style>
-</head>
-<body>
-    <table style="border-collapse: collapse; border: none;">
+<table style="border-collapse: collapse; border: none;">
         <td class="noBorder">
                 <img src="{!! public_path('img/escudo.png') !!}" alt="" width="75px;" style="text-align: left;">
         </td>
@@ -39,7 +16,7 @@
             <img src="{!! public_path('img/ecuador.png') !!}" alt="" width="75px;" style="text-align: right;">
         </td>
     </table>
-    @if (count($personales)>0)
+    @if (count($personales))
         <p>Listado de personal</p>
         <table class="table table-bordered">
             <thead>
@@ -82,7 +59,7 @@
     @else
         <p>No existe personales</p>
     @endif
-    @if (count($vehiculos)>0)
+    @if (count($vehiculos))
     <p>Listado de vehículos</p>
     <table class="table table-bordered">
         <thead>
@@ -127,6 +104,3 @@
             <strong>No existe vehiculos</strong>
         </div>
     @endif
-       
-</body>
-</html>

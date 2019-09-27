@@ -5,13 +5,13 @@
 @section('barraLateral')
 
     <div class="breadcrumb justify-content-center">
-        <a href="{{ route('exportPdfAsistencia',$asistencia->id) }}" target="_blanck" class="breadcrumb-elements-item">
+        <a href="{{ route('exportPdfAsistencia',$asistencia->id) }}" target="_blanck" class="breadcrumb-elements-item" data-toggle="tooltip" data-placement="bottom" title="Exportar asistencia de {{ $estacion->nombre }} a PDF del día de hoy">
             <i class="far fa-file-pdf"></i>
-            Exportar a PDF
+            Exportar PDF
         </a>    
-        <a href="{{ route('usuariosNuevo') }}" class="breadcrumb-elements-item">
+        <a href="{{ route('buscarAsistencia',$estacion->id) }}" class="breadcrumb-elements-item" data-toggle="tooltip" data-placement="bottom" title="Buscar asistencia por fecha de {{ $estacion->nombre }}">
             <i class="fas fa-search"></i>
-            Buscar asistencia por fecha
+            Buscar asistencia
         </a>
     </div>
 @endsection

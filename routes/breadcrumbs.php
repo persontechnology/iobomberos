@@ -220,5 +220,8 @@ Breadcrumbs::for('listadoPersonalAsistencia', function ($trail,$estacion) {
     $trail->parent('generarAsistencia');
     $trail->push('Listado de personal en '.$estacion->nombre, route('listadoPersonalAsistencia',$estacion->id));
 });
-
+Breadcrumbs::for('buscarAsistencia', function ($trail,$estacion) {
+    $trail->parent('listadoPersonalAsistencia',$estacion);
+    $trail->push('Buscar asistencia en '.$estacion->nombre, route('buscarAsistencia',$estacion->id));
+});
 

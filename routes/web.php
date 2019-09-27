@@ -165,8 +165,8 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/observacion-personal-asistencia', 'Asistencias@obsPersonal')->name('obsAsistenciaPersonal');
         Route::post('/observacion-vehiculo-asistencia', 'Asistencias@obsVehiculo')->name('obsAsistenciaVehiculo');
         Route::get('/listado-personal-asistencia-exportar-pdf/{asistencia}', 'Asistencias@exportarPdf')->name('exportPdfAsistencia');
-        
-        
+        Route::get('/buscar-asistencia/{estacion}', 'Asistencias@buscarAsistencia')->name('buscarAsistencia');    
+
     });
     
     
