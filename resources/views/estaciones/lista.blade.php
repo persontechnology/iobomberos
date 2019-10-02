@@ -5,7 +5,7 @@
             <div class="col-md-4 ">
                 <div class="card ">
                     <div class="card-header bg-dark header-elements-inline">
-                        <h5>{{ $est->nombre }}  {{ $est->id }}</h5>
+                        <h5>{{ $est->nombre }} </h5>
                         
                     </div>
                     {{-- crear la lista para ver registros por estacion --}}
