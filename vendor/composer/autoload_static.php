@@ -4641,6 +4641,7 @@ class ComposerStaticInit322560a069f322d6f5d44d09aa75d4aa
         'iobom\\Policies\\AsistenciaPolicy' => __DIR__ . '/../..' . '/app/Policies/AsistenciaPolicy.php',
         'iobom\\Policies\\EmergenciaPolicy' => __DIR__ . '/../..' . '/app/Policies/EmergenciaPolicy.php',
         'iobom\\Policies\\EstacionPolicy' => __DIR__ . '/../..' . '/app/Policies/EstacionPolicy.php',
+        'iobom\\Policies\\FormularioEmercenciaPolicy' => __DIR__ . '/../..' . '/app/Policies/FormularioEmercenciaPolicy.php',
         'iobom\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'iobom\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'iobom\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',

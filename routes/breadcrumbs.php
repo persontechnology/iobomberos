@@ -225,3 +225,8 @@ Breadcrumbs::for('buscarAsistencia', function ($trail,$estacion) {
     $trail->push('Buscar asistencia en '.$estacion->nombre, route('buscarAsistencia',$estacion->id));
 });
 
+// para la gestion de formularios
+Breadcrumbs::for('formularios', function ($trail) {
+    $trail->parent('home');
+    $trail->push('G. Formularios', route('formularios'));
+});

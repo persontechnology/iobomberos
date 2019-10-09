@@ -115,7 +115,22 @@
                 </li> 
 
                 @endcan
-              
+                {{-- generar formulario de emergencia --}}
+                <li class="nav-item nav-item-submenu" id="menuGestionFomularios">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-list"></i>
+                        <span>Gestión de Formularios</span>
+                    </a>
+                    <ul class="nav nav-group-sub" data-submenu-title="Form components">
+                    
+                        <li class="nav-item">
+                            <a href="{{ route('formularios') }}" class="nav-link" id="menuFormularios">Formularios</a>
+                        </li> 
+                        <li class="nav-item">
+                                <a href="{{ route('nuevo-formulario') }}" class="nav-link" id="nuevoFormularios">Nuevo Formulario</a>
+                            </li> 
+                    </ul>
+                </li>
                 @role('Administrador')
                 <li class="nav-item-header">
                     <div class="text-uppercase font-size-xs line-height-xs">SISTEMA</div> 

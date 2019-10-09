@@ -11,6 +11,8 @@
 |
 */
 
+use iobom\Models\FormularioEmergencia;
+
 Route::get('/', function () {
 
     return view('welcome');
@@ -167,6 +169,12 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::get('/listado-personal-asistencia-exportar-pdf/{asistencia}', 'Asistencias@exportarPdf')->name('exportPdfAsistencia');
         Route::get('/buscar-asistencia/{estacion}', 'Asistencias@buscarAsistencia')->name('buscarAsistencia');    
 
+    });
+    Route::namespace('Formularios')->group(function () {
+        Route::get('formularios','FormularioEmergencias@index' )->name('formularios');
+        Route::get('/nuevo-formulario','FormularioEmergencias@nuevo' )->name('nuevo-formulario');
+        Route::get('/proceso-formulario/{id}','FormularioEmergencias@proceso' )->name('proceso-formulario');
+        
     });
     
     

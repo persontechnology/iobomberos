@@ -34,11 +34,16 @@ class Asistencias extends Controller
 
         // 2019-09-25
         $asistencia=Asistencia::where(['estacion_id'=>$estacion->id,'fecha'=>Carbon::now()->toDateString()])->first();
-        
+        //Fabian Lopez
+        //sumar un dia a la fecha actual
+        $diaHoy=Carbon::now();
+        $sumarUnDia=$diaHoy->addDays(1);       
+       
         if (!$asistencia) {
             $asistencia=new Asistencia();
             $asistencia->estacion_id=$estacion->id;
             $asistencia->fecha=Carbon::now()->toDateString();
+            $asistencia->fechaFin=$diaHoy->setDateTime($sumarUnDia->year,$sumarUnDia->month,$sumarUnDia->day,7,30,0,0)->toDateTimeString();
             $asistencia->user_id=Auth::id();
             $asistencia->save();
         }

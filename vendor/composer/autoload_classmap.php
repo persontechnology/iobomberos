@@ -4128,6 +4128,7 @@ return array(
     'iobom\\Policies\\AsistenciaPolicy' => $baseDir . '/app/Policies/AsistenciaPolicy.php',
     'iobom\\Policies\\EmergenciaPolicy' => $baseDir . '/app/Policies/EmergenciaPolicy.php',
     'iobom\\Policies\\EstacionPolicy' => $baseDir . '/app/Policies/EstacionPolicy.php',
+    'iobom\\Policies\\FormularioEmercenciaPolicy' => $baseDir . '/app/Policies/FormularioEmercenciaPolicy.php',
     'iobom\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'iobom\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',
     'iobom\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',

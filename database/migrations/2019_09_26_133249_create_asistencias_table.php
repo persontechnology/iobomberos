@@ -16,7 +16,8 @@ class CreateAsistenciasTable extends Migration
         Schema::create('asistencias', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->date('fecha');
+            $table->dateTime('fecha');
+            $table->dateTime('fechaFin');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('estacion_id');
