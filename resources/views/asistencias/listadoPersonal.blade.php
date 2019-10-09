@@ -57,7 +57,14 @@
                                                 </td>
                                                 <td>
                                                     {{ $personal->name }}
-                                                    <small class="badge badge-light float-right">Admin</small>
+                                                    @if (count($personal->getRoleNames())>0)
+                                                    <small class="badge badge-light float-right">
+                                                        @foreach ($personal->getRoleNames() as $rol)
+                                                        {{ $rol }},
+                                                        @endforeach
+                                                    </small>    
+                                                    @endif
+                                                    
                                                 </td>
                                                 <td>
                                                     <input type="checkbox" data-url="{{ route('estadoAsistenciaPersonal',$personal->asistenciaPersonal->id) }}" data-id="u_{{ $personal->asistenciaPersonal->id }}" value="{{ $personal->asistenciaPersonal->id }}" class="toggle-estado" {{ $personal->asistenciaPersonal->estado==true?'checked':'' }} data-toggle="toggle" data-on="SI" data-off="NO" data-onstyle="success" data-offstyle="warning" data-size="xs">  

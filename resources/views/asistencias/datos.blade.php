@@ -37,7 +37,13 @@
                       
                         <td>
                             {{ $personal->name }}
-                            <small class="badge badge-light float-right">Admin</small>
+                            @if (count($personal->getRoleNames())>0)
+                            <small class="badge badge-light float-right iz">
+                                @foreach ($personal->getRoleNames() as $rol)
+                                {{ $rol }},
+                                @endforeach
+                            </small>    
+                            @endif
                         </td>
                         <td>
                             
