@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
-use iobom\User;
 
 trait ResetsPasswords
 {
@@ -39,18 +38,6 @@ trait ResetsPasswords
     public function reset(Request $request)
     {
         $request->validate($this->rules(), $this->validationErrorMessages());
-
-        // extras
-        $user = User::where('email', $request->email)->first();
-        if ($user) {
-           if($user->estado=='Dado de baja'){
-            return redirect()->back()
-            ->withInput($request->only('email'))
-            ->withErrors([
-                'email' => 'Está cuenta se encuentra Dado de baja'
-            ]);
-           }
-        }
 
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the

@@ -493,6 +493,10 @@ class QueryDataTable extends DataTableAbstract
      */
     protected function prepareKeyword($keyword)
     {
+        if ($this->config->isStartsWithSearch()) {
+            return "$keyword%";
+        }
+
         if ($this->config->isCaseInsensitive()) {
             $keyword = Str::lower($keyword);
         }
@@ -669,10 +673,14 @@ class QueryDataTable extends DataTableAbstract
      */
     protected function applyOrderColumn($column, $orderable)
     {
-        $sql      = $this->columnDef['order'][$column]['sql'];
-        $sql      = str_replace('$1', $orderable['direction'], $sql);
-        $bindings = $this->columnDef['order'][$column]['bindings'];
-        $this->query->orderByRaw($sql, $bindings);
+        $sql = $this->columnDef['order'][$column]['sql'];
+        if (is_callable($sql)) {
+            call_user_func($sql, $this->query, $orderable['direction']);
+        } else {
+            $sql      = str_replace('$1', $orderable['direction'], $sql);
+            $bindings = $this->columnDef['order'][$column]['bindings'];
+            $this->query->orderByRaw($sql, $bindings);
+        }
     }
 
     /**
@@ -686,7 +694,11 @@ class QueryDataTable extends DataTableAbstract
     {
         $sql = $this->config->get('datatables.nulls_last_sql', '%s %s NULLS LAST');
 
-        return sprintf($sql, $column, $direction);
+        return str_replace(
+            [':column', ':direction'],
+            [$column, $direction],
+            sprintf($sql, $column, $direction)
+        );
     }
 
     /**

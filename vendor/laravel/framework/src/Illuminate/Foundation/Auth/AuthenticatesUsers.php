@@ -119,17 +119,7 @@ trait AuthenticatesUsers
      */
     protected function authenticated(Request $request, $user)
     {
-        if ($user->estado == 'Dado de baja') {
-            $this->logout($request);
-
-            return redirect()->back()
-                ->withInput($request->only($this->username(), 'remember'))
-                ->withErrors([
-                    $this->username() => 'Está cuenta se encuentra Dado de baja'
-                ]);
-        } else {
-            return redirect()->intended($this->redirectPath());
-        }
+        //
     }
 
     /**

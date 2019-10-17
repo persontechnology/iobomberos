@@ -2,20 +2,20 @@
 
 namespace Yajra\DataTables\Html\Editor;
 
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Fluent;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Support\Fluent;
+use Yajra\DataTables\Utilities\Helper;
 use Yajra\DataTables\Html\Editor\Fields\Field;
 
 class Editor extends Fluent
 {
     use HasEvents;
-
-    const DISPLAY_LIGHTBOX = 'lightbox';
-    const DISPLAY_ENVELOPE = 'envelope';
-    const DISPLAY_BOOTSTRAP = 'bootstrap';
+    const DISPLAY_LIGHTBOX   = 'lightbox';
+    const DISPLAY_ENVELOPE   = 'envelope';
+    const DISPLAY_BOOTSTRAP  = 'bootstrap';
     const DISPLAY_FOUNDATION = 'foundation';
-    const DISPLAY_JQUERYUI = 'jqueryui';
+    const DISPLAY_JQUERYUI   = 'jqueryui';
 
     /**
      * Editor constructor.
@@ -137,6 +137,63 @@ class Editor extends Fluent
     }
 
     /**
+     * Set Editor's formOptions.
+     *
+     * @param mixed $formOptions
+     * @return $this
+     * @see https://editor.datatables.net/reference/option/formOptions
+     * @see https://editor.datatables.net/reference/type/form-options
+     */
+    public function formOptions(array $formOptions)
+    {
+        $this->attributes['formOptions'] = $formOptions;
+
+        return $this;
+    }
+
+    /**
+     * Set Editor's bubble formOptions.
+     *
+     * @param mixed $formOptions
+     * @return $this
+     * @see https://editor.datatables.net/reference/option/formOptions.bubble
+     */
+    public function formOptionsBubble(array $formOptions)
+    {
+        $this->attributes['formOptions']['bubble'] = Helper::castToArray($formOptions);;
+
+        return $this;
+    }
+
+    /**
+     * Set Editor's inline formOptions.
+     *
+     * @param mixed $formOptions
+     * @return $this
+     * @see https://editor.datatables.net/reference/option/formOptions.inline
+     */
+    public function formOptionsInline($formOptions)
+    {
+        $this->attributes['formOptions']['inline'] = Helper::castToArray($formOptions);
+
+        return $this;
+    }
+
+    /**
+     * Set Editor's main formOptions.
+     *
+     * @param mixed $formOptions
+     * @return $this
+     * @see https://editor.datatables.net/reference/option/formOptions.main
+     */
+    public function formOptionsMain($formOptions)
+    {
+        $this->attributes['formOptions']['main'] = Helper::castToArray($formOptions);
+
+        return $this;
+    }
+
+    /**
      * Set Editor's language.
      *
      * @param array $language
@@ -145,7 +202,7 @@ class Editor extends Fluent
      */
     public function language(array $language)
     {
-        $this->attributes['language'] = $language;
+        $this->attributes['i18n'] = $language;
 
         return $this;
     }
@@ -173,9 +230,11 @@ class Editor extends Fluent
     {
         $array = parent::toArray();
 
-        foreach ($array['fields'] as &$field) {
+        unset($array['events']);
+
+        foreach (Arr::get($array, 'fields', []) as $key => &$field) {
             if ($field instanceof Field) {
-                $field = $field->toArray();
+                Arr::set($array['fields'], $key, $field->toArray());
             }
         }
 
@@ -185,31 +244,33 @@ class Editor extends Fluent
     /**
      * Convert the fluent instance to JSON.
      *
-     * @param  int  $options
+     * @param int $options
      * @return string
      */
     public function toJson($options = 0)
     {
         $parameters = $this->jsonSerialize();
 
-        $values = [];
+        unset($parameters['events']);
+
+        $values       = [];
         $replacements = [];
 
-        foreach (array_dot($parameters) as $key => $value) {
+        foreach (Arr::dot($parameters) as $key => $value) {
             if ($key === 'table') {
-                array_set($parameters, $key, '#' . $value);
+                Arr::set($parameters, $key, '#' . $value);
             }
 
             if ($this->isCallbackFunction($value, $key)) {
                 $values[] = trim($value);
-                array_set($parameters, $key, '%' . $key . '%');
+                Arr::set($parameters, $key, '%' . $key . '%');
                 $replacements[] = '"%' . $key . '%"';
             }
         }
 
         $new = [];
         foreach ($parameters as $key => $value) {
-            array_set($new, $key, $value);
+            Arr::set($new, $key, $value);
         }
 
         $json = json_encode($new, $options);
@@ -228,7 +289,7 @@ class Editor extends Fluent
      */
     protected function isCallbackFunction($value, $key)
     {
-        if (empty($value)) {
+        if (empty($value) || is_object($value) || is_array($value)) {
             return false;
         }
 

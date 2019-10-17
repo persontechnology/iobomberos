@@ -2,22 +2,24 @@
 
 namespace DaveJamesMiller\Breadcrumbs;
 
+// Not available until Laravel 5.8
+//use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
 /**
  * The Laravel service provider, which registers, configures and bootstraps the package.
  */
-class BreadcrumbsServiceProvider extends ServiceProvider
+class BreadcrumbsServiceProvider extends ServiceProvider //implements DeferrableProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = true;
+    public function isDeferred()
+    {
+        // Remove this and uncomment DeferrableProvider after dropping support
+        // for Laravel 5.7 and below
+        return true;
+    }
 
     /**
-     * Get the classes provided for deferred loading.
+     * Get the services provided for deferred loading.
      *
      * @return array
      */
@@ -38,7 +40,7 @@ class BreadcrumbsServiceProvider extends ServiceProvider
         $this->mergeConfigFrom($configFile, 'breadcrumbs');
 
         // Publish the config/breadcrumbs.php file
-        $this->publishes([$configFile => config_path('breadcrumbs.php')], 'config');
+        $this->publishes([$configFile => config_path('breadcrumbs.php')], 'breadcrumbs-config');
 
         // Register Manager class singleton with the app container
         $this->app->singleton(BreadcrumbsManager::class, config('breadcrumbs.manager-class'));

@@ -4,7 +4,6 @@ namespace Illuminate\Foundation\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
-use iobom\User;
 
 trait SendsPasswordResetEmails
 {
@@ -27,19 +26,6 @@ trait SendsPasswordResetEmails
     public function sendResetLinkEmail(Request $request)
     {
         $this->validateEmail($request);
-
-        // extras
-
-        $user = User::where('email', $request->email)->first();
-        if ($user) {
-        if($user->estado=='Dado de baja'){
-            return redirect()->back()
-            ->withInput($request->only('email'))
-            ->withErrors([
-                'email' => 'Está cuenta se encuentra Dado de baja'
-            ]);
-           }
-        }
 
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
