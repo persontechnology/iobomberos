@@ -9,6 +9,7 @@ use iobom\Models\Asistencia\Asistencia;
 use iobom\Models\Emergencia\Emergencia;
 use iobom\Models\Estacion;
 use iobom\Models\FormularioEmergencia;
+use iobom\Models\Parroquia;
 use iobom\Models\PuntoReferencia;
 
 class FormularioEmergencias extends Controller
@@ -23,8 +24,13 @@ class FormularioEmergencias extends Controller
     {
         $emergencias=Emergencia::get();
         $puntoReferencias=PuntoReferencia::get();
+        $parroquias=Parroquia::get();
         $estacines=Estacion::get();
-        $data = array('emergencias' => $emergencias,'puntoReferencias'=>$puntoReferencias,'estacines'=>$estacines );
+        $data = array('emergencias' => $emergencias,
+                    'puntoReferencias'=>$puntoReferencias,
+                    'estaciones'=>$estacines, 
+                    'parroquias'=>$parroquias,        
+                );
         return view('formularios.formulariosEmergencias.nuevo',$data);
         
     }

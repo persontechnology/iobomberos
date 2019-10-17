@@ -17,7 +17,7 @@
 			<div class="form-row">
 				<div class="form-group col-md-6">
 					<label for="parroquias">Parroquias</label>
-					<select id="parroquias" class="form-control" onchange="obtenerBarrio(this);">
+					<select id="parroquias" class="form-control " onchange="obtenerBarrio(this);">
 						<option value=""> Selecione una parroquia</option>
 						@foreach ($parroquias as $parroquia)
 							<option value="{{ $parroquia->id }}">{{ $parroquia->nombre }}</option>
@@ -26,14 +26,14 @@
 				</div>
 				<div class="form-group col-md-6">
 					<label for="barrio">Barrios</label>
-					<select id="barrio" name="barrio" class="form-control" required>
+					<select id="barrio" name="barrio" class="form-control " required>
 					</select>
 				</div>	
 			</div>
 			<div class="form-row">
 				<div class="form-group col-md-6">
 					<label for="name">{{ __('Latitud') }}</label>	           
-					<input id="latitud" type="text" class="form-control @error('latitud') is-invalid @enderror" name="latitud" value="{{ old('latitud') }}" required autocomplete="latitud" autofocus placeholder="Latitud" readonly>
+					<input id="latitud" type="text" class="form-control @error('latitud') is-invalid @enderror" name="latitud" value="{{ old('latitud') }}" required autocomplete="latitud" autofocus placeholder="Latitud" >
 
 					@error('latitud')
 						<span class="invalid-feedback" role="alert">
@@ -43,7 +43,7 @@
 				</div>
 				<div class="form-group col-md-6">
 					<label for="name" >{{ __('Longitud') }}</label>	           
-					<input id="longitud" type="text" class="form-control @error('longitud') is-invalid @enderror" name="longitud" value="{{ old('longitud') }}" required autocomplete="longitud" readonly autofocus placeholder="Longitud">
+					<input id="longitud" type="text" class="form-control @error('longitud') is-invalid @enderror" name="longitud" value="{{ old('longitud') }}" required autocomplete="longitud"  autofocus placeholder="Longitud">
 					@error('longitud')
 						<span class="invalid-feedback" role="alert">
 							<strong>{{ $message }}</strong>
@@ -73,8 +73,11 @@
 
 
 @push('linksCabeza')
+<link rel="stylesheet" href="{{ asset('admin/plus/select/css/bootstrap-select.min.css') }}">
+<script src="{{ asset('admin/plus/select/js/bootstrap-select.min.js') }}"></script>
+<script src="{{ asset('admin/plus/select/js/lg/defaults-es_ES.min.js') }}"></script>
  <script src="{{ asset('admin/plus/validate/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('admin/plus/validate/messages_es.min.js') }}"></script>
+<script src="{{ asset('admin/plus/validate/messages_es.min.js') }}"></script>
 @endpush
 
 @prepend('linksPie')
@@ -83,7 +86,7 @@
    	$('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
     $('#menuPuntosReferencia').addClass('active');
 	$( "#puntosForm" ).validate();
-
+	$('selectpicker').selectpicker();
 	function obtenerBarrio(arg)
 	{
 		$('#barrio').html('');

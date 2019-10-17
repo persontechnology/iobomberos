@@ -14,4 +14,9 @@ class Barrio extends Model
     {
         return $this->belongsTo(Parroquia::class, 'parroquia_id');
     }
+    
+    public function puntosRefencias()
+    {
+        return $this->hasMany(PuntoReferencia::class,'barrio_id');
+    }
 }

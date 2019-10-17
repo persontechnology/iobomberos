@@ -103,4 +103,13 @@ class PuntosReferencias extends Controller
         $parroquia=Parroquia::findOrFail($request->parroquia);
         return response()->json($parroquia->barrios);
     }
+    public function buscarPuntoReferenciaId(Request $request)
+    {
+        $puntoReferencia=PuntoReferencia::findOrFail($request->id);
+        if($puntoReferencia){
+            return response()->json($puntoReferencia);
+        }else{
+            return response()->json(['data'=>'error']);
+        }
+    }
 }

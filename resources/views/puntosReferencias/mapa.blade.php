@@ -58,10 +58,10 @@
 				var markerpuntos_{{$punto->id}} = new google.maps.Marker({
 			    map: map,
 			     position:{lat:latitu , lng:longi } ,
-			    title:" {{$punto->referenica}}",
+			    title:" {{$punto->barrio->nombre .' '. $punto->referenica}}",
 			    icon:imagePuntos,
 			 	 });
-				var nombre="{{$punto->referencia}}";
+				var nombre="{{$punto->barrio->nombre .' '.$punto->referencia}}";
 				var geocoder = new google.maps.Geocoder;
 			     var infowindow1 = new google.maps.InfoWindow;
 			     infowindow1.setContent(nombre);
