@@ -6,7 +6,7 @@
             </a>
         </li>
 
-        <li class="nav-item dropdown">
+        {{-- <li class="nav-item dropdown">
             <a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
                 <i class="icon-git-compare"></i>
                 <span class="d-md-none ml-2">Actividades</span>
@@ -42,10 +42,11 @@
                     </div>
                 </div>
             </div>
-        </li>
+        </li> --}}
+
     </ul>
     <ul class="navbar-nav ml-auto">
-        <li class="nav-item dropdown">
+        {{-- <li class="nav-item dropdown">
             <a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
                 <i class="icon-people"></i>
                 <span class="d-md-none ml-2">Usuarios</span>
@@ -121,21 +122,25 @@
                     <a href="#" class="bg-light text-grey w-100 py-2" data-popup="tooltip" title="Load more"><i class="icon-menu7 d-block top-0"></i></a>
                 </div>
             </div>
-        </li>
+        </li> --}}
 
         <li class="nav-item dropdown dropdown-user">
             <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-                <img src="{{ asset('admin/img/user.jpg') }}" class="rounded-circle mr-2" height="34" alt="">
+                
+                @if (Storage::exists(Auth::user()->foto))
+                    
+                    <img src="{{ Storage::url(Auth::user()->foto) }}" alt="" class="rounded-circle mr-2" width="34px"  height="34px">
+                    
+                @else
+                    <img src="{{ asset('img/user.png') }}" class="rounded-circle mr-2 bg-light" width="34px"  height="34px" alt="">
+                @endif	
+
                 <span>{{ Auth::user()->email }}</span>
             </a>
 
             <div class="dropdown-menu dropdown-menu-right">
-                <a href="#" class="dropdown-item"><i class="icon-user-plus"></i> Mi perfil</a>
-                <a href="#" class="dropdown-item"><i class="icon-coins"></i> Mi balance</a>
-                <a href="#" class="dropdown-item"><i class="icon-comment-discussion"></i> Mensajes <span class="badge badge-pill bg-blue ml-auto">58</span></a>
+                <a href="{{ route('miPerfil') }}" class="dropdown-item"><i class="icon-user-plus"></i> Mi perfil</a>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item"><i class="icon-cog5"></i> Configuración de la cuenta</a>
-                
                 <button href="{{ route('logout') }}" class="dropdown-item" onclick="salirSistema(this);">
                     <i class="icon-switch2"></i> Salir del sistema
                 </button>

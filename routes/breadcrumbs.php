@@ -25,6 +25,13 @@ Breadcrumbs::for('home', function ($trail) {
     $trail->push('Administración', route('home'));
 });
 
+// Mi perfil
+Breadcrumbs::for('miPerfil', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Mi perfil', route('miPerfil'));
+});
+
+
 //A:Deivid
 //D:Breadcrums de roles y permisos
 Breadcrumbs::for('roles', function ($trail) {
