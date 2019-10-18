@@ -144,12 +144,7 @@ class Asistencias extends Controller
     public function exportarPdf($idAsistencia)
     {
         $asistencia=Asistencia::findOrFail($idAsistencia);
-        
-        $data = array(
-            // 'personales'=>$asistencia->asistenciaPersonal,
-            // 'vehiculos'=>$asistencia->asistenciaVehiculo,
-            'asistencia'=>$asistencia 
-        );
+        $data = array('asistencia'=>$asistencia);
         $pdf = PDF::loadView('asistencias.exportarPdf',$data);
         return $pdf->inline('asistencia_'.$asistencia->fecha.'.pdf');
     }
@@ -158,6 +153,7 @@ class Asistencias extends Controller
     public function buscarAsistencia(Request $request, $idEstacion)
     {
         $asistencia=Asistencia::where(['fecha'=>$request->fecha,'estacion_id'=>$idEstacion])->first();    
+       
         $fecha=$request->fecha;
         $estacion=Estacion::findOrFail($idEstacion);
         $data = array('asistencia' =>$asistencia,'estacion'=>$estacion,'fecha'=>$fecha );

@@ -157,6 +157,10 @@
             @endif
         </div>
     </div>
+@else
+<div class="alert alert-warning" role="alert">
+    <strong>No existe asistencia en fecha: {{ $fecha }}</strong>
+</div>
 @endif
 
    
