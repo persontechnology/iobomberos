@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('breadcrumbs', Breadcrumbs::render('crearAsistencia',$estacion))
 @section('barraLateral')
 
 @if ($asistencia)
@@ -28,6 +28,9 @@
         <h4>
             Fecha de asistencia: <strong>{{ $asistencia->fecha }}</strong>, Fecha finalización: <strong>{{ $asistencia->fechaFin }}</strong>
         </h4>
+        <p>
+            Creado por: <strong>{{ $asistencia->user->name }}</strong> a las , <strong>{{ $asistencia->created_at }}</strong>
+        </p>
         @endif
         <small id="mensaje"></small>
     </div>

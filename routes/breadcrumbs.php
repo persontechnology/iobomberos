@@ -223,12 +223,12 @@ Breadcrumbs::for('generarAsistencia', function ($trail) {
     $trail->push('Generar asistencia', route('generarAsistencia'));
 });
 
-Breadcrumbs::for('listadoPersonalAsistencia', function ($trail,$estacion) {
+Breadcrumbs::for('crearAsistencia', function ($trail,$estacion) {
     $trail->parent('generarAsistencia');
-    $trail->push('Listado de personal en '.$estacion->nombre, route('listadoPersonalAsistencia',$estacion->id));
+    $trail->push('Listado de personal en '.$estacion->nombre, route('crearAsistencia',$estacion->id));
 });
 Breadcrumbs::for('buscarAsistencia', function ($trail,$estacion) {
-    $trail->parent('listadoPersonalAsistencia',$estacion);
+    $trail->parent('crearAsistencia',$estacion);
     $trail->push('Buscar asistencia en '.$estacion->nombre, route('buscarAsistencia',$estacion->id));
 });
 
