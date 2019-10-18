@@ -31,4 +31,6 @@ class AsistenciaPolicy
                 return true;
         }
     }
+
+    
 }

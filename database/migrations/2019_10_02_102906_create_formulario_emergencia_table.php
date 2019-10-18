@@ -17,11 +17,12 @@ class CreateFormularioEmergenciaTable extends Migration
             $table->bigIncrements('id');
             $table->integer('numero')->unique();
             $table->dateTime('fecha');
-            $table->time('horaSalda');
+            $table->time('horaSalida');
             $table->time('horaEntrada')->nullable();
             $table->string('institucion');
             $table->enum('formaAviso', ['Teléfonico', 'Personal']);
             $table->enum('estado', ['Asignado','Proceso', 'Finalizado']);
+            $table->enum('frecuencia', ['Lunes-Viernes','Fin de semana', 'Feriado']);
             $table->unsignedBigInteger('puntoReferencia_id');
             $table->foreign('puntoReferencia_id')->references('id')->on('puntoReferencia');            
             $table->unsignedBigInteger('encardadoFicha_id')->nullable();

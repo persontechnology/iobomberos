@@ -27,19 +27,33 @@ class Asistencias extends Controller
         return view('asistencias.index',$data);
     }
 
+    public function crearAsistencia($idEstacion)
+    {
+        $estacion=Estacion::findOrFail($idEstacion);
+        
+        $asistencia=$estacion->asistenciasHoy()->first();
+
+        if ($asistencia) {
+            $asistencia=$this->listadoPersonal($estacion->id);
+        }
+
+        $data = array('estacion' => $estacion,'asistencia'=>$asistencia );
+        return view('asistencias.generar',$data);
+    }
+
+    public function crearNuevo(Request $request)
+    {
+        // aqui crear nueva asistenacia
+    }
     public function listadoPersonal($Idestacion)
     {
         $estacion=Estacion::findOrFail($Idestacion);
         $this->authorize('generarAsistencia', $estacion);
-
-        // 2019-09-25
-        $asistencia=Asistencia::where(['estacion_id'=>$estacion->id,'fecha'=>Carbon::now()->toDateString()])->first();
-        //Fabian Lopez
-        //sumar un dia a la fecha actual
+        $asistencia=$estacion->asistenciasHoy()->first();
         $diaHoy=Carbon::now();
-        $sumarUnDia=$diaHoy->addDays(1);       
-       
-        if (!$asistencia) {
+        $sumarUnDia=$diaHoy->addDays(1);
+
+        if(!$asistencia){
             $asistencia=new Asistencia();
             $asistencia->estacion_id=$estacion->id;
             $asistencia->fecha=Carbon::now()->toDateString();
@@ -47,12 +61,20 @@ class Asistencias extends Controller
             $asistencia->user_id=Auth::id();
             $asistencia->save();
         }
-        
+
         $asistencia->asistenciaPersonal()->sync($estacion->personales->pluck('id'));
         $asistencia->asistenciaVehiculo()->sync($estacion->vehiculos->pluck('id'));
 
-        $data = array('estacion' =>$estacion ,'personales'=>$asistencia->asistenciaPersonal,'vehiculos'=>$asistencia->asistenciaVehiculo,'asistencia'=>$asistencia );
-        return view('asistencias.listadoPersonal',$data);
+        return $asistencia;
+
+        // $data = array(
+        //     'estacion' =>$estacion ,
+        //     'personales'=>$asistencia->asistenciaPersonal,
+        //     'vehiculos'=>$asistencia->asistenciaVehiculo,
+        //     'asistencia'=>$asistencia 
+        // );
+
+        // return view('asistencias.listadoPersonal',$data);
     }
 
     public function estadoPersonal(Request $request)

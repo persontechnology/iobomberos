@@ -12,7 +12,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-img-actions">
-                            <a href="{{ route('listadoPersonalAsistencia',$est->id) }}" data-popup="lightbox">
+                            <a href="{{ route('crearAsistencia',$est->id) }}" data-popup="lightbox">
                                 
 
                                 @if (Storage::exists($est->foto))

@@ -126,6 +126,7 @@ class Usuarios extends Controller
         $user->syncRoles($request->roles);
         $user->actualizadoPor=Auth::user()->id;
         $user->save();
+        $request->session()->flash('success','Roles actualizados');
         return redirect()->route('editarRolUsuario',$user->id);
     }
 

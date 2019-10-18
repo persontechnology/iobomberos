@@ -17,6 +17,15 @@
 @endsection
 @section('content')
 
+@if($asistencia->fecha<=$asistencia->fechaFin)
+<div class="alert alert-info alert-styled-left alert-dismissible">
+    
+    <span class="font-weight-semibold">Regitro de asistencia creado {{ $asistencia->created_at }} {{ $asistencia->created_at->diffForHumans() }}
+        culmina el {{ $asistencia->fechaFin }}    
+    </span> 
+</div>
+@endif
+
 <div class="container-fluid">
     <small id="mensaje" class=""></small>
     <div class="row">
@@ -28,6 +37,7 @@
                         Listado de personal
                     </div>
                     <div class="card-body">
+                        <div class="list-cards">  
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
@@ -75,6 +85,7 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
                     </div>
                 </div>
             @else
@@ -90,7 +101,7 @@
                         Listado de vehículos
                     </div>
                     <div class="card-body">
-                        
+                    <div class="list-cards">  
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
@@ -133,6 +144,8 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+
                     </div>
                 </div>
             @else
@@ -239,6 +252,28 @@
         });
         
     </script>
-    
+    <style>
+            .list-cards {
+                overflow: auto;
+                max-height: 450px;
+                width: auto;
+            }
+            .ista{
+                overflow-y: auto;
+            }
+            .stiloitems{
+                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+                border-radius: 10px;
+                background-color: #F5F5F5;
+                
+            }
+            .stiloitems1:active{
+                -webkit-box-shadow: inset 0 0 6px rgba(237, 23, 12);
+                border-radius: 10px;
+                background-color: #F5F5F5;
+                
+            }
+                
+        </style>
 @endprepend
 @endsection

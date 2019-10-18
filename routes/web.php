@@ -165,7 +165,8 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::namespace('Asistencias')->group(function () {
         //insumos
         Route::get('/generar-asistencia', 'Asistencias@index')->name('generarAsistencia');
-        Route::get('/listado-personal-asistencia/{estacion}', 'Asistencias@listadoPersonal')->name('listadoPersonalAsistencia');
+        Route::get('/crear-asistencia/{estacion}', 'Asistencias@crearAsistencia')->name('crearAsistencia');
+        
         Route::post('/estado-personal-asistencia', 'Asistencias@estadoPersonal')->name('estadoAsistenciaPersonal');
         Route::post('/estado-vehiculo-asistencia', 'Asistencias@estadoVehiculo')->name('estadoAsistenciaVehiculo');
         Route::post('/observacion-personal-asistencia', 'Asistencias@obsPersonal')->name('obsAsistenciaPersonal');
@@ -178,6 +179,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::get('formularios','FormularioEmergencias@index' )->name('formularios');
         Route::get('/nuevo-formulario','FormularioEmergencias@nuevo' )->name('nuevo-formulario');
         Route::get('/proceso-formulario/{id}','FormularioEmergencias@proceso' )->name('proceso-formulario');
+        Route::post('/formulario-guardar', 'FormularioEmergencias@guardarFormulario')->name('guardar-formulario');
         
     });
     

@@ -127,7 +127,7 @@
                             <a href="{{ route('formularios') }}" class="nav-link" id="menuFormularios">Formularios</a>
                         </li> 
                         <li class="nav-item">
-                                <a href="{{ route('nuevo-formulario') }}" class="nav-link" id="nuevoFormularios">Nuevo Formulario</a>
+                                <a href="{{ route('nuevo-formulario') }}" class="nav-link" id="menuNuevoFormularios">Nuevo Formulario</a>
                             </li> 
                     </ul>
                 </li>

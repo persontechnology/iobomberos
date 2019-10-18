@@ -9,7 +9,7 @@
 @section('content')
 <div class="card">
        <div class="card-body">
-        <form method="POST" action="#" id="formNuevoUsuario" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('guardar-formulario') }}" id="formNuevoUsuario" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-sm-6">
@@ -18,7 +18,7 @@
 
                         <div class="col-md-9">
                             @if($emergencias)
-                                <select class="form-control @error('emergencia') is-invalid @enderror" name="emergencia" id="emergencia" >
+                                <select class="form-control @error('emergencia') is-invalid @enderror" required name="emergencia" id="emergencia" >
                                     @foreach($emergencias as $esta)
                                     <option value="{{ $esta->id }}" {{ (old("emergencia") == $esta->id ? "selected":"") }} >{{$esta->nombre}}</option>
                                     @endforeach
@@ -103,8 +103,8 @@
             </div>
             {{-- ingreso del mapa con su respectiva seleción de barrio --}}            
             <div class="form-row">
-                <label class=" col-form-label text-md-right" for="formaAviso">Punto de Referencia<i class="text-danger">*</i></label>
-                    <div class="col-md-9"> 
+                <label class=" col-form-label text-md-right" for="formaAviso">Seleccione el punto de Referencia<i class="text-danger">*</i></label>
+                    <div class="col-md-12"> 
                     <select id="puntoRe" class="form-control selectpicker  @error('puntoReferencia') is-invalid @enderror" data-live-search="true" name="puntoReferencia" required>
                         <option value=" ">Selecione un punto de referencia</option>
                         @foreach ($parroquias as $parroquia)
@@ -118,11 +118,14 @@
                         @endforeach
                     </select>
                 </div>                        	
-            </div>               
+            </div> 
+              
             <div id="map">
 
             </div>       
-            
+            <div class="card-footer">
+                    <button type="submit" class="btn btn-dark">Generar Ficha</button>
+               </div>
         </form>
         
     </div>
@@ -138,7 +141,7 @@
 @prepend('linksPie')
 <script type="text/javascript">
     $('#menuGestionFomularios').addClass('nav-item-expanded nav-item-open');
-     $('#menuFormularios').addClass('active');
+     $('#menuNuevoFormularios').addClass('active');
      $('selectpicker').selectpicker();
 </script>
 
