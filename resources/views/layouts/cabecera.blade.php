@@ -45,6 +45,13 @@
         </li> --}}
 
     </ul>
+    @auth
+        <span class="badge bg-dark ml-md-3 mr-md-auto">
+            Estación: {{ Auth::user()->estacion->nombre }}
+        </span>    
+    @endauth
+    
+
     <ul class="navbar-nav ml-auto">
         {{-- <li class="nav-item dropdown">
             <a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
