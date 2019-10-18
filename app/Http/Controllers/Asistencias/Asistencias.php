@@ -41,9 +41,12 @@ class Asistencias extends Controller
         return view('asistencias.generar',$data);
     }
 
-    public function crearNuevo(Request $request)
+    public function crearNuevaAsistencia(Request $request)
     {
-        // aqui crear nueva asistenacia
+        $estacion=Estacion::findOrFail($request->estacion);
+        $this->authorize('generarAsistencia', $estacion);
+        $asistencia=$this->listadoPersonal($estacion->id);
+        return response(['success'=>'ok']);
     }
     public function listadoPersonal($Idestacion)
     {
@@ -64,17 +67,8 @@ class Asistencias extends Controller
 
         $asistencia->asistenciaPersonal()->sync($estacion->personales->pluck('id'));
         $asistencia->asistenciaVehiculo()->sync($estacion->vehiculos->pluck('id'));
-
+        
         return $asistencia;
-
-        // $data = array(
-        //     'estacion' =>$estacion ,
-        //     'personales'=>$asistencia->asistenciaPersonal,
-        //     'vehiculos'=>$asistencia->asistenciaVehiculo,
-        //     'asistencia'=>$asistencia 
-        // );
-
-        // return view('asistencias.listadoPersonal',$data);
     }
 
     public function estadoPersonal(Request $request)

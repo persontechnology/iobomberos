@@ -19,16 +19,17 @@ class AsistenciaPolicy
             $user->can('Generar asistencia') && 
             $user->hasRole('Clase de guardía') && 
             $user->estacion->id==$asistencia->estacion->id &&
-            $asistencia->fecha==Carbon::now()->toDateString()){
-                return true;
+            Carbon::parse($asistencia->fecha)->format('Y-m-d')==Carbon::now()->toDateString()
+        ){
+            return true;
         }
 
         if(
             $user->can('Generar asistencia') && 
             $user->hasRole('Oficial de guardía') &&
-            $asistencia->fecha==Carbon::now()->toDateString()
-            ){
-                return true;
+            Carbon::parse($asistencia->fecha)->format('Y-m-d')==Carbon::now()->toDateString()
+        ){
+            return true;
         }
     }
 

@@ -166,6 +166,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         //insumos
         Route::get('/generar-asistencia', 'Asistencias@index')->name('generarAsistencia');
         Route::get('/crear-asistencia/{estacion}', 'Asistencias@crearAsistencia')->name('crearAsistencia');
+        Route::post('/crear-nueva-asistencia', 'Asistencias@crearNuevaAsistencia')->name('crearNuevaAsistencia');
         
         Route::post('/estado-personal-asistencia', 'Asistencias@estadoPersonal')->name('estadoAsistenciaPersonal');
         Route::post('/estado-vehiculo-asistencia', 'Asistencias@estadoVehiculo')->name('estadoAsistenciaVehiculo');
