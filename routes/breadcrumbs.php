@@ -134,7 +134,35 @@ Breadcrumbs::for('editarClinica', function ($trail,$clinica) {
     $trail->parent('clinicas');
     $trail->push('Editar clínica', route('editarClinica',$clinica->id));
 });
+//A:Fabian Lopez
+//D:Breadcrums de parroquias
 
+Breadcrumbs::for('parroquias', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Parroquias', route('parroquias'));
+});
+
+Breadcrumbs::for('editarParroquia', function ($trail,$parroquia) {
+    $trail->parent('parroquias');
+    $trail->push('Editar parroquia', route('editarParroquia',$parroquia->id));
+});
+
+//A:Fabian Lopez
+//D:Breadcrums de Barrios
+
+Breadcrumbs::for('barrios', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Barrios', route('barrios'));
+});
+
+Breadcrumbs::for('nuevoBarrio', function ($trail) {
+    $trail->parent('barrios');
+    $trail->push('Nuevo barrio', route('nuevoBarrio'));
+});
+Breadcrumbs::for('editarBarrio', function ($trail,$barrio) {
+    $trail->parent('barrios');
+    $trail->push('Editar barrio', route('editarBarrio',$barrio->id));
+});
 //A:Fabian Lopez
 //D:Breadcrums de punto de referencia
 

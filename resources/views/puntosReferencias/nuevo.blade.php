@@ -83,7 +83,7 @@
 @prepend('linksPie')
 
 <script type="text/javascript">
-   	$('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
+   	$('#menuGestionPuntos').addClass('nav-item-expanded nav-item-open');
     $('#menuPuntosReferencia').addClass('active');
 	$( "#puntosForm" ).validate();
 	$('selectpicker').selectpicker();

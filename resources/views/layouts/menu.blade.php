@@ -71,16 +71,7 @@
                         <li class="nav-item">
                             <a href="{{ route('clinicas') }}" class="nav-link" id="menuClinicas">Clínicas</a>
                         </li>     
-                        @endcan
-                        
-                        @can('G. de puntos de referencias')
-                            
-                        
-                        <li class="nav-item">
-                            <a href="{{ route('puntosReferencia') }}" class="nav-link" id="menuPuntosReferencia">Puntos de referencias</a>
-                        </li> 
-
-                        @endcan
+                        @endcan          
 
                         @can('G. de vehículos')
                             
@@ -101,7 +92,27 @@
 
                     </ul>
                 </li>
-
+                 {{-- generar puntos de referencia--}}
+                 @can('G. de puntos de referencias')
+                 <li class="nav-item nav-item-submenu" id="menuGestionPuntos">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-list"></i>
+                        <span>Gestión de Puntos de referencia</span>
+                    </a>
+                    <ul class="nav nav-group-sub" data-submenu-title="Form components">
+                    
+                        <li class="nav-item">
+                            <a href="{{ route('parroquias') }}" class="nav-link" id="menuParroquias">Parroquias</a>
+                        </li> 
+                        <li class="nav-item">
+                            <a href="{{ route('barrios') }}" class="nav-link" id="menuBarrios">Barrios</a>
+                        </li> 
+                        <li class="nav-item">
+                            <a href="{{ route('puntosReferencia') }}" class="nav-link" id="menuPuntosReferencia">Puntos de referencias</a>
+                        </li> 
+                    </ul>
+                </li>
+                @endcan
                 {{--  generar asistencia  --}}
                 @can('Generar asistencia', Model::class)
                     
