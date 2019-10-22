@@ -59,11 +59,11 @@
                         <label class="col-md-3 col-form-label text-md-right" for="formaAviso">Frecuencia<i class="text-danger">*</i></label>
                         <div class="col-md-9">
                         <div class="custom-control custom-radio">
-                            <input type="radio" checked class="custom-control-input {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="L-V" id="L-V" name="frecuencia"  required >
+                            <input type="radio" checked class="custom-control-input {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Lunes-Viernes" id="L-V" name="frecuencia"  required >
                             <label class="custom-control-label" for="L-V">Lunes-Viernes</label>
                         </div>                                
                         <div class="custom-control custom-radio">
-                            <input type="radio"  class="custom-control-input {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Fin de Semana" id="Fin de Semana" name="frecuencia"  required >
+                            <input type="radio"  class="custom-control-input {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Fin de semana" id="Fin de Semana" name="frecuencia"  required >
                             <label class="custom-control-label" for="Fin de Semana">Fin de Semana</label>
                         </div> 
                         <div class="custom-control custom-radio ">
@@ -89,7 +89,7 @@
                             </div>                                
         
                             <div class="custom-control custom-radio ">
-                                <input type="radio" class="custom-control-input{{ $errors->has('formaAviso') ? ' is-invalid' : '' }}" value="Telefonico" id="Telefonico" name="formaAviso" required >
+                                <input type="radio" class="custom-control-input{{ $errors->has('formaAviso') ? ' is-invalid' : '' }}" value="Teléfonico" id="Telefonico" name="formaAviso" required >
                                 <label class="custom-control-label" for="Telefonico">Telefónico</label>
                                     
                                     @if ($errors->has('formaAviso'))
@@ -108,7 +108,7 @@
             <div class="form-row">
                 <label class=" col-form-label text-md-right" for="formaAviso">Seleccione el punto de Referencia<i class="text-danger">*</i></label>
                 <div class="col-md-12"> 
-                    <select id="puntoRe" class="form-control selectpicker  @error('puntoReferencia') is-invalid @enderror" data-live-search="true" name="puntoReferencia" required>
+                    <select id="puntoRe" class="form-control selectpicker  @error('puntoReferencia') is-invalid @enderror" data-live-search="true" name="puntoReferencia"  required>
                         <option value=" ">Selecione un punto de referencia</option>
                         @foreach ($parroquias as $parroquia)
                         <optgroup label="Parroquia: {{$parroquia->nombre}}">
@@ -122,28 +122,31 @@
                     </select>
                 </div>                        	
             </div> 
-
-            <div>
-
-            </div>
-            
-            <div>
-                
-                <div class="border mb-1 mt-1">
-                    <label for="">Selecione estacion/es <i class="text-danger">*</i></label><br>
-                    <div class="form-check form-check-inline ml-1">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                        <label class="form-check-label" for="inlineCheckbox1">LATACUNGA</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-                        <label class="form-check-label" for="inlineCheckbox2">LASSO</label>
-                    </div>
-                </div>
-                
-            </div>
             
             <div id="map">
+            </div>
+
+            <div class="border mb-1 mt-1">
+                @if (count($estaciones)>0)
+
+                    <label for="">Selecione estacion/es <i class="text-danger">*</i></label><br>
+                    @foreach ($estaciones as $estacion_f)
+                        <div class="form-check form-check-inline ml-1">
+                            <input class="form-check-input" name="estaciones[{{ $estacion_f->id }}]" {{ old('estaciones.'.$estacion_f->id)==$estacion_f->id ?'checked':'' }} type="checkbox" id="estacionF_{{ $estacion_f->id }}" value="{{ $estacion_f->id }}">
+
+                            <label class="form-check-label" for="estacionF_{{ $estacion_f->id }}">
+                                {{ $estacion_f->nombre }}
+                            </label>
+                        </div>    
+                    @endforeach
+                    
+
+                @else
+                    <div class="alert alert-danger" role="alert">
+                        <strong>No existe estaciones para generar un formulario de emergencia</strong>
+                    </div>
+                @endif
+                
             </div>
 
         </div>

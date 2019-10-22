@@ -105,24 +105,16 @@ class PuntosReferencias extends Controller
         $parroquia=Parroquia::findOrFail($request->parroquia);
         return response()->json($parroquia->barrios);
     }
-    public function buscarPuntoReferenciaId(Request $request)
-    {
-        $puntoReferencia=PuntoReferencia::findOrFail($request->id);
-        if($puntoReferencia){
-            return response()->json($puntoReferencia);
-        }else{
-            return response()->json(['data'=>'error']);
-        }
-    }
+    
     public function importar()
     {
         return view('puntosReferencias.importar');
     }
     public function guardarImportacion(Request $request)
     {
-        $this->validate($request,[
-            'archivo'=>'required|mimes:xls,xlsx'
-        ]);    	
+        // $this->validate($request,[
+        //     'archivo'=>'required|mimes:xls,xlsx'
+        // ]);    	
         Excel::import(new PuntosReferenciaImport, request()->file('archivo'));
         return redirect()->route('puntosReferencia')->with('success', 'Puntos de referencia importados exitosamente');
     }

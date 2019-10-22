@@ -133,7 +133,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::post('/puntos-referencia-eliminar', 'PuntosReferencias@eliminar')->name('puntosReferenciaEliminar');
     // parroquias y barrios
     Route::post('/obtener-barrios-x-parroquia', 'PuntosReferencias@obtenerBarrios')->name('obtenerBarrios');
-    Route::post('/buscar-puntos-referencia', 'PuntosReferencias@buscarPuntoReferenciaId')->name('buscarPuntosReferencia');
+    
    //importar puntos de referencia
    Route::get('/puntos-referencia-importar', 'PuntosReferencias@importar')->name('puntosReferenciaImportar');
    Route::post('/puntos-referencia-guardar-importacion', 'PuntosReferencias@guardarImportacion')->name('puntosGuardarImportacion');
@@ -199,6 +199,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::get('/nuevo-formulario','FormularioEmergencias@nuevo' )->name('nuevo-formulario');
         Route::get('/proceso-formulario/{id}','FormularioEmergencias@proceso' )->name('proceso-formulario');
         Route::post('/formulario-guardar', 'FormularioEmergencias@guardarFormulario')->name('guardarFormulario');
+        Route::post('/buscar-puntos-referencia', 'FormularioEmergencias@buscarPuntoReferenciaId')->name('buscarPuntosReferencia');
         
     });
     
