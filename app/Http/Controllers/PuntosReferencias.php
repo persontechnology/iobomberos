@@ -8,7 +8,9 @@ use iobom\DataTables\PuntosReferenciasDataTable;
 use Illuminate\Support\Facades\Auth;
 use iobom\Models\Estacion;
 use Illuminate\Support\Facades\DB;
+use iobom\Imports\PuntosReferenciaImport;
 use iobom\Models\Parroquia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PuntosReferencias extends Controller
 {
@@ -111,5 +113,17 @@ class PuntosReferencias extends Controller
         }else{
             return response()->json(['data'=>'error']);
         }
+    }
+    public function importar()
+    {
+        return view('puntosReferencias.importar');
+    }
+    public function guardarImportacion(Request $request)
+    {
+        $this->validate($request,[
+            'archivo'=>'required|mimes:xls,xlsx'
+        ]);    	
+        Excel::import(new PuntosReferenciaImport, request()->file('archivo'));
+        return redirect()->route('puntosReferencia')->with('success', 'Puntos de referencia importados exitosamente');
     }
 }

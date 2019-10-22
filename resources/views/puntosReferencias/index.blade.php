@@ -7,6 +7,10 @@
         <a href="{{ route('puntosReferenciaNuevo') }}" class="breadcrumb-elements-item">
             <i class="fas fa-plus"></i> Nuevo P. referencia
         </a>
+        <a href="{{ route('puntosReferenciaImportar') }}" class="breadcrumb-elements-item">
+            <i class="fas fa-file-excel"></i>
+            Importar puntos.
+        </a>
          <a href="{{ route('puntosReferenciaMapa') }}" class="breadcrumb-elements-item">
             <i class="icon-map"></i> Ver mapa
         </a>
