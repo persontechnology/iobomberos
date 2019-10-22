@@ -84,9 +84,9 @@ class PuntosReferenciasDataTable extends DataTable
     protected function getColumnsTable()
     {
         return [
-            'referencia',
-            'barrio_id'=>['title'=>'Barrio'],
             'parroquia',
+            'barrio_id'=>['title'=>'Barrio'],
+            'referencia',
             'latitud',
             'longitud',
             

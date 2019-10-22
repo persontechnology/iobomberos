@@ -107,6 +107,22 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::post('/eliminar-clinica', 'Clinicas@eliminar')->name('eliminarClinica');
 
     //A:Fabian Lopez
+    //D. administracion de parroquias
+    Route::get('/parroquias', 'Parroquias@index')->name('parroquias');
+    Route::post('/nueva-parroquia', 'Parroquias@guardar')->name('guardarParroquia');
+    Route::get('/editar-parroquia/{id}', 'Parroquias@editar')->name('editarParroquia');
+    Route::post('/actualizar-parroquia', 'Parroquias@actualizar')->name('actualizarParroquia');
+    Route::post('/eliminar-parroquia', 'Parroquias@eliminar')->name('eliminarParroquia');
+     //A:Fabian Lopez
+    //D. administracion de barrios
+    Route::get('/barrios', 'Barrios@index')->name('barrios');
+    Route::get('/nuevo-barrios', 'Barrios@nuevo')->name('nuevoBarrio');
+    Route::post('/guardar-barrio', 'Barrios@guardar')->name('guardarBarrio');
+    Route::get('/editar-barrio/{id}', 'Barrios@editar')->name('editarBarrio');
+    Route::post('/actualizar-barrio', 'Barrios@actualizar')->name('actualizarBarrio');
+    Route::post('/barrio-eliminar', 'Barrios@eliminar')->name('barrioEliminar');
+   
+    //A:Fabian Lopez
     //D. administracion de puntos de referencia
     Route::get('/puntos-referencia', 'PuntosReferencias@index')->name('puntosReferencia');
     Route::get('/puntos-referencia-nuevo', 'PuntosReferencias@nuevo')->name('puntosReferenciaNuevo');
