@@ -134,8 +134,10 @@ Route::middleware(['verified', 'auth'])->group(function () {
     // parroquias y barrios
     Route::post('/obtener-barrios-x-parroquia', 'PuntosReferencias@obtenerBarrios')->name('obtenerBarrios');
     Route::post('/buscar-puntos-referencia', 'PuntosReferencias@buscarPuntoReferenciaId')->name('buscarPuntosReferencia');
+   //importar puntos de referencia
+   Route::get('/puntos-referencia-importar', 'PuntosReferencias@importar')->name('puntosReferenciaImportar');
+   Route::post('/puntos-referencia-guardar-importacion', 'PuntosReferencias@guardarImportacion')->name('puntosGuardarImportacion');
    
-
     //A:Fabian Lopez
     //D. administracion de puntos de Vehiculos
     Route::namespace('Vehiculos')->group(function () {
