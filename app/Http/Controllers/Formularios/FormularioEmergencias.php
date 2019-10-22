@@ -24,6 +24,7 @@ class FormularioEmergencias extends Controller
     
     public function nuevo( )
     {
+        
         $emergencias=Emergencia::get();
         $puntoReferencias=PuntoReferencia::get();
         $parroquias=Parroquia::get();
@@ -38,9 +39,17 @@ class FormularioEmergencias extends Controller
     }
     public function guardarFormulario(Request $request)
     {
+        $numero=FormularioEmergencia::latest()->value('numero');
+
+        if($numero){
+            $numero=$numero+1;
+        }else{
+            $numero=1;
+        }
+        
         $fechaHoy=Carbon::now();
         $formulario=new FormularioEmergencia();
-        $formulario->numero=1;
+        $formulario->numero=$numero;
         $formulario->fecha=$fechaHoy->toDateString();
         $formulario->horaSalida=$fechaHoy->toTimeString();
         $formulario->institucion=$request->institucion;
@@ -53,6 +62,7 @@ class FormularioEmergencias extends Controller
 
         return redirect()->route('formularios');
     }
+    
     public function crearProceso($idFormulario)
     {
         $formuralrio=FormularioEmergencia::findOrFail($idFormulario);

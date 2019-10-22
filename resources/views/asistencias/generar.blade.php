@@ -46,54 +46,53 @@
                     </div>
                     <div class="card-body">
                         
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-sm">
-                                <thead>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Foto</th>
+                                <th scope="col">Personal</th>
+                                <th scope="col">Asistencia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php($p=0)
+                                @foreach ($asistencia->asistenciaPersonal as $personal)
+                                @php($p++)
                                     <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Foto</th>
-                                    <th scope="col">Personal</th>
-                                    <th scope="col">Asistencia</th>
+                                        <th scope="row">
+                                            {{ $p }}
+                                        </th>
+                                        <td>
+                                            @if (Storage::exists($personal->foto))
+                                                <a href="{{ Storage::url($personal->foto) }}" class="btn-link" data-toggle="tooltip" data-placement="top" title="Ver foto">
+                                                    <img src="{{ Storage::url($personal->foto) }}" alt="" class="img-fluid" width="45px;">
+                                                </a>
+                                            @else
+                                                <img src="{{ asset('img/user.png') }}" alt="" class="img-fluid" width="45px;">
+                                            @endif
+                                        </td>
+                                        <td>
+                                            {{ $personal->name }}
+                                            @if (count($personal->getRoleNames())>0)
+                                            <small class="badge badge-light float-right">
+                                                @foreach ($personal->getRoleNames() as $rol)
+                                                {{ $rol }},
+                                                @endforeach
+                                            </small>    
+                                            @endif
+                                            
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" data-url="{{ route('estadoAsistenciaPersonal',$personal->asistenciaPersonal->id) }}" data-id="u_{{ $personal->asistenciaPersonal->id }}" value="{{ $personal->asistenciaPersonal->id }}" class="toggle-estado" {{ $personal->asistenciaPersonal->estado==true?'checked':'' }} data-toggle="toggle" data-on="SI" data-off="NO" data-onstyle="success" data-offstyle="warning" data-size="xs">  
+                                            <input type="text" value="{{ $personal->asistenciaPersonal->observacion }}" onkeyup="detalle(this)" data-url="{{ route('obsAsistenciaPersonal') }}" data-id="{{ $personal->asistenciaPersonal->id }}"  style="{{ $personal->asistenciaPersonal->estado==true?'display: none':'' }}" class="form-control form-control-sm mt-1" id="u_{{ $personal->asistenciaPersonal->id }}" placeholder="Observacíon">
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @php($p=0)
-                                    @foreach ($asistencia->asistenciaPersonal as $personal)
-                                    @php($p++)
-                                        <tr>
-                                            <th scope="row">
-                                                {{ $p }}
-                                            </th>
-                                            <td>
-                                                @if (Storage::exists($personal->foto))
-                                                    <a href="{{ Storage::url($personal->foto) }}" class="btn-link" data-toggle="tooltip" data-placement="top" title="Ver foto">
-                                                        <img src="{{ Storage::url($personal->foto) }}" alt="" class="img-fluid" width="45px;">
-                                                    </a>
-                                                @else
-                                                    <img src="{{ asset('img/user.png') }}" alt="" class="img-fluid" width="45px;">
-                                                @endif
-                                            </td>
-                                            <td>
-                                                {{ $personal->name }}
-                                                @if (count($personal->getRoleNames())>0)
-                                                <small class="badge badge-light float-right">
-                                                    @foreach ($personal->getRoleNames() as $rol)
-                                                    {{ $rol }},
-                                                    @endforeach
-                                                </small>    
-                                                @endif
-                                                
-                                            </td>
-                                            <td>
-                                                <input type="checkbox" data-url="{{ route('estadoAsistenciaPersonal',$personal->asistenciaPersonal->id) }}" data-id="u_{{ $personal->asistenciaPersonal->id }}" value="{{ $personal->asistenciaPersonal->id }}" class="toggle-estado" {{ $personal->asistenciaPersonal->estado==true?'checked':'' }} data-toggle="toggle" data-on="SI" data-off="NO" data-onstyle="success" data-offstyle="warning" data-size="xs">  
-                                                <input type="text" value="{{ $personal->asistenciaPersonal->observacion }}" onkeyup="detalle(this)" data-url="{{ route('obsAsistenciaPersonal') }}" data-id="{{ $personal->asistenciaPersonal->id }}"  style="{{ $personal->asistenciaPersonal->estado==true?'display: none':'' }}" class="form-control form-control-sm mt-1" id="u_{{ $personal->asistenciaPersonal->id }}" placeholder="Observacíon">
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     </div>
                 </div>
             @else

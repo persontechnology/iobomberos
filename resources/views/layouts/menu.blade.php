@@ -40,10 +40,10 @@
                  {{--  menus para las gestiones del proyecto  --}}
                 <li class="nav-item nav-item-submenu" id="menuGestionInformacion">
                     <a href="#" class="nav-link">
-                        <i class="fas fa-list"></i>
+                        <i class="far fa-address-card"></i>
                         <span>Gestión de Información</span>
                     </a>
-                    <ul class="nav nav-group-sub" data-submenu-title="Form components">
+                    <ul class="nav nav-group-sub" data-submenu-title="Gestión de información">
                         @can('G. de estaciones')
                             
                         
@@ -99,7 +99,7 @@
                         <i class="fas fa-list"></i>
                         <span>Gestión de Puntos de referencia</span>
                     </a>
-                    <ul class="nav nav-group-sub" data-submenu-title="Form components">
+                    <ul class="nav nav-group-sub" data-submenu-title="Gestión de puntos de referencias">
                     
                         <li class="nav-item">
                             <a href="{{ route('parroquias') }}" class="nav-link" id="menuParroquias">Parroquias</a>
@@ -114,7 +114,7 @@
                 </li>
                 @endcan
                 {{--  generar asistencia  --}}
-                @can('Generar asistencia', Model::class)
+                @can('Generar asistencia')
                     
                 <li class="nav-item">
                     <a href="{{ route('generarAsistencia') }}" class="nav-link" id="menuGenerarAsistencia">
@@ -129,17 +129,21 @@
                 {{-- generar formulario de emergencia --}}
                 <li class="nav-item nav-item-submenu" id="menuGestionFomularios">
                     <a href="#" class="nav-link">
-                        <i class="fas fa-list"></i>
+                        <i class="fas fa-journal-whills"></i>
                         <span>Gestión de Formularios</span>
                     </a>
-                    <ul class="nav nav-group-sub" data-submenu-title="Form components">
+                    <ul class="nav nav-group-sub" data-submenu-title="Gestión de formularios">
                     
                         <li class="nav-item">
                             <a href="{{ route('formularios') }}" class="nav-link" id="menuFormularios">Formularios</a>
                         </li> 
-                        <li class="nav-item">
+                        
+                        @can('crearNuevoFormularioEmergencia', iobom\User::class)
+                            <li class="nav-item">
                                 <a href="{{ route('nuevo-formulario') }}" class="nav-link" id="menuNuevoFormularios">Nuevo Formulario</a>
-                            </li> 
+                            </li>     
+                        @endcan
+                        
                     </ul>
                 </li>
                 @role('Administrador')

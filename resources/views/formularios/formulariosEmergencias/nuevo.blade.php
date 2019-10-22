@@ -8,9 +8,10 @@
 
 @section('content')
 <div class="card">
-       <div class="card-body">
-        <form method="POST" action="{{ route('guardar-formulario') }}" id="formNuevoUsuario" enctype="multipart/form-data">
-            @csrf
+    <form method="POST" action="{{ route('guardarFormulario') }}" id="formNuevoUsuario" enctype="multipart/form-data">
+        @csrf
+        <div class="card-body">
+
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
@@ -51,7 +52,7 @@
 
             </div>
 
-      
+    
             <div class="row">
                 <div class="col-sm-6">
                     <div class=" form-row">
@@ -62,9 +63,9 @@
                             <label class="custom-control-label" for="L-V">Lunes-Viernes</label>
                         </div>                                
                         <div class="custom-control custom-radio">
-                                <input type="radio"  class="custom-control-input {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Fin de Semana" id="Fin de Semana" name="frecuencia"  required >
-                                <label class="custom-control-label" for="Fin de Semana">Fin de Semana</label>
-                            </div> 
+                            <input type="radio"  class="custom-control-input {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Fin de Semana" id="Fin de Semana" name="frecuencia"  required >
+                            <label class="custom-control-label" for="Fin de Semana">Fin de Semana</label>
+                        </div> 
                         <div class="custom-control custom-radio ">
                             <input type="radio" class="custom-control-input{{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Feriado" id="Feriado" name="frecuencia" required >
                             <label class="custom-control-label" for="Feriado">Feriado</label>
@@ -101,34 +102,55 @@
                         </div>
                 </div>
             </div>
+
             {{-- ingreso del mapa con su respectiva seleción de barrio --}}            
+            
             <div class="form-row">
                 <label class=" col-form-label text-md-right" for="formaAviso">Seleccione el punto de Referencia<i class="text-danger">*</i></label>
-                    <div class="col-md-12"> 
+                <div class="col-md-12"> 
                     <select id="puntoRe" class="form-control selectpicker  @error('puntoReferencia') is-invalid @enderror" data-live-search="true" name="puntoReferencia" required>
                         <option value=" ">Selecione un punto de referencia</option>
                         @foreach ($parroquias as $parroquia)
                         <optgroup label="Parroquia: {{$parroquia->nombre}}">
                             @foreach ($parroquia->barrios as $barrio)
-                            @foreach ($barrio->puntosRefencias as $puntoReferencia)
-                            <option data-subtext="P.R : {{ $puntoReferencia->referencia }} " value="{{ $puntoReferencia->id }}" {{ (old("puntoReferencia") == $puntoReferencia->id ? "selected":"") }}>Barrio: {{ $barrio->nombre }}</option>                                    
-                            @endforeach
+                                @foreach ($barrio->puntosRefencias as $puntoReferencia)
+                                <option data-subtext="P.R : {{ $puntoReferencia->referencia }} " value="{{ $puntoReferencia->id }}" {{ (old("puntoReferencia") == $puntoReferencia->id ? "selected":"") }}>Barrio: {{ $barrio->nombre }}</option>                                    
+                                @endforeach
                             @endforeach
                             </optgroup>
                         @endforeach
                     </select>
                 </div>                        	
             </div> 
-              
-            <div id="map">
 
-            </div>       
-            <div class="card-footer">
-                    <button type="submit" class="btn btn-dark">Generar Ficha</button>
-               </div>
-        </form>
-        
-    </div>
+            <div>
+
+            </div>
+            
+            <div>
+                
+                <div class="border mb-1 mt-1">
+                    <label for="">Selecione estacion/es <i class="text-danger">*</i></label><br>
+                    <div class="form-check form-check-inline ml-1">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                        <label class="form-check-label" for="inlineCheckbox1">LATACUNGA</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                        <label class="form-check-label" for="inlineCheckbox2">LASSO</label>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div id="map">
+            </div>
+
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-dark">Generar Ficha</button>
+        </div>
+    </form>
 </div>
 
 @push('linksCabeza')
@@ -185,6 +207,7 @@
                       infowindow.open(map, marker_{{$estacion->id}}); 
                 @endforeach
             @endif	  
+            
             document.getElementById('puntoRe').addEventListener('change', function() {
                 var id=document.getElementById('puntoRe').value;
                 var selectedMode = "DRIVING";

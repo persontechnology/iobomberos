@@ -196,7 +196,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::get('formularios','FormularioEmergencias@index' )->name('formularios');
         Route::get('/nuevo-formulario','FormularioEmergencias@nuevo' )->name('nuevo-formulario');
         Route::get('/proceso-formulario/{id}','FormularioEmergencias@proceso' )->name('proceso-formulario');
-        Route::post('/formulario-guardar', 'FormularioEmergencias@guardarFormulario')->name('guardar-formulario');
+        Route::post('/formulario-guardar', 'FormularioEmergencias@guardarFormulario')->name('guardarFormulario');
         
     });
     

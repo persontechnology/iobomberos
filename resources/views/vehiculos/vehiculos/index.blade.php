@@ -59,7 +59,7 @@
         
             swal({
                 title: "¿Estás seguro?",
-                text: "Que desea eliminar esta emergencia !",
+                text: "Que desea eliminar este tipo de vehículo!",
                 type: "error",
                 showCancelButton: true,
                 confirmButtonClass: "btn-dark",

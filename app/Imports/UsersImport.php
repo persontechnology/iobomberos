@@ -26,14 +26,19 @@ class UsersImport implements ToModel
             $user= new User();
             $user->name= $row[0];
             $user->email= $row[1]; 
-            $user->password= Hash::make(Str::random(8));
+            $user->password= Hash::make($row[1]);
             $user->telefono=$row[2];
             $user->estacion_id=$est->id;
             $user->save();
-            $rol=Role::where('name',$row[3])->first();
-            if($rol){
-                $user->assignRole($rol);
+            
+            $roles = explode(",", $row[3]);
+            foreach ($roles as $role) {
+                $rol=Role::where('name',$role)->first();    
+                if($rol){
+                    $user->assignRole($rol);
+                }
             }
+
         }
     
         return $user;
