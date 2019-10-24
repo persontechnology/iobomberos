@@ -17,7 +17,27 @@ class FormularioEmergenciasDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->addColumn('action', 'formularios/formularioemergencias.action');
+            ->editColumn('emergencia_id',function($pr){
+                return $pr->emergencia->nombre;
+            })
+            ->filterColumn('emergencia_id',function($query, $keyword){
+                $query->whereHas('emergencia', function($query) use ($keyword) {
+                    $query->whereRaw("nombre like ?", ["%{$keyword}%"]);
+                });            
+            })
+            ->editColumn('puntoReferencia_id',function($pr){
+                return $pr->puntoReferencia->barrio->nombre.' ' .$pr->puntoReferencia->referencia;
+            })
+            ->filterColumn('puntoReferencia_id',function($query, $keyword){
+                $query->whereHas('puntoReferencia', function($query) use ($keyword) {
+                    $query->whereRaw("referencia like ?", ["%{$keyword}%"]);
+                });            
+            })
+            
+            ->addColumn('action', function($modelo){
+                return view('formularios.formulariosEmergencias.acciones',['formulario'=>$modelo])->render();
+            })
+              ->rawColumns(['action']);
     }
 
     /**
@@ -58,7 +78,7 @@ class FormularioEmergenciasDataTable extends DataTable
             'fecha',
             'puntoReferencia_id',
             'emergencia_id',
-            'tipoEmergencia_id'
+            'estado'
         ];
     }
     protected function getColumnsTable()
@@ -68,7 +88,7 @@ class FormularioEmergenciasDataTable extends DataTable
             'fecha',
             'puntoReferencia_id'=>['title'=>'Lugar'],
             'emergencia_id'=>['title'=>'Emergencia'],
-            'tipoEmergencia_id'=>['title'=>'Tipo Emergencia'],           
+            'estado'=>['title'=>'Estado'],           
         ];
     }
     /**

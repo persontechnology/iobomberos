@@ -2,7 +2,15 @@
 @section('breadcrumbs', Breadcrumbs::render('mapaPuntoReferencia'))
 
 @section('content')
-
+<select class="form-control"  name="" id="buscarBarrios">
+	<option value="todos">Todos</option>
+	@if ($parroquias)
+		@foreach ($parroquias as $parroquia)
+			<option value="{{$parroquia->id}}">{{$parroquia->nombre}}</option>
+		@endforeach
+	@endif
+</select>
+<br>
 <div id="map"></div>
 
 
@@ -26,7 +34,7 @@
 		map = new google.maps.Map(document.getElementById('map'), {
 		  center: myLatLng,
 		  zoom: 12,
-		  mapTypeId: 'hybrid'
+		  
 		});
 	
 		var imageEstacion="{{ asset('img/ESTACION1.png') }}";
@@ -50,9 +58,11 @@
 			      infowindow.open(map, marker_{{$estacion->id}}); 
 			@endforeach
 		@endif	
-
-		@if($puntos->count()>0)
-			@foreach($puntos as $punto)
+		document.getElementById('buscarBarrios').addEventListener('change', function() {
+			var id=document.getElementById('buscarBarrios').value;
+			if(id=="todos"){
+				@if($puntos->count()>0)
+					@foreach($puntos as $punto)
 				var latitu={{$punto->latitud}};
 				var longi={{$punto->longitud}};
 				var markerpuntos_{{$punto->id}} = new google.maps.Marker({
@@ -68,7 +78,27 @@
 			      infowindow1.open(map, markerpuntos_{{$punto->id}}); 
 
 				@endforeach
-		@endif	
+				@endif
+			}else{
+				if(id){			
+				$.blockUI({message:'<h1>Espere por favor.!</h1>'});
+				$.post("{{ route('obtenerBarrios') }}", { parroquia: id })
+				.done(function( data ) {
+					var fila;
+					$.each(data, function(i, item) {
+						console.log(item.nombre)
+					});
+					
+				}).always(function(){
+					$.unblockUI();
+				}).fail(function(){
+					notificar("error","Ocurrio un error");
+				});
+			}
+			}
+
+		})
+			
 
 	}
 

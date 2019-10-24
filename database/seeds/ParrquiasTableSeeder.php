@@ -14,7 +14,7 @@ class ParrquiasTableSeeder extends Seeder
     public function run()
     {
         $parroquias = array(
-        'Toacaso',
+        'Toacazo',
         'San Juan de Pastocalle',
         'Mulaló',
         'Tanicuchí',

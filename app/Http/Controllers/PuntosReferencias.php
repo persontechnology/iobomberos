@@ -51,8 +51,9 @@ class PuntosReferencias extends Controller
     public function mapa()
     {
     	 $estaciones=Estacion::get();
-    	 $puntos=PuntoReferencia::get();
-       return view('puntosReferencias.mapa',['estaciones'=>$estaciones,'puntos'=>$puntos]);
+         $puntos=PuntoReferencia::get();
+         $parroquias=Parroquia::get();
+       return view('puntosReferencias.mapa',['estaciones'=>$estaciones,'puntos'=>$puntos,'parroquias'=>$parroquias]);
     }
     public function editar($idPunto)
     {
@@ -118,4 +119,5 @@ class PuntosReferencias extends Controller
         Excel::import(new PuntosReferenciaImport, request()->file('archivo'));
         return redirect()->route('puntosReferencia')->with('success', 'Puntos de referencia importados exitosamente');
     }
+  
 }
