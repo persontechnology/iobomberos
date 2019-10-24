@@ -21,7 +21,7 @@ class VehiculosImport implements ToModel
           $tipo=TipoVehiculo::where('nombre',$row[1])->first();
           $vehiculo=Vehiculo::where('placa',$row[8])->first();
           $vehiculomotor=Vehiculo::where('motor',$row[7])->first();
-        if(!$vehiculo && $tipo && $estacion && $vehiculomotor){
+        if(!$vehiculo && $tipo && $estacion && !$vehiculomotor){
             $vehiculo= new Vehiculo();
             $vehiculo->placa=$row[8];
             $vehiculo->codigo=$row[2];
