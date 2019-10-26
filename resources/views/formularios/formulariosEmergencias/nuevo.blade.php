@@ -1,4 +1,4 @@
-@extends('layouts.app',['title'=>'formularios'])
+@extends('layouts.app',['title'=>'Nuevo formulario'])
 
 @section('breadcrumbs', Breadcrumbs::render('formularios'))
 
@@ -127,26 +127,99 @@
             </div>
 
             <div class="border mb-1 mt-1">
-                @if (count($estaciones)>0)
+                <label for="">Selecione Vehículos</label>
 
-                    <label for="">Selecione estacion/es <i class="text-danger">*</i></label><br>
-                    @foreach ($estaciones as $estacion_f)
-                        <div class="form-check form-check-inline ml-1">
-                            <input class="form-check-input" name="estaciones[{{ $estacion_f->id }}]" {{ old('estaciones.'.$estacion_f->id)==$estacion_f->id ?'checked':'' }} type="checkbox" id="estacionF_{{ $estacion_f->id }}" value="{{ $estacion_f->id }}">
 
-                            <label class="form-check-label" for="estacionF_{{ $estacion_f->id }}">
-                                {{ $estacion_f->nombre }}
-                            </label>
-                        </div>    
-                    @endforeach
-                    
+                <div class="row">
+                    <div class="col-md-6">
+                            @if (count($estaciones)>0)
 
-                @else
-                    <div class="alert alert-danger" role="alert">
-                        <strong>No existe estaciones para generar un formulario de emergencia</strong>
+                            <ul class="nav nav-pills mb-3 mt-2 ml-2" id="pills-tab" role="tablist">
+                                
+                                @php($est_i=0)
+                                @foreach ($estaciones as $estacion_f)
+                                @php($est_i++)
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ $est_i==1?'active':'' }}" id="pills-{{ $estacion_f->id }}-tab" data-toggle="pill" href="#pills-{{ $estacion_f->id }}" role="tab">
+                                            {{ $estacion_f->nombre }}
+                                        </a>
+                                    </li>
+                                @endforeach
+        
+                            </ul>
+                            <div class="tab-content" id="pills-tabContent">
+                                @php($est_c=0)
+                                @foreach ($estaciones as $estacion_c)
+                                @php($est_c++)
+                                <div class="tab-pane fade {{ $est_c==1?'show active':'' }}" id="pills-{{ $estacion_c->id }}" role="tabpanel" aria-labelledby="pills-{{ $estacion_c->id }}-tab">
+                                        @if (count($estacion_c->vehiculosDisponibles)>0)
+                                        <label for="" class="ml-1">Vehículos</label>
+                                        <div class="row ml-1">
+                                            @foreach ($estacion_c->vehiculosDisponibles as $vehiculo)
+                                            <div class="col-xl-3 col-xs-6">
+                                                <div class="card">
+                                                    @if (Storage::exists($vehiculo->foto))
+                                                        <img src="{{ Storage::url($vehiculo->foto) }}" class="card-img-top" alt="...">
+                                                    @else
+                                                        <img src="{{ asset('img/carroBomberos.png') }}" alt="" class="card-img-top">
+                                                    @endif
+
+                                                    <div class="card-body">
+                                                        <div class="form-check">
+                                                            <input type="checkbox" onchange="agregarVehiculo(this);" class="form-check-input" data-id="{{ $vehiculo->id }}" data-nombre="{{ $vehiculo->tipoVehiculo->codigo.''.$vehiculo->codigo }}" value="{{ $vehiculo->id }}" id="check_v_{{ $vehiculo->id }}">
+                                                            <label class="form-check-label" for="check_v_{{ $vehiculo->id }}">
+                                                                {{ $vehiculo->tipoVehiculo->codigo.''.$vehiculo->codigo }}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="alert alert-warning" role="alert">
+                                            <strong>No existe veículos disponibles en esta estación</strong>
+                                        </div>
+                                    @endif
+                                </div>
+                                @endforeach
+                            </div>
+        
+                        @else
+                            <div class="alert alert-danger" role="alert">
+                                <strong>No existe estaciones para generar un formulario de emergencia</strong>
+                            </div>    
+                        @endif
                     </div>
-                @endif
+                    <div class="col-md-6">
+                        <label for="">Agregar responsables a vehículos</label>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Vehículo</th>
+                                        <th scope="col">Operador</th>
+                                        <th scope="col">Acompañantes</th>
+                                        <th scope="col">Paramédico</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="personales">
+
+                                </tbody>
+                            </table>
+                    </div>
+                    </div>
+                </div>
+
+
                 
+            </div>
+
+            <div class="table-reponsive">
+                <button type="button" class="btn btn-danger">
+                    <i class=""></i>
+                </button>
             </div>
 
         </div>
@@ -168,6 +241,32 @@
     $('#menuGestionFomularios').addClass('nav-item-expanded nav-item-open');
      $('#menuNuevoFormularios').addClass('active');
      $('selectpicker').selectpicker();
+
+
+     function agregarVehiculo(arg){
+         
+        var vehiculo=$(arg).data('nombre');
+        var id=$(arg).data('id');
+        var estado=arg.checked;
+
+        
+        if($('#fila_'+id).length){
+            $('#fila_'+id).remove();
+        }else{
+            var fila='<tr id="fila_'+id+'">'+
+                    '<th scope="row">'+vehiculo+'</th>'+
+                    '<td>Mark</td>'+
+                    '<td>Otto</td>'+
+                    '<td>@mdo</td>'+
+                    '<td></td>'+
+                    '</tr>';
+            $('#personales').append(fila)
+        }
+        
+        
+
+         
+     }
 </script>
 
 <script>
@@ -193,21 +292,23 @@
         
             @if($estaciones->count()>0)
                 @foreach($estaciones as $estacion)
-                    directionsRenderer{{$estacion->id}}.setMap(map);
-                    var latitu={{$estacion->latitud}};
-                    var longi={{$estacion->longitud}};
-                    var marker_{{$estacion->id}} = new google.maps.Marker({
-                    map: map,
-                     position:{lat:latitu , lng:longi } ,
-                    title:"{{$estacion->nombre}}",
-                    icon:imageEstacion,
-                      });
-                    
-                    var nombre="{{$estacion->nombre}}";
-                    var geocoder = new google.maps.Geocoder;
-                     var infowindow = new google.maps.InfoWindow;
-                     infowindow.setContent(nombre);
-                      infowindow.open(map, marker_{{$estacion->id}}); 
+                @if ($estacion->latitud&&$estacion->longitud)
+                        directionsRenderer{{$estacion->id}}.setMap(map);
+                        var latitu={{$estacion->latitud}};
+                        var longi={{$estacion->longitud}};
+                        var marker_{{$estacion->id}} = new google.maps.Marker({
+                        map: map,
+                        position:{lat:latitu , lng:longi } ,
+                        title:"{{$estacion->nombre}}",
+                        icon:imageEstacion,
+                        });
+                        
+                        var nombre="{{$estacion->nombre}}";
+                        var geocoder = new google.maps.Geocoder;
+                        var infowindow = new google.maps.InfoWindow;
+                        infowindow.setContent(nombre);
+                        infowindow.open(map, marker_{{$estacion->id}}); 
+                    @endif
                 @endforeach
             @endif	  
             
@@ -222,26 +323,29 @@
                     if(data){
                         @if($estaciones->count()>0)
                             @foreach($estaciones as $estacion)
-                            
-                            var latitu={{$estacion->latitud}};
-                            var longi={{$estacion->longitud}};
+                            @if ($estacion->latitud&&$estacion->longitud)
                                 
-                                directionsService{{$estacion->id}}.route({
+                                var latitu={{$estacion->latitud}};
+                                var longi={{$estacion->longitud}};
                                     
-                                origin: {lat: latitu, lng: longi},  // Haight.
-                                destination: {lat: parseFloat(data.latitud), lng: parseFloat(data.longitud)},  // Ocean Beach.
-                                
-                                travelMode: google.maps.TravelMode[selectedMode]
-                                }, function(response, status) {
-                                     
-                                if (status == 'OK') {
-                                   
-                                    directionsRenderer{{$estacion->id}}.setDirections(response);
-                                } else {
-                                    window.alert('Directions request failed due to ' + status);
-                                }
-                                });
-                                
+                                    directionsService{{$estacion->id}}.route({
+                                        
+                                    origin: {lat: latitu, lng: longi},  // Haight.
+                                    destination: {lat: parseFloat(data.latitud), lng: parseFloat(data.longitud)},  // Ocean Beach.
+                                    
+                                    travelMode: google.maps.TravelMode[selectedMode]
+                                    }, function(response, status) {
+                                        
+                                    if (status == 'OK') {
+                                    
+                                        directionsRenderer{{$estacion->id}}.setDirections(response);
+                                    } else {
+                                        window.alert('Directions request failed due to ' + status);
+                                    }
+                                    });
+                                    
+                            @endif
+                            
                             @endforeach
                         @endif   
                     }else{
@@ -259,25 +363,27 @@
         }
         @if($estaciones->count()>0)
         @foreach($estaciones as $estacion)
-        var latitu={{$estacion->latitud}};
-        var longi={{$estacion->longitud}};
-        function calculateAndDisplayRoute{{$estacion->id}}(directionsService, directionsRenderer,latitud,longitud) {
-        var selectedMode = "DRIVING";
-        directionsService.route({
-        origin: {lat: latitu, lng: longi},  // Haight.
-        destination: {lat: parseFloat(latitud), lng: parseFloat(longitud)},  // Ocean Beach.
-          // Note that Javascript allows us to access the constant
-          // using square brackets and a string value as its
-          // "property."
-          travelMode: 'DRIVING',
-        }, function(response, status) {
-          if (status == 'OK') {
-            directionsRenderer.setDirections(response);
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
-        });
-      }
+            @if ($estacion->latitud&&$estacion->longitud)
+                var latitu={{$estacion->latitud}};
+                var longi={{$estacion->longitud}};
+                function calculateAndDisplayRoute{{$estacion->id}}(directionsService, directionsRenderer,latitud,longitud) {
+                    var selectedMode = "DRIVING";
+                    directionsService.route({
+                        origin: {lat: latitu, lng: longi},  // Haight.
+                        destination: {lat: parseFloat(latitud), lng: parseFloat(longitud)},  // Ocean Beach.
+                        // Note that Javascript allows us to access the constant
+                        // using square brackets and a string value as its
+                        // "property."
+                        travelMode: 'DRIVING',
+                    }, function(response, status) {
+                    if (status == 'OK') {
+                        directionsRenderer.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                    });
+                }
+            @endif
       @endforeach
     @endif
     </script>

@@ -200,7 +200,11 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::get('/proceso-formulario/{id}','FormularioEmergencias@proceso' )->name('proceso-formulario');
         Route::post('/formulario-guardar', 'FormularioEmergencias@guardarFormulario')->name('guardarFormulario');
         Route::post('/buscar-puntos-referencia', 'FormularioEmergencias@buscarPuntoReferenciaId')->name('buscarPuntosReferencia');
-        Route::get('/asignacion-recursos-formulario/{id}','FormularioEmergencias@proceso' )->name('asignacionRecursosformulario');
+        Route::get('/completar-formulario-emergencia/{id}','FormularioEmergencias@completarFormulario' )->name('completarFormulario');
+        Route::get('/cargar-personal-unidades-depachadas/{id}','FormularioEmergencias@cargarPersonalUnidadesDespachadas' )->name('cargarPersonalUnidadesDespachadas');
+        
+        //rotas para etapas de incedio y edificacion
+        Route::post('/creat-etapas-edificacion-formulario','FormularioEmergencias@cerarEtapasIncendiEdificacion' )->name('crearEdificacionFormulario');
         
     });
     
