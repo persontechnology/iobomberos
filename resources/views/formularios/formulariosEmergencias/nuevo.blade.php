@@ -205,7 +205,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="personales">
-
+                                    
                                 </tbody>
                             </table>
                     </div>
@@ -253,17 +253,29 @@
         if($('#fila_'+id).length){
             $('#fila_'+id).remove();
         }else{
+
+            var operador='<select name="" id="operador_'+id+'" name="operador" class="form-control">'+
+                    '</select>';
+
             var fila='<tr id="fila_'+id+'">'+
-                    '<th scope="row">'+vehiculo+'</th>'+
-                    '<td>Mark</td>'+
-                    '<td>Otto</td>'+
-                    '<td>@mdo</td>'+
-                    '<td></td>'+
+                        '<th scope="row">'+vehiculo+'</th>'+
+                        '<td>'+operador+'</td>'+
+                        '<td>Otto</td>'+
+                        '<td>@mdo</td>'+
+                        '<td></td>'+
                     '</tr>';
-            $('#personales').append(fila)
+            $('#personales').append(fila);
+
+            cargarOperadores(id);
         }
         
-        
+        function cargarOperadores(id){
+            var fila='<option value="">uno</option>';
+
+            // cargar operadoes, no ajax y enviar a opciones ----> esta historia continuara    
+
+            $('#operador_'+id).append(fila);
+        }
 
          
      }
