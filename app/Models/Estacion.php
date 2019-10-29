@@ -29,6 +29,14 @@ class Estacion extends Model
     }
 
 
+    // A:Deivid
+    // D:vehiculos disponibles para emergencia solo en estado=disponible
+    public function vehiculosDisponibles()
+    {
+        return $this->hasMany(Vehiculo::class)->where('estado','Disponible');
+    }
+
+
     public function asistenciasHoy()
     {
         $diaHoy=Carbon::now();

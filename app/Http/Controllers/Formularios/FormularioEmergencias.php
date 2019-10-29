@@ -6,18 +6,18 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use iobom\DataTables\Formularios\FormularioEmergenciasDataTable;
 use iobom\Http\Controllers\Controller;
-use iobom\Models\Asistencia\Asistencia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use iobom\Http\Requests\FormularioEmergencia\RqIngreso;
 use iobom\Models\Emergencia\Emergencia;
 use iobom\Models\Estacion;
 use iobom\Models\FormularioEmergencia;
+use iobom\Models\FormularioEmergencia\Edificacion;
 use iobom\Models\FormularioEmergencia\EstacionFormularioEmergencia;
+use iobom\Models\FormularioEmergencia\EtapaIncendio;
 use iobom\Models\Parroquia;
 use iobom\Models\PuntoReferencia;
 use iobom\User;
-use PhpParser\Node\Stmt\TryCatch;
 
 class FormularioEmergencias extends Controller
 {
@@ -96,20 +96,46 @@ class FormularioEmergencias extends Controller
             }
 
             DB::commit();
-            $request->flash('success','Formulario registrado exitosamente');
+            $request->flash('success','Formulario # '.$form->numero.' registrado exitosamente');
+            return redirect()->route('completarFormulario',$form->id);
         } catch (\Exception $th) {
             DB::rollback();
             $request->flash('danger','Ocurrio un error, vuelva intentar');
+            return redirect()->route('formularios');
         }
-
-        return redirect()->route('formularios');
     }
     
-    public function crearProceso($idFormulario)
+    public function completarFormulario($idFormulario)
     {
-        $formuralrio=FormularioEmergencia::findOrFail($idFormulario);
-        return view('formularios.formulariosEmergencias.nuevo');
+        $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $data = array('formu' => $formulario );
+        return view('formularios.formulariosEmergencias.completarFormulario',$data);
 
     }
 
+    public function cargarPersonalUnidadesDespachadas($idFormulario)
+    {
+        $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $estacionsSi=$formulario->estaciones;
+        $estacionsNo=Estacion::whereNotIn('id',$formulario->estaciones->pluck('id'))->get();
+        $data = array('formu' => $formulario,'estacionesSi'=>$estacionsSi,'estacionesNo'=>$estacionsNo );
+        return view('formularios.formulariosEmergencias.cargarPersonalUnidadesDespachadas',$data);
+    }
+
+    public function cerarEtapasIncendiEdificacion(Request $request)
+    {
+        $formulario=FormularioEmergencia::findOrFail($request->formulario);
+        if($formulario->etpaIncendio && $formulario->edificacion){
+            return response(['success'=>'existe']);
+        }else{
+            $etapa=new EtapaIncendio();
+            $etapa->formularioEmergencia_id=$formulario->id;
+            $etapa->save();
+            $edificacion=new Edificacion();
+            $edificacion->formularioEmergencia_id=$formulario->id;
+            $edificacion->save();
+            return response(['success'=>'ok']);
+        }
+        
+    }
 }

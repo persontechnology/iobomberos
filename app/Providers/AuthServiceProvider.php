@@ -7,9 +7,11 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use iobom\Models\Asistencia\Asistencia;
 use iobom\Models\Emergencia\Emergencia;
 use iobom\Models\Estacion;
+use iobom\Models\FormularioEmergencia;
 use iobom\Policies\AsistenciaPolicy;
 use iobom\Policies\EmergenciaPolicy;
 use iobom\Policies\EstacionPolicy;
+use iobom\Policies\FormularioEmercenciaPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -21,7 +23,8 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Estacion::class => EstacionPolicy::class,
         Emergencia::class=>EmergenciaPolicy::class,
-        Asistencia::class=>AsistenciaPolicy::class
+        Asistencia::class=>AsistenciaPolicy::class,
+        FormularioEmergencia::class=>FormularioEmercenciaPolicy::class,
     ];
 
     /**

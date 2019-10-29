@@ -28,7 +28,7 @@ class CreateEstacionFormularioEmergenciasTable extends Migration
 
             $table->text('origin_causa_evento')->nullable();
             $table->text('trabajo_realizado')->nullable();
-
+            
 
 
         });

@@ -202,7 +202,6 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/buscar-puntos-referencia', 'FormularioEmergencias@buscarPuntoReferenciaId')->name('buscarPuntosReferencia');
        
     });
-    
-    
+       
 
 });

@@ -127,16 +127,18 @@
 		var imageCrear="{{ asset('img/crear.png') }}";
 		@if($estaciones->count()>0)
 			@foreach($estaciones as $estacion)
-				var latitu={{$estacion->latitud}};
-				var longi={{$estacion->longitud}};
-				var marker_{{$estacion->id}} = new google.maps.Marker({
-			    map: map,
-			     position:{lat:latitu , lng:longi } ,
-			    title:"Nombre de la estación {{$estacion->nombre}}",
-			    icon:imageEstacion,
+				@if($estacion->latitud && $estacion->longitud)
+					var latitu={{$estacion->latitud}};
+					var longi={{$estacion->longitud}};
+					var marker_{{$estacion->id}} = new google.maps.Marker({
+					map: map,
+					position:{lat:latitu , lng:longi } ,
+					title:"Nombre de la estación {{$estacion->nombre}}",
+					icon:imageEstacion,
 
 
-			 	 });
+					});
+				@endif
 			@endforeach
 		@endif
 		@if($puntos->count()>0)
