@@ -45,6 +45,14 @@ class Estacion extends Model
         return $this->hasMany(Asistencia::class)
         ->where('fecha',Carbon::now()->toDateString())->where('fechaFin','<=',$fechaMenor);
     }
-
+  
+    public function asistenciaHoy()
+    {
+        $diaHoy=Carbon::now();
+        $sumarUnDia=$diaHoy->addDays(1);
+        $fechaMenor=$diaHoy->setDateTime($sumarUnDia->year,$sumarUnDia->month,$sumarUnDia->day,7,30,0,0)->toDateTimeString();
+        return $this->hasOne(Asistencia::class)
+        ->where('fecha',Carbon::now()->toDateString())->where('fechaFin','<=',$fechaMenor);
+    }   
 
 }

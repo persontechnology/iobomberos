@@ -25,7 +25,8 @@ class RolesTableSeeder extends Seeder
             'Recursos humanos',
             'Radio operador',
             'Radio despachador',
-            'Paramédico ',
+            'Paramédico',
+            'Inspector',
         );
         foreach ($roles as $rol) {
             Role::firstOrCreate(['name' => $rol]);

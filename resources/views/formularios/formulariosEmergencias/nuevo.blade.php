@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label for="emergencia" class="col-md-3 col-form-label text-md-right">{{ __('Emergencia') }}<i class="text-danger">*</i></label>
+                        <label for="emergencia" class="col-md-3 col-form-label text-md-right">{{ __('Emergencia') }}<name class="text-danger">*</i></label>
 
                         <div class="col-md-9">
                             @if($emergencias)
@@ -131,7 +131,7 @@
 
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                             @if (count($estaciones)>0)
 
                             <ul class="nav nav-pills mb-3 mt-2 ml-2" id="pills-tab" role="tablist">
@@ -150,28 +150,39 @@
                             <div class="tab-content" id="pills-tabContent">
                                 @php($est_c=0)
                                 @foreach ($estaciones as $estacion_c)
+                            
                                 @php($est_c++)
                                 <div class="tab-pane fade {{ $est_c==1?'show active':'' }}" id="pills-{{ $estacion_c->id }}" role="tabpanel" aria-labelledby="pills-{{ $estacion_c->id }}-tab">
-                                        @if (count($estacion_c->vehiculosDisponibles)>0)
+                                   
+                                    @if (count($estacion_c->asistenciaHoy->asistenciasAsistenciaVehiculo)>0)
                                         <label for="" class="ml-1">Vehículos</label>
-                                        <div class="row ml-1">
-                                            @foreach ($estacion_c->vehiculosDisponibles as $vehiculo)
-                                            <div class="col-xl-3 col-xs-6">
-                                                <div class="card">
-                                                    @if (Storage::exists($vehiculo->foto))
-                                                        <img src="{{ Storage::url($vehiculo->foto) }}" class="card-img-top" alt="...">
+                                        <div class="row">
+                                            @foreach ($estacion_c->asistenciaHoy->asistenciasAsistenciaVehiculo as $asistenciaVehiculo)
+                                            <div class="col-xl-2 col-xs-6">
+                                                @if ($asistenciaVehiculo->estado==false)                                                           
+                                                <div class="card bg-warning" >
+                                                @endif
+                                                 @if ($asistenciaVehiculo->estado==true &&  $asistenciaVehiculo->estadoEmergencia=='Emergencia')                                                           
+                                                    <div class="card bg-danger" >
+                                                @endif
+                                                @if ($asistenciaVehiculo->estado==true &&  $asistenciaVehiculo->estadoEmergencia=='Disponible')                                                           
+                                                <div class="card bg-success" >
+                                                @endif
+                                                    @if (Storage::exists($asistenciaVehiculo->vehiculo->foto))
+                                                        <img src="{{ Storage::url($asistenciaVehiculo->vehiculo->foto) }}" class="card-img-top" alt="...">
                                                     @else
                                                         <img src="{{ asset('img/carroBomberos.png') }}" alt="" class="card-img-top">
-                                                    @endif
-
-                                                    <div class="card-body">
-                                                        <div class="form-check">
-                                                            <input type="checkbox" onchange="agregarVehiculo(this);" class="form-check-input" data-id="{{ $vehiculo->id }}" data-nombre="{{ $vehiculo->tipoVehiculo->codigo.''.$vehiculo->codigo }}" value="{{ $vehiculo->id }}" id="check_v_{{ $vehiculo->id }}">
-                                                            <label class="form-check-label" for="check_v_{{ $vehiculo->id }}">
-                                                                {{ $vehiculo->tipoVehiculo->codigo.''.$vehiculo->codigo }}
+                                                    @endif                                                   
+                                                        <div class="form-check text-center">
+                                                            @if ($asistenciaVehiculo->estado==true &&  $asistenciaVehiculo->estadoEmergencia=='Disponible' )
+                                                            <input type="checkbox" onchange="agregarVehiculo(this);" class="form-check-input" data-id="{{ $asistenciaVehiculo->vehiculo->id }}" data-nombre="{{ $asistenciaVehiculo->vehiculo->tipoVehiculo->codigo.''.$asistenciaVehiculo->vehiculo->codigo }}" value="{{ $asistenciaVehiculo->vehiculo->id }}" id="check_v_{{ $asistenciaVehiculo->vehiculo->id }}">
+                                                                
+                                                            @endif
+                                                            <label class="form-check-label" for="check_v_{{ $asistenciaVehiculo->vehiculo->id }}">
+                                                                {{ $asistenciaVehiculo->vehiculo->tipoVehiculo->codigo.''.$asistenciaVehiculo->vehiculo->codigo }}
                                                             </label>
                                                         </div>
-                                                    </div>
+                                                    
                                                 </div>
                                             </div>
                                             @endforeach
@@ -191,17 +202,17 @@
                             </div>    
                         @endif
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label for="">Agregar responsables a vehículos</label>
                         <div class="table-responsive">
-                            <table class="table table-bordered">
+                            <table class=" table-bordered" style=" width:100%">
                                 <thead>
                                     <tr>
                                         <th scope="col">Vehículo</th>
                                         <th scope="col">Operador</th>
                                         <th scope="col">Acompañantes</th>
                                         <th scope="col">Paramédico</th>
-                                        <th scope="col"></th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody id="personales">
@@ -234,51 +245,114 @@
 <script src="{{ asset('admin/plus/select/js/bootstrap-select.min.js') }}"></script>
 <script src="{{ asset('admin/plus/select/js/lg/defaults-es_ES.min.js') }}"></script>
 
+
 @endpush
 
 @prepend('linksPie')
 <script type="text/javascript">
     $('#menuGestionFomularios').addClass('nav-item-expanded nav-item-open');
      $('#menuNuevoFormularios').addClass('active');
-     $('selectpicker').selectpicker();
+     $('select').selectpicker();
 
-
-     function agregarVehiculo(arg){
-         
+     function agregarVehiculo(arg){         
         var vehiculo=$(arg).data('nombre');
         var id=$(arg).data('id');
         var estado=arg.checked;
-
         
         if($('#fila_'+id).length){
+            notificar("warning","Vehículo removido");
             $('#fila_'+id).remove();
         }else{
-
-            var operador='<select name="" id="operador_'+id+'" name="operador" class="form-control">'+
+            notificar("info","Vehículo asignado");
+            var operador='<select  id="operador_'+id+'"  name="operador" data-live-search="true"  class="form-control selectpicker">'+
                     '</select>';
+            var operativos='<select id="operativos_'+id+'"  multiple="multiple" name="operador" class="form-control ">'+
+                    '</select>';
+            var paramedico='<select name="" id="paramedico_'+id+'" multiple="multiple" name="operador" class="form-control">'+
+            '</select>';
 
             var fila='<tr id="fila_'+id+'">'+
-                        '<th scope="row">'+vehiculo+'</th>'+
+                        '<th >'+vehiculo+'</th>'+
                         '<td>'+operador+'</td>'+
-                        '<td>Otto</td>'+
-                        '<td>@mdo</td>'+
-                        '<td></td>'+
+                        '<td>'+operativos+'</td>'+
+                        '<td>'+paramedico+'</td>'+
+                      
                     '</tr>';
             $('#personales').append(fila);
 
             cargarOperadores(id);
+            cargarOperativos(id);
+            cargarParamedico(id);
         }
         
         function cargarOperadores(id){
-            var fila='<option value="">uno</option>';
-
-            // cargar operadoes, no ajax y enviar a opciones ----> esta historia continuara    
-
-            $('#operador_'+id).append(fila);
+            $.blockUI({message:'<h1>Espere por favor.!</h1>'});
+            $.post( "{{route('buscarPersonalOperadorFormulario')}}", { vehiculo: id })
+            .done(function( data ) {
+                var fila;
+                var palabraClave;
+                $.each(data, function(i, item) {                  
+                    palabraClave=item.split('--')
+					fila+='<option value="'+palabraClave[2]+'"><strong>'+palabraClave[1] + ' : '+ palabraClave[0]+'</strong></option>'
+				});
+                $('#operador_'+id).append(fila);
+              
+            }).always(function(){
+				$.unblockUI();
+			}).fail(function(){
+                $.unblockUI();
+				console.log('existe un error ')
+			});   
         }
-
-         
-     }
+        
+        function cargarOperativos(id){
+            $.blockUI({message:'<h1>Espere por favor.!</h1>'});
+            $.post( "{{route('buscarPersonalOperativoFormulario')}}", { vehiculo: id })
+            .done(function( data ) {
+                var fila;
+                var palabraClave;
+                $.each(data, function(i, item) {                  
+                    palabraClave=item.split('--')
+					fila+='<option value="'+palabraClave[2]+'"><strong>'+palabraClave[1] + ' : '+ palabraClave[0]+'</strong></option>'
+				});
+                $('#operativos_'+id).append(fila);
+              
+            }).always(function(){
+				$.unblockUI();
+			}).fail(function(){
+                $.unblockUI();
+				console.log('existe un error ')
+			});   
+        }
+        function cargarParamedico(id){
+            $.blockUI({message:'<h1>Espere por favor.!</h1>'});
+            $.post( "{{route('buscarPersonalParamedicoFormulario')}}", { vehiculo: id })
+            .done(function( data ) {
+                var fila;
+                var palabraClave;
+                $.each(data, function(i, item) {                  
+                    palabraClave=item.split('--')
+					fila+='<option value="'+palabraClave[1]+'"><strong>'+palabraClave[0]+'</strong></option>'
+				});
+                $('#paramedico_'+id).append(fila);
+              
+            }).always(function(){
+				$.unblockUI();
+			}).fail(function(){
+                $.unblockUI();
+				console.log('existe un error ')
+			});  
+        }
+        $('#paramedico_'+id).select2({
+            placeholder: 'Seleccione paramedicos',
+            
+        });
+        $('#operativos_'+id).select2({
+            placeholder: 'Seleccione  acompañantes'
+        }); 
+        $('#operador_'+id).select2();
+              
+    }
 </script>
 
 <script>
@@ -370,8 +444,7 @@
                     notificar("error","Ocurrio un error");
                 });               
                 
-            });
-    
+            });    
         }
         @if($estaciones->count()>0)
         @foreach($estaciones as $estacion)
@@ -398,6 +471,7 @@
             @endif
       @endforeach
     @endif
+ 
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0Ko6qUa0EFuDWr77BpNJOdxD-QLstjBk&callback=initMap">
@@ -405,7 +479,7 @@
     <style type="text/css">
         #map {
             height: 350px;
-  width: 100%;
+            width: 100%;
         }
     </style>
 @endprepend

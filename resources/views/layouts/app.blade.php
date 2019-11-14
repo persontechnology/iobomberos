@@ -41,7 +41,9 @@
 	{{--  sw alert  --}}
 	<link rel="stylesheet" href="{{ asset('admin/plus/bootstrap-sweetalert/sweetalert.css') }}">
 	<script src="{{ asset('admin/plus/bootstrap-sweetalert/sweetalert.min.js') }}"></script>
-
+	{{--  Lobibox.min  --}}
+	<link rel="stylesheet" href="{{ asset('admin/plus/select2/dist/css/select2.css') }}">
+	<script src="{{ asset('admin/plus/select2/dist/js/select2.js') }}"></script>
 
 	@stack('linksCabeza')
 	<script>

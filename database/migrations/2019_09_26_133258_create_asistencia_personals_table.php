@@ -17,6 +17,7 @@ class CreateAsistenciaPersonalsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->boolean('estado')->default(true);
+            $table->enum('estadoEmergencia',['Disponible','Emergencia'])->default('Disponible');
             $table->string('observacion')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');

@@ -98,6 +98,7 @@ class VehiculosDataTable extends DataTable
      protected function getColumnsTable()
     {
         return [
+            'id',
             'foto'=>['title'=>'Imagen','data'=>'foto'],         
             'estacion_id'=>['title'=>'Estación','data'=>'estacion_id'],           
             'placa',

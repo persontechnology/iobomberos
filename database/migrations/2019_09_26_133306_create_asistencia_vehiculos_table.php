@@ -18,6 +18,7 @@ class CreateAsistenciaVehiculosTable extends Migration
             $table->timestamps();
             $table->boolean('estado')->default(true);
             $table->string('observacion')->nullable();
+            $table->enum('estadoEmergencia',['Disponible','Emergencia'])->default('Disponible');
             $table->unsignedBigInteger('vehiculo_id');
             $table->foreign('vehiculo_id')->references('id')->on('vehiculo');
             $table->unsignedBigInteger('asistencia_id');

@@ -4,6 +4,7 @@ namespace iobom\Http\Controllers\formularios;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use iobom\DataTables\Formularios\FormularioEmergenciasDataTable;
 use iobom\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,7 @@ use iobom\Models\FormularioEmergencia\EstacionFormularioEmergencia;
 use iobom\Models\FormularioEmergencia\EtapaIncendio;
 use iobom\Models\Parroquia;
 use iobom\Models\PuntoReferencia;
+use iobom\Models\Vehiculo;
 use iobom\User;
 
 class FormularioEmergencias extends Controller
@@ -137,5 +139,63 @@ class FormularioEmergencias extends Controller
             return response(['success'=>'ok']);
         }
         
+    }
+    public function buscarPersonalOperador(Request $request)
+    {
+        $vehiculo=Vehiculo::findOrFail($request->vehiculo);
+        // $vehiculo=Vehiculo::findOrFail($idVe);
+        $estacion=Estacion::findOrFail($vehiculo->estacion_id);
+        $usuarios=$estacion->asistenciaHoy->asietenciaAsistenciaPersonalesAscendente()
+        ->whereHas('roles', function($q){
+            $q->where('name','!=', 'Administrador');
+
+        })->get();
+        $data = array();       
+        foreach ($usuarios as $usuario) {
+            
+            array_push( $data,$usuario->getRoleNames()->first().'--'.$usuario->name.'--'.$usuario->asistenciaPersonal->id);
+        }   
+        // return $data;
+        return response()->json($data);
+    
+    }
+    public function buscarPersonalOperativo(Request $request)
+    {
+        $vehiculo=Vehiculo::findOrFail($request->vehiculo);
+        // $vehiculo=Vehiculo::findOrFail($idVe);
+        $estacion=Estacion::findOrFail($vehiculo->estacion_id);
+        $usuarios=$estacion->asistenciaHoy->asietenciaAsistenciaPersonalesDescendente()
+        ->whereHas('roles', function($q){
+            $q->where('name','!=', 'Administrador');
+
+        })->get();
+        $data = array();       
+        foreach ($usuarios as $usuario) {
+            
+            array_push( $data,$usuario->getRoleNames()->first().'--'.$usuario->name.'--'.$usuario->asistenciaPersonal->id);
+        }   
+        // return $data;
+        return response()->json($data);
+    
+    }
+
+    public function buscarPersonalParamedico(Request $request)
+    {
+        $vehiculo=Vehiculo::findOrFail($request->vehiculo);
+        // $vehiculo=Vehiculo::findOrFail($idVe);
+        $estacion=Estacion::findOrFail($vehiculo->estacion_id);
+        $usuarios=$estacion->asistenciaHoy->asietenciaAsistenciaPersonalesAscendente()
+        ->whereHas('roles', function($q){
+            $q->where('name', 'Paramédico');
+
+        })->get();
+        $data = array();       
+        foreach ($usuarios as $usuario) {
+            
+            array_push($data ,$usuario->name.'--'.$usuario->asistenciaPersonal->id);
+        }   
+        // return $data;
+        return response()->json($data);
+    
     }
 }
