@@ -10,16 +10,21 @@ use iobom\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use iobom\Http\Requests\FormularioEmergencia\RqIngreso;
+use iobom\Models\Asistencia\Asistencia;
+use iobom\Models\Asistencia\AsistenciaPersonal;
+use iobom\Models\Asistencia\AsistenciaVehiculo;
 use iobom\Models\Emergencia\Emergencia;
 use iobom\Models\Estacion;
 use iobom\Models\FormularioEmergencia;
 use iobom\Models\FormularioEmergencia\Edificacion;
 use iobom\Models\FormularioEmergencia\EstacionFormularioEmergencia;
 use iobom\Models\FormularioEmergencia\EtapaIncendio;
+use iobom\Models\FormularioEmergencia\FormularioEstacionVehiculo;
 use iobom\Models\Parroquia;
 use iobom\Models\PuntoReferencia;
 use iobom\Models\Vehiculo;
 use iobom\User;
+use iobom\Models\FormularioEmergencia\VehiculoOperador;
 
 class FormularioEmergencias extends Controller
 {
@@ -36,10 +41,25 @@ class FormularioEmergencias extends Controller
         $puntoReferencias=PuntoReferencia::get();
         $parroquias=Parroquia::get();
         $estacines=Estacion::get();
+        //buscar usuario que esten el la lista 
+        $diaHoy=Carbon::now();
+        $sumarUnDia=$diaHoy->addDays(1);
+        $fechaMenor=$diaHoy->setDateTime($sumarUnDia->year,$sumarUnDia->month,$sumarUnDia->day,7,30,0,0)->toDateTimeString();
+        $asistenciaHoy=Asistencia::where('fecha',Carbon::now()->toDateString())
+        ->where('fechaFin','<=',$fechaMenor)->get();
+        $astenciaPersonal=AsistenciaPersonal::
+        whereIn('asistencia_id',$asistenciaHoy->pluck('id'))->get();
+        $user = User::whereHas('roles', function($q){
+            $q->where('name','!=', 'Administrador');
+        })->get();
+        $asistenciaHoyFitro=$astenciaPersonal->whereIn('user_id',$user->pluck('id'));      
+        //fin de la busqueda de usuarios
+     
         $data = array('emergencias' => $emergencias,
                     'puntoReferencias'=>$puntoReferencias,
                     'estaciones'=>$estacines, 
-                    'parroquias'=>$parroquias,        
+                    'parroquias'=>$parroquias,
+                    'asistenciaHoy'=> $asistenciaHoyFitro,       
                 );
         return view('formularios.formulariosEmergencias.nuevo',$data);
         
@@ -84,26 +104,57 @@ class FormularioEmergencias extends Controller
             $form->maximaAutoridad_id=$maximaAutoridad->id??null;
             $form->emergencia_id=$request->emergencia;
             $form->creadoPor=Auth::id();
-
             
             $form->save();
-
-
+            //actualizar encargado del formulario
+            $encargadoFormulario=FormularioEmergencia::findOrFail($form->id);
+            $encargadoFormulario->encardadoFicha_id=$request->encargadoFormulario;
+            $encargadoFormulario->save();
             // crear formulario y estacione selecionados
-            foreach ($request->estaciones as $estacion) {
+            $i=0;
+            foreach ($request->vehiculos as $vehiculos) {
+                $asistenciaVehiculo=AsistenciaVehiculo::findOrFail($vehiculos);
+                $estacionFOrmulara=EstacionFormularioEmergencia::where('estacion_id',$asistenciaVehiculo->vehiculo->estacion_id)
+                ->where('formularioEmergencia_id',$form->id)
+                ->count();
                 $estacionFormularioEmergencia=new EstacionFormularioEmergencia();
-                $estacionFormularioEmergencia->estacion_id=$estacion;
-                $estacionFormularioEmergencia->formularioEmergencia_id=$form->id;
-                $estacionFormularioEmergencia->save();
+                $formularioEstacionVehiculo=new FormularioEstacionVehiculo();
+                $vehiculoOperador=new VehiculoOperador();
+                $personalOperado=AsistenciaPersonal::where('id',$request->operador[$i])->first();
+                if($estacionFOrmulara==0){
+                    $estacionFormularioEmergencia->estacion_id=$asistenciaVehiculo->vehiculo->estacion_id;
+                    $estacionFormularioEmergencia->formularioEmergencia_id=$form->id;                    
+                    $estacionFormularioEmergencia->save();
+                    $formularioEstacionVehiculo->estacionForEmergencias_id=$estacionFormularioEmergencia->id;
+                    $formularioEstacionVehiculo->asistenciaVehiculo_id=$asistenciaVehiculo->id;                  
+                    $formularioEstacionVehiculo->save();
+                    $vehiculoOperador->estacionForVehiculo_id=$formularioEstacionVehiculo->id;
+                    $vehiculoOperador->asistenciaPersonal_id=$request->operador[$i];
+                    $vehiculoOperador->save();
+                }else{
+                    $estacionFormularaPrimero=EstacionFormularioEmergencia::where('estacion_id',$asistenciaVehiculo->vehiculo->estacion_id)
+                    ->where('formularioEmergencia_id',$form->id)->first();
+                    $formularioEstacionVehiculo->estacionForEmergencias_id=$estacionFormularaPrimero->id;
+                    $formularioEstacionVehiculo->asistenciaVehiculo_id=$asistenciaVehiculo->id;                 
+                    $formularioEstacionVehiculo->save();
+                    $vehiculoOperador->estacionForVehiculo_id=$formularioEstacionVehiculo->id;
+                    $vehiculoOperador->asistenciaPersonal_id=$request->operador[$i];
+                    $vehiculoOperador->save();
+                }
+                $asistenciaVehiculo->estadoEMergencia="Emergencia";
+                $asistenciaVehiculo->save();
+                $personalOperado->estadoEMergencia="Emergencia";
+                $personalOperado->save();
+                     $i++;
             }
-
             DB::commit();
             $request->flash('success','Formulario # '.$form->numero.' registrado exitosamente');
-            return redirect()->route('completarFormulario',$form->id);
+            return redirect()->route('formularios');
         } catch (\Exception $th) {
             DB::rollback();
-            $request->flash('danger','Ocurrio un error, vuelva intentar');
-            return redirect()->route('formularios');
+            // $request->session()->flash('danger','Ocurrio un error, vuelva intentar');
+            // return redirect()->route('formularios');
+            echo $th;
         }
     }
     

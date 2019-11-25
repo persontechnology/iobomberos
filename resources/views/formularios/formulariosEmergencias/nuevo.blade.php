@@ -154,34 +154,35 @@
                                 @php($est_c++)
                                 <div class="tab-pane fade {{ $est_c==1?'show active':'' }}" id="pills-{{ $estacion_c->id }}" role="tabpanel" aria-labelledby="pills-{{ $estacion_c->id }}-tab">
                                    
-                                    @if (count($estacion_c->asistenciaHoy->asistenciasAsistenciaVehiculo)>0)
+                                    @if ($estacion_c->asistenciaHoy)
+                                    @if ($estacion_c->asistenciaHoy->asistenciasAsistenciaVehiculo->count()>0)
                                         <label for="" class="ml-1">Vehículos</label>
                                         <div class="row">
                                             @foreach ($estacion_c->asistenciaHoy->asistenciasAsistenciaVehiculo as $asistenciaVehiculo)
                                             <div class="col-xl-2 col-xs-6">
                                                 @if ($asistenciaVehiculo->estado==false)                                                           
-                                                <div class="card bg-warning" >
+                                                    <div class="card bg-warning" >
                                                 @endif
-                                                 @if ($asistenciaVehiculo->estado==true &&  $asistenciaVehiculo->estadoEmergencia=='Emergencia')                                                           
+                                                @if ($asistenciaVehiculo->estado==true &&  $asistenciaVehiculo->estadoEmergencia=='Emergencia')                                                           
                                                     <div class="card bg-danger" >
                                                 @endif
                                                 @if ($asistenciaVehiculo->estado==true &&  $asistenciaVehiculo->estadoEmergencia=='Disponible')                                                           
-                                                <div class="card bg-success" >
+                                                    <div class="card bg-success" >
                                                 @endif
-                                                    @if (Storage::exists($asistenciaVehiculo->vehiculo->foto))
-                                                        <img src="{{ Storage::url($asistenciaVehiculo->vehiculo->foto) }}" class="card-img-top" alt="...">
-                                                    @else
-                                                        <img src="{{ asset('img/carroBomberos.png') }}" alt="" class="card-img-top">
-                                                    @endif                                                   
-                                                        <div class="form-check text-center">
-                                                            @if ($asistenciaVehiculo->estado==true &&  $asistenciaVehiculo->estadoEmergencia=='Disponible' )
-                                                            <input type="checkbox" onchange="agregarVehiculo(this);" class="form-check-input" data-id="{{ $asistenciaVehiculo->vehiculo->id }}" data-nombre="{{ $asistenciaVehiculo->vehiculo->tipoVehiculo->codigo.''.$asistenciaVehiculo->vehiculo->codigo }}" value="{{ $asistenciaVehiculo->vehiculo->id }}" id="check_v_{{ $asistenciaVehiculo->vehiculo->id }}">
-                                                                
-                                                            @endif
-                                                            <label class="form-check-label" for="check_v_{{ $asistenciaVehiculo->vehiculo->id }}">
-                                                                {{ $asistenciaVehiculo->vehiculo->tipoVehiculo->codigo.''.$asistenciaVehiculo->vehiculo->codigo }}
-                                                            </label>
-                                                        </div>
+                                                @if (Storage::exists($asistenciaVehiculo->vehiculo->foto))
+                                                    <img src="{{ Storage::url($asistenciaVehiculo->vehiculo->foto) }}" class="card-img-top" alt="...">
+                                                @else
+                                                    <img src="{{ asset('img/carroBomberos.png') }}" alt="" class="card-img-top">
+                                                @endif                                                   
+                                                <div class="form-check text-center">
+                                                    @if ($asistenciaVehiculo->estado==true &&  $asistenciaVehiculo->estadoEmergencia=='Disponible' )
+                                                    <input type="checkbox" onchange="agregarVehiculo(this);" class="form-check-input" data-idasistencia="{{$asistenciaVehiculo->id }}" data-id="{{$asistenciaVehiculo->vehiculo->id }}" data-nombre="{{ $asistenciaVehiculo->vehiculo->tipoVehiculo->codigo.''.$asistenciaVehiculo->vehiculo->codigo }}" value="{{ $asistenciaVehiculo->vehiculo->id }}" id="check_v_{{ $asistenciaVehiculo->vehiculo->id }}">
+                                                        
+                                                    @endif
+                                                    <label class="form-check-label" for="check_v_{{ $asistenciaVehiculo->vehiculo->id }}">
+                                                        {{ $asistenciaVehiculo->vehiculo->tipoVehiculo->codigo.''.$asistenciaVehiculo->vehiculo->codigo }}
+                                                    </label>
+                                                </div>
                                                     
                                                 </div>
                                             </div>
@@ -190,6 +191,11 @@
                                     @else
                                         <div class="alert alert-warning" role="alert">
                                             <strong>No existe veículos disponibles en esta estación</strong>
+                                        </div>
+                                    @endif
+                                    @else
+                                        <div class="alert alert-warning" role="alert">
+                                            <strong>No existe un registro de asistencia de vehículos en la estación {{$estacion_c->nombre}} </strong>
                                         </div>
                                     @endif
                                 </div>
@@ -205,7 +211,7 @@
                     <div class="col-md-12">
                         <label for="">Agregar responsables a vehículos</label>
                         <div class="table-responsive">
-                            <table class=" table-bordered" style=" width:100%">
+                            <table class="table-bordered" style=" width:100%">
                                 <thead>
                                     <tr>
                                         <th scope="col">Vehículo</th>
@@ -221,18 +227,53 @@
                             </table>
                     </div>
                     </div>
-                </div>
-
-
+                </div>                
+            </div>
+            <ul class="list-group">
                 
-            </div>
-
-            <div class="table-reponsive">
-                <button type="button" class="btn btn-danger">
-                    <i class=""></i>
-                </button>
-            </div>
-
+                @if (count($asistenciaHoy)>0)
+                    <li  class="list-group-item">
+                        Seleccione Encargado del formulario
+                        <select name="encargadoFormulario" id="encargadoFormulario" class="form-control">
+                            @foreach ($asistenciaHoy as $asistencia)                         
+                                <option value="{{$asistencia->id}}">{{$asistencia->usuario->name}}</option>                        
+                            @endforeach
+                        </select>
+                    </li>                 
+                    @if (count($estaciones)>0)        
+                        @foreach ($estaciones as $estacion_c)                        
+                            @if ($estacion_c->asistenciaHoy)                    
+                                <li  class="list-group-item">
+                                      Seleccione encargado de la estación {{$estacion_c->nombre}}
+                                        <Select name="encargadoEstacion[]" id="representanteEstacion_{{$estacion_c->nombre}}" name="representanteEstacion" class="form-control">
+                                            @foreach ($estacion_c->asistenciaHoy->asietenciaAsistenciaPersonalesEncargado as $asistencialis)
+                                                <option value="{{$asistencialis->id}}">{{$asistencialis->name}}</option>
+                                                
+                                            @endforeach
+                                        </Select>
+                                    </li>
+                            @else
+                                <div class="alert alert-warning" role="alert">
+                                    <strong>No existe un registro de asistencia de vehículos en la estación {{$estacion_c->nombre}} </strong>
+                                </div>
+                            @endif
+                            <script>
+                                  $('#representanteEstacion_'+{{$estacion_c->nombre}}).select2();
+                            </script>
+                        @endforeach   
+                    @else
+                        <div class="alert alert-danger" role="alert">
+                            <strong>No existe estaciones para generar un formulario de emergencia</strong>
+                        </div>                    
+                    @endif
+                @else
+                    <div class="alert alert-danger" role="alert">
+                        <strong>No existe personal en asistencia</strong>
+                    </div>                    
+                @endif
+            </ul>         
+              
+            
         </div>
         <div class="card-footer">
             <button type="submit" class="btn btn-dark">Generar Ficha</button>
@@ -252,11 +293,13 @@
 <script type="text/javascript">
     $('#menuGestionFomularios').addClass('nav-item-expanded nav-item-open');
      $('#menuNuevoFormularios').addClass('active');
-     $('select').selectpicker();
+     $('selectpicker').selectpicker();
 
      function agregarVehiculo(arg){         
         var vehiculo=$(arg).data('nombre');
         var id=$(arg).data('id');
+        var idAsistencia=$(arg).data('idasistencia');
+        
         var estado=arg.checked;
         
         if($('#fila_'+id).length){
@@ -264,15 +307,15 @@
             $('#fila_'+id).remove();
         }else{
             notificar("info","Vehículo asignado");
-            var operador='<select  id="operador_'+id+'"  name="operador" data-live-search="true"  class="form-control selectpicker">'+
+            var operador='<select  id="operador_'+id+'"  name="operador[]" data-live-search="true"  class="form-control selectpicker" required>'+
                     '</select>';
-            var operativos='<select id="operativos_'+id+'"  multiple="multiple" name="operador" class="form-control ">'+
+            var operativos='<select id="operativos_'+id+'"  multiple="multiple" name="operativos[]" class="form-control " required>'+
                     '</select>';
-            var paramedico='<select name="" id="paramedico_'+id+'" multiple="multiple" name="operador" class="form-control">'+
+            var paramedico='<select name="" id="paramedico_'+id+'" multiple="multiple" name="paramedico" class="form-control" >'+
             '</select>';
 
             var fila='<tr id="fila_'+id+'">'+
-                        '<th >'+vehiculo+'</th>'+
+                        '<th ><input type="hidden" name="vehiculos[]" value="'+idAsistencia+'" />'+vehiculo+'</th>'+
                         '<td>'+operador+'</td>'+
                         '<td>'+operativos+'</td>'+
                         '<td>'+paramedico+'</td>'+
@@ -353,6 +396,8 @@
         $('#operador_'+id).select2();
               
     }
+
+    $('#encargadoFormulario').select2();
 </script>
 
 <script>
