@@ -5,6 +5,7 @@ namespace iobom\Models;
 use Illuminate\Database\Eloquent\Model;
 use iobom\Models\Emergencia\Emergencia;
 use iobom\Models\FormularioEmergencia\Edificacion;
+use iobom\Models\FormularioEmergencia\EstacionFormularioEmergencia;
 use iobom\Models\FormularioEmergencia\EtapaIncendio;
 use iobom\Models\PuntoReferencia;
 use iobom\User;
@@ -48,7 +49,9 @@ class FormularioEmergencia extends Model
     // D:un formualrio tiene varias estaciones asignadas
     public function estaciones()
     {
-        return $this->belongsToMany(Estacion::class, 'estacion_formulario_emergencias', 'formularioEmergencia_id', 'estacion_id');
+        return $this->belongsToMany(Estacion::class, 'estacion_formulario_emergencias', 'formularioEmergencia_id', 'estacion_id')
+        ->as('estacionFormulario')
+        ->withPivot(['id','estacion_id','formularioEmergencia_id']);
     }
 
     // A:fabian
@@ -65,5 +68,8 @@ class FormularioEmergencia extends Model
         return $this->hasOne(Edificacion::class,'formularioEmergencia_id');
     }
 
-
+    public function estacionFormularioEmergencias()
+    {
+        return $this->hasMany(EstacionFormularioEmergencia::class,'formularioEmergencia_id');
+    }
 }

@@ -311,7 +311,7 @@
                     '</select>';
             var operativos='<select id="operativos_'+id+'"  multiple="multiple" name="operativos[]" class="form-control " required>'+
                     '</select>';
-            var paramedico='<select name="" id="paramedico_'+id+'" multiple="multiple" name="paramedico" class="form-control" >'+
+            var paramedico='<select  id="paramedico_'+id+'"  name="paramedico[]" class="form-control" >'+
             '</select>';
 
             var fila='<tr id="fila_'+id+'">'+
@@ -324,7 +324,7 @@
             $('#personales').append(fila);
 
             cargarOperadores(id);
-            cargarOperativos(id);
+            cargarOperativos(id,idAsistencia);
             cargarParamedico(id);
         }
         
@@ -348,7 +348,7 @@
 			});   
         }
         
-        function cargarOperativos(id){
+        function cargarOperativos(id,idAsistencia){
             $.blockUI({message:'<h1>Espere por favor.!</h1>'});
             $.post( "{{route('buscarPersonalOperativoFormulario')}}", { vehiculo: id })
             .done(function( data ) {
@@ -356,7 +356,7 @@
                 var palabraClave;
                 $.each(data, function(i, item) {                  
                     palabraClave=item.split('--')
-					fila+='<option value="'+palabraClave[2]+'"><strong>'+palabraClave[1] + ' : '+ palabraClave[0]+'</strong></option>'
+					fila+='<option value="'+idAsistencia+'-'+palabraClave[2]+'"><strong>'+palabraClave[1] + ' : '+ palabraClave[0]+'</strong></option>'
 				});
                 $('#operativos_'+id).append(fila);
               
