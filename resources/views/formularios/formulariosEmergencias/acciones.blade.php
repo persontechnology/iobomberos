@@ -5,8 +5,12 @@
     <a  href="#" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Editar {{ $formulario->emergencia->nombre }}">
         <i class="fas fa-edit"></i>
     </a>
+    
     <button type="button" onclick="eliminar(this);" data-id="{{ $formulario->id }}" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar {{$formulario->emergencia->nombre}}">
         <i class="fas fa-trash-alt"></i>
     </button>
+    <a  href="{{ route('nueva-atencion', $formulario->id) }}" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Editar {{ $formulario->emergencia->nombre }}">
+        <i class="icon-truck "></i>
+    </a>
     
 </div>

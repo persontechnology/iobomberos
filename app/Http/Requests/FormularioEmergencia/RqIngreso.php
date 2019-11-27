@@ -34,8 +34,7 @@ class RqIngreso extends FormRequest
             "operador.*"  => "required|exists:asistencia_personals,id",
             "operativos"    => "required|array",
             "operativos.*"  => "required|exists:asistencia_personals,id",
-            "paramedico"    => "array",
-            "paramedico.*"  => "exists:asistencia_personals,id",
+            
             'emergencia'=>'required|exists:emergencia,id',
             'puntoReferencia'=>'required|exists:puntoReferencia,id',
         ];

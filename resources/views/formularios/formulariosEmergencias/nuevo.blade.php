@@ -8,6 +8,10 @@
 
 @section('content')
 <div class="card">
+   <div class="text-center">
+       <p><h4><strong>Crear Formulario N° {{$numero}}</strong></h4></p>
+   </div>
+      
     <form method="POST" action="{{ route('guardarFormulario') }}" id="formNuevoUsuario" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
@@ -109,7 +113,7 @@
                 <label class=" col-form-label text-md-right" for="formaAviso">Seleccione el punto de Referencia<i class="text-danger">*</i></label>
                 <div class="col-md-12"> 
                     <select id="puntoRe" class="form-control selectpicker  @error('puntoReferencia') is-invalid @enderror" data-live-search="true" name="puntoReferencia"  required>
-                        <option value=" ">Selecione un punto de referencia</option>
+                        <option value="" selected >Seleccione Un punto de referencia</option>
                         @foreach ($parroquias as $parroquia)
                         <optgroup label="Parroquia: {{$parroquia->nombre}}">
                             @foreach ($parroquia->barrios as $barrio)
@@ -122,7 +126,7 @@
                     </select>
                 </div>                        	
             </div> 
-            
+            <br>
             <div id="map">
             </div>
 
@@ -210,7 +214,7 @@
                     </div>
                     <div class="col-md-12">
                         <label for="">Agregar responsables a vehículos</label>
-                        <div class="table-responsive">
+                        <div class="table table-responsive">
                             <table class="table-bordered" style=" width:100%">
                                 <thead>
                                     <tr>
@@ -234,7 +238,9 @@
                 @if (count($asistenciaHoy)>0)
                     <li  class="list-group-item">
                         Seleccione Encargado del formulario
-                        <select name="encargadoFormulario" id="encargadoFormulario" class="form-control">
+                        <select name="encargadoFormulario" id="encargadoFormulario" class="form-control selectpicker" data-live-search="true">
+                            <option value=" ">--Seleccione Encargado del formulario-- </option>
+                            
                             @foreach ($asistenciaHoy as $asistencia)                         
                                 <option value="{{$asistencia->id}}">{{$asistencia->usuario->name}}</option>                        
                             @endforeach
@@ -245,21 +251,21 @@
                             @if ($estacion_c->asistenciaHoy)                    
                                 <li  class="list-group-item">
                                       Seleccione encargado de la estación {{$estacion_c->nombre}}
-                                        <Select name="encargadoEstacion[]" id="representanteEstacion_{{$estacion_c->nombre}}" name="representanteEstacion" class="form-control">
+                                        <Select name="encargadoEstacion[]" id="representanteEstacion{{$estacion_c->nombre}}" name="representanteEstacion" data-live-search="true" class="form-control selectpicker" required>
+                                            <option value=" ">--Seleccione Encargado de estacion-- </option>
                                             @foreach ($estacion_c->asistenciaHoy->asietenciaAsistenciaPersonalesEncargado as $asistencialis)
                                                 <option value="{{$asistencialis->id}}">{{$asistencialis->name}}</option>
                                                 
                                             @endforeach
                                         </Select>
                                     </li>
+                               
                             @else
                                 <div class="alert alert-warning" role="alert">
                                     <strong>No existe un registro de asistencia de vehículos en la estación {{$estacion_c->nombre}} </strong>
                                 </div>
                             @endif
-                            <script>
-                                  $('#representanteEstacion_'+{{$estacion_c->nombre}}).select2();
-                            </script>
+                           
                         @endforeach   
                     @else
                         <div class="alert alert-danger" role="alert">
@@ -307,7 +313,7 @@
             $('#fila_'+id).remove();
         }else{
             notificar("info","Vehículo asignado");
-            var operador='<select  id="operador_'+id+'"  name="operador[]" data-live-search="true"  class="form-control selectpicker" required>'+
+            var operador='<select   id="operador_'+id+'"  name="operador[]"   class="form-control selectpicker"  required>'+
                     '</select>';
             var operativos='<select id="operativos_'+id+'"  multiple="multiple" name="operativos[]" class="form-control " required>'+
                     '</select>';
@@ -373,6 +379,7 @@
             .done(function( data ) {
                 var fila;
                 var palabraClave;
+                fila='<option value="">--Selecione Paramédico--</option>'
                 $.each(data, function(i, item) {                  
                     palabraClave=item.split('--')
 					fila+='<option value="'+palabraClave[1]+'"><strong>'+palabraClave[0]+'</strong></option>'
@@ -397,7 +404,7 @@
               
     }
 
-    $('#encargadoFormulario').select2();
+
 </script>
 
 <script>

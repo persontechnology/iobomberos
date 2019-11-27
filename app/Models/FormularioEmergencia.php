@@ -3,6 +3,7 @@
 namespace iobom\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use iobom\Models\Asistencia\AsistenciaPersonal;
 use iobom\Models\Emergencia\Emergencia;
 use iobom\Models\FormularioEmergencia\Edificacion;
 use iobom\Models\FormularioEmergencia\EstacionFormularioEmergencia;
@@ -71,5 +72,13 @@ class FormularioEmergencia extends Model
     public function estacionFormularioEmergencias()
     {
         return $this->hasMany(EstacionFormularioEmergencia::class,'formularioEmergencia_id');
+    }
+    public function creadoPorUsuario()
+    {
+        return $this->belongsTo(User::class, 'creadoPor');
+    }
+    public function asitenciaEncardado()
+    {
+        return $this->belongsTo(AsistenciaPersonal::class, 'encardadoFicha_id');
     }
 }

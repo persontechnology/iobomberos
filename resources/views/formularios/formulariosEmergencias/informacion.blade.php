@@ -8,16 +8,21 @@
 
 @section('content')
 <div class="card">
-    <div class="card-header">       
-        <label class="center"  for="nombre">Detalles de formulario</label>         
-    </div>
+ 
     <div class="card-body">
-        <h4 class="text-center"><strong>INFORME N° {{$formulario->numero}} DEL EVENTO ADVERSO</strong></h4>
+        <h4 class="text-center"><strong>DETALLE DEL FORMULARIO DE EMERGENCIA N° {{$formulario->numero}} </strong></h4>
         <div class="table-responsive">
             <table class="table table-bordered">
                <tbody>
+                    <tr>
+                        <th colspan="2">
+                            <strong> Estado: </strong> <span class="badge  badge-pill bg-teal-400">{{$formulario->estado}}</span>
+                        </th>
+                    </tr>
                    <tr>
-                   <th><strong>Emeregencia: </strong> {{$formulario->emergencia->nombre}}</th>
+                        <th colspan="2">
+                            <strong>Emeregencia: </strong> {{$formulario->emergencia->nombre}}
+                        </th>
                    </tr>
                    <tr>
                         <th>
@@ -44,7 +49,21 @@
                         </th>
                    </tr>
                    <tr>
-                       <th>Personal y unidades despachadas</th>
+                        <th class="text-primary">
+                            <strong>Creado Por: </strong> {{$formulario->creadoPorUsuario->name}}
+                        </th>
+                        <th class="text-success">
+                            <strong >Creado el: </strong> {{$formulario->created_at}}
+                        </th>
+                   </tr>
+                   <tr class="text-center">
+                       <th colspan="2">
+                           <h4><strong>Personal y unidades despachadas <br>
+                           </strong></h4>
+                           <div class="text-info">
+                                <strong>Encargado Formulario: </strong>{{$formulario->asitenciaEncardado->usuario->name}}
+                            </div>
+                            </th>
                    </tr>
                    
                </tbody>
@@ -54,18 +73,69 @@
             <table class="table table-bordered">
                 <tbody>
                     <tr class="text-center">
-                        <th>
+                        <th colspan="4">
                             <strong>{{$estaciones->estacion->nombre}}</strong>
+                            <br>
+                            <div class="text-warning">
+                                <strong>Encargado de la estación: </strong>{{$estaciones->responsable->name}}
+                            </div>
                         </th>
+                    </tr>
+                    <tr>
+                        <th>Unidades</th>
+                        <th>Operador</th>
+                        <th>Acompañantes</th>
+                        <th>Paramédico</th>
                     </tr>
                     @foreach ($estaciones->formularioEstacionVehiculo as $vehiculo)
                     <tr >
-                            <th>
-                                    <strong>{{$vehiculo->asistenciaVehiculo->vehiculo->tipoVehiculo->nombre}} <br>
-                                        {{$vehiculo->asistenciaVehiculo->vehiculo->tipoVehiculo->codigo}}
-                                        {{$vehiculo->asistenciaVehiculo->vehiculo->codigo}}
-                                    </strong>
-                                </th>
+                        <th>
+                            <strong>{{$vehiculo->asistenciaVehiculo->vehiculo->tipoVehiculo->nombre}} <br>
+                                {{$vehiculo->asistenciaVehiculo->vehiculo->tipoVehiculo->codigo}}
+                                {{$vehiculo->asistenciaVehiculo->vehiculo->codigo}}
+                            </strong>
+                        </th>
+                        <th>
+                            <ul>
+                                @if ($vehiculo->vehiculoOperador)
+                                    <li>
+                                        {{$vehiculo->vehiculoOperador->asistenciaPersonal->usuario->name}}  
+                                    </li> 
+                                @else
+                                <li class="text-danger">
+                                    Operador  no asignado
+                                </li> 
+                                @endif
+                                
+                            </ul>
+
+                        </th>
+                        <th>
+                            <ul>
+                                @foreach ($vehiculo->vehiculoOperativos as $operativos)
+                                    
+                                    <li>
+                                        {{$operativos->asistenciaPersonal->usuario->name}}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </th>
+                        <th>
+                            <ul>
+                                
+                                    @if ($vehiculo->vehiculoParamedico)
+                                        <li>
+                                            {{$vehiculo->vehiculoParamedico->asistenciaPersonal->usuario->name}}   
+                                        </li> 
+                                    @else
+                                    <li class="text-danger">
+                                       Paramédico no asignado
+                                    </li> 
+                                    @endif
+                               
+                            </ul>
+                        </th>
+
                     </tr>  
                     @endforeach
                     

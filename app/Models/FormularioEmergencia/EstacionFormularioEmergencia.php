@@ -4,6 +4,7 @@ namespace iobom\Models\FormularioEmergencia;
 
 use Illuminate\Database\Eloquent\Model;
 use iobom\Models\Estacion;
+use iobom\User;
 
 class EstacionFormularioEmergencia extends Model
 {
@@ -16,5 +17,8 @@ class EstacionFormularioEmergencia extends Model
     {
         return $this->hasMany(FormularioEstacionVehiculo::class,'estacionForEmergencias_id');
     }
-    
+    public function responsable()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
 }

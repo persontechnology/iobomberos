@@ -56,12 +56,18 @@ class FormularioEmergencias extends Controller
         })->get();
         $asistenciaHoyFitro=$astenciaPersonal->whereIn('user_id',$user->pluck('id'));      
         //fin de la busqueda de usuarios
-     
+        $numero=FormularioEmergencia::latest()->value('numero');
+        if($numero){
+            $numero=$numero+1;
+        }else{
+            $numero=1;
+        }
         $data = array('emergencias' => $emergencias,
                     'puntoReferencias'=>$puntoReferencias,
                     'estaciones'=>$estacines, 
                     'parroquias'=>$parroquias,
-                    'asistenciaHoy'=> $asistenciaHoyFitro,       
+                    'asistenciaHoy'=> $asistenciaHoyFitro, 
+                    'numero'=>$numero,      
                 );
         return view('formularios.formulariosEmergencias.nuevo',$data);
         
@@ -133,8 +139,14 @@ class FormularioEmergencias extends Controller
                     //guardar vehiculo en cada uno de las estaciones
                     $formularioEstacionVehiculo->estacionForEmergencias_id=$estacionFormularioEmergencia->id;
                     $formularioEstacionVehiculo->asistenciaVehiculo_id=$asistenciaVehiculo->id;                  
-                    $formularioEstacionVehiculo->save();               
-                    
+                    $formularioEstacionVehiculo->save();
+                    //buscar estacion del formulario
+                    $buscarestacionEstacion=EstacionFormularioEmergencia::findOrFail($estacionFormularioEmergencia->id);
+                    $asistenciaPersonalEstacion=AsistenciaPersonal::findOrFail($request->encargadoEstacion[$i]);             
+                    $buscarestacionEstacion->user_id= $asistenciaPersonalEstacion->user_id;
+                    $buscarestacionEstacion->save();
+                    $asistenciaPersonalEstacion->estadoEmergencia='Emergencia';
+                    $asistenciaPersonalEstacion->save();
                 }else{
                     //Buscar si la estacion existe en la asignacion del formulario 
                     $estacionFormularaPrimero=EstacionFormularioEmergencia::where('estacion_id',$asistenciaVehiculo->vehiculo->estacion_id)
@@ -189,8 +201,9 @@ class FormularioEmergencias extends Controller
             return redirect()->route('formularios');
         } catch (\Exception $th) {
             DB::rollback();
-            $request->session()->flash('danger','Ocurrio un error, vuelva intentar');
-            return redirect()->route('formularios');
+            //$request->session()->flash('danger','Ocurrio un error, vuelva intentar');
+            //return redirect()->route('formularios');
+            echo $th;
            
         }
     }
