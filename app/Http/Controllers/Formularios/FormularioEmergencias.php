@@ -142,11 +142,18 @@ class FormularioEmergencias extends Controller
                     $formularioEstacionVehiculo->save();
                     //buscar estacion del formulario
                     $buscarestacionEstacion=EstacionFormularioEmergencia::findOrFail($estacionFormularioEmergencia->id);
-                    $asistenciaPersonalEstacion=AsistenciaPersonal::findOrFail($request->encargadoEstacion[$i]);             
-                    $buscarestacionEstacion->user_id= $asistenciaPersonalEstacion->user_id;
-                    $buscarestacionEstacion->save();
-                    $asistenciaPersonalEstacion->estadoEmergencia='Emergencia';
-                    $asistenciaPersonalEstacion->save();
+                        foreach($request->encargadoEstacion as $encargadoEstacion){
+                            $variableAuxEnca=explode('-',$encargadoEstacion);
+                            if($buscarestacionEstacion->estacion_id==$variableAuxEnca[0]){
+                                $asistenciaPersonalEstacion=AsistenciaPersonal::findOrFail($variableAuxEnca[1]);             
+                                $buscarestacionEstacion->user_id= $asistenciaPersonalEstacion->user_id;
+                                $buscarestacionEstacion->save();
+                                $asistenciaPersonalEstacion->estadoEmergencia='Emergencia';
+                                $asistenciaPersonalEstacion->save();
+                            }
+                        }
+                        
+                    
                 }else{
                     //Buscar si la estacion existe en la asignacion del formulario 
                     $estacionFormularaPrimero=EstacionFormularioEmergencia::where('estacion_id',$asistenciaVehiculo->vehiculo->estacion_id)
@@ -158,10 +165,12 @@ class FormularioEmergencias extends Controller
                  
                 }
                 //guardar operador en cada veiculo registrado
+                if($request->operador[$i]){
                 $vehiculoOperador=new VehiculoOperador();  
                 $vehiculoOperador->estacionForVehiculo_id=$formularioEstacionVehiculo->id;
                 $vehiculoOperador->asistenciaPersonal_id=$request->operador[$i];
                 $vehiculoOperador->save();
+                }
                 //guardar Acompañantes en cada vehiculo
                 foreach ($request->operativos as $operativo ) {
                     $variableAux=explode('-',$operativo);
