@@ -16,6 +16,7 @@ class CreateAtencionPrehospitalariasTable extends Migration
     {
         Schema::create('atencion_prehospitalarias', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('numero');
             $table->string('ambulancia');
             $table->string('nombres');
             $table->string('cedula');
@@ -31,8 +32,8 @@ class CreateAtencionPrehospitalariasTable extends Migration
             $table->integer('glasgow');
             $table->enum('reaccionDerecha',['RN','RL','RR'])->nullable();
             $table->enum('dilatacionDerecha',['DN','DD','DA'])->nullable();
-            $table->enum('reaccionIzquierda',['RN','RL','RR'])->nullable();
-            $table->enum('dilatacionIzquierda',['DN','DD','DA'])->nullable();
+            $table->enum('reaccionIzquierda',['RN1','RL1','RR1'])->nullable();
+            $table->enum('dilatacionIzquierda',['DN1','DD1','DA1'])->nullable();
 
             $table->unsignedBigInteger('formularioEmergencia_id');            
             $table->foreign('formularioEmergencia_id')->references('id')->on('formularioEmergencia');
