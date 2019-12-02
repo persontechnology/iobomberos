@@ -15,6 +15,12 @@ use iobom\Models\FormularioEmergencia\AtencionPrehospitalaria;
 
 class AtencionPrehospitalarias extends Controller
 {
+    public function index($idFormulario)
+    {
+        $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $data = array('formulario' => $formulario);
+        return view('formularios.atencionPrehospitalarias.index',$data);
+    }
     public function nuevo($idFormulario)
     {
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
@@ -74,10 +80,18 @@ class AtencionPrehospitalarias extends Controller
          } catch (\Exception $th) {
             DB::rollback();
             $request->session()->flash('danger','Ocurrio un error, vuelva intentar');
-            return redirect()->route('formularios');
-           
+            return redirect()->route('formularios');        
            
         }
         
+    }
+    
+    function editarAtencion($idAtencion)
+    {
+        $atencion=AtencionPrehospitalaria::findOrFail($idAtencion);
+        $clinicas=Clinica::get();
+        $insumos=Insumo::get();
+        $data = array('atencion' => $atencion,'clinicas'=>$clinicas,'insumos'=>$insumos);
+        return view('formularios.atencionPrehospitalarias.editar',$data);
     }
 }

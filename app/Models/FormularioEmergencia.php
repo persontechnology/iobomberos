@@ -5,6 +5,7 @@ namespace iobom\Models;
 use Illuminate\Database\Eloquent\Model;
 use iobom\Models\Asistencia\AsistenciaPersonal;
 use iobom\Models\Emergencia\Emergencia;
+use iobom\Models\FormularioEmergencia\AtencionPrehospitalaria;
 use iobom\Models\FormularioEmergencia\Edificacion;
 use iobom\Models\FormularioEmergencia\EstacionFormularioEmergencia;
 use iobom\Models\FormularioEmergencia\EtapaIncendio;
@@ -80,5 +81,10 @@ class FormularioEmergencia extends Model
     public function asitenciaEncardado()
     {
         return $this->belongsTo(AsistenciaPersonal::class, 'encardadoFicha_id');
+    }
+    //FAbian Lopez Buscar atension referente al formulario
+    public function atenciones()
+    {
+        return $this->hasMany(AtencionPrehospitalaria::class,'formularioEmergencia_id');
     }
 }

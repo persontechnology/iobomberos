@@ -265,3 +265,15 @@ Breadcrumbs::for('formularios', function ($trail) {
     $trail->parent('home');
     $trail->push('G. Formularios', route('formularios'));
 });
+Breadcrumbs::for('registroHospitalario', function ($trail,$formulario) {
+    $trail->parent('formularios');
+    $trail->push(' G. Pre-Hospitalaria ', route('atenciones',$formulario->id));
+});
+Breadcrumbs::for('nuevoRegistroHospitalario', function ($trail,$formulario) {
+    $trail->parent('registroHospitalario',$formulario);
+    $trail->push(' N. Registro Pre-Hospitalaria ', route('nueva-atencion',$formulario->id));
+});
+Breadcrumbs::for('editarRegistroHospitalario', function ($trail,$atencion) {
+    $trail->parent('registroHospitalario',$atencion->formulario);
+    $trail->push(' N. Registro Pre-Hospitalaria ', route('nueva-atencion',$atencion->id));
+});

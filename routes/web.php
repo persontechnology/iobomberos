@@ -204,9 +204,10 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/formulario-buscar-personal-Operativo', 'FormularioEmergencias@buscarPersonalOperativo')->name('buscarPersonalOperativoFormulario');
         Route::post('/formulario-buscar-personal-Paramedico', 'FormularioEmergencias@buscarPersonalParamedico')->name('buscarPersonalParamedicoFormulario');
         Route::get('/informacion-formulario/{id}','FormularioEmergencias@informacionFormulario' )->name('informacion-formulario');
+        Route::get('/atenciones/{id}','AtencionPrehospitalarias@index' )->name('atenciones');
         Route::get('/nueva-atencion/{id}','AtencionPrehospitalarias@nuevo' )->name('nueva-atencion');
         Route::post('/guardar-atencion','AtencionPrehospitalarias@guardarAtencion' )->name('guardar-atencion');
-
+        Route::get('/editar-atencion/{id}','AtencionPrehospitalarias@editarAtencion' )->name('editar-atencion');
         
          
     });
