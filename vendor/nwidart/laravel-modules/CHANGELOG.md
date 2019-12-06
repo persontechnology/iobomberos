@@ -4,6 +4,28 @@ All Notable changes to `laravel-modules` will be documented in this file.
 
 ## Next
 
+## 6.2.0 - 2019-11-12
+
+### Changed
+
+- Properly guessing the namespace from the path (in `GeneratorPath` class)
+- Fixing generation of resource file if the resource has been disabled to generate
+- Fix when using a custom service provider namespace, namespace is correctly referenced in module.json and compose.json
+- Fix when using custom service provider namespace, module path is correctly referenced in the `RouteServiceProvider` and `ModuleServiceProvider`
+- Fix when using a custom path for controllers in the controller stub
+
+## 6.1.0 - 2019-11-01
+
+### Added
+
+- Added new `module:delete` command
+
+### Changed
+
+- Add optional path parameter to `module_path` helper (PR#861)
+- The default path of the `module_statuses.json` file has been moved to the Application's base path. This is to improve its visibility and the fact that it can be committed by default.
+- Throw an exception when no proper activator class was configured
+
 ## 6.0.0 - 2019-09-19
 
 ### Added

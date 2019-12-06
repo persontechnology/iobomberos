@@ -32,7 +32,7 @@ class FormularioEmergencia extends Model
 
 
     // A:Deivid
-    // D: un formulario tiene una maxima autoridad axinado
+    // D: un formulario tiene una maxima autoridad axignado
     public function maximaAutoridad()
     {
         return $this->belongsTo(User::class,'maximaAutoridad_id');
@@ -78,6 +78,8 @@ class FormularioEmergencia extends Model
     {
         return $this->belongsTo(User::class, 'creadoPor');
     }
+    
+    // A:
     public function asitenciaEncardado()
     {
         return $this->belongsTo(AsistenciaPersonal::class, 'encardadoFicha_id');

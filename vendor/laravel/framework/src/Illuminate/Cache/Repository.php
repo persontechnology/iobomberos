@@ -2,25 +2,25 @@
 
 namespace Illuminate\Cache;
 
-use Closure;
 use ArrayAccess;
-use DateTimeInterface;
 use BadMethodCallException;
-use Illuminate\Support\Carbon;
+use Closure;
+use DateTimeInterface;
 use Illuminate\Cache\Events\CacheHit;
-use Illuminate\Contracts\Cache\Store;
-use Illuminate\Cache\Events\KeyWritten;
 use Illuminate\Cache\Events\CacheMissed;
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\Cache\Events\KeyForgotten;
-use Illuminate\Support\InteractsWithTime;
-use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Cache\Events\KeyWritten;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
+use Illuminate\Contracts\Cache\Store;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\InteractsWithTime;
+use Illuminate\Support\Traits\Macroable;
 
 /**
  * @mixin \Illuminate\Contracts\Cache\Store
  */
-class Repository implements CacheContract, ArrayAccess
+class Repository implements ArrayAccess, CacheContract
 {
     use InteractsWithTime;
     use Macroable {
@@ -504,7 +504,7 @@ class Repository implements CacheContract, ArrayAccess
     /**
      * Get the default cache time.
      *
-     * @return int
+     * @return int|null
      */
     public function getDefaultCacheTime()
     {
@@ -584,7 +584,7 @@ class Repository implements CacheContract, ArrayAccess
      * Store an item in the cache for the default time.
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return void
      */
     public function offsetSet($key, $value)

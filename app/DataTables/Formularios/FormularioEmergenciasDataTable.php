@@ -26,7 +26,16 @@ class FormularioEmergenciasDataTable extends DataTable
                 });            
             })
             ->editColumn('puntoReferencia_id',function($pr){
-                return $pr->puntoReferencia->barrio->nombre.' ' .$pr->puntoReferencia->referencia;
+                if($pr->puntoReferencia){
+                    return $pr->puntoReferencia->barrio->nombre.' ' .$pr->puntoReferencia->referencia;
+                }else{
+                    return $pr->localidad;
+                }
+                
+            })
+
+            ->editColumn('encardadoFicha_id',function($pr){
+                return $pr->asitenciaEncardado->usuario->name;
             })
             ->filterColumn('puntoReferencia_id',function($query, $keyword){
                 $query->whereHas('puntoReferencia', function($query) use ($keyword) {
@@ -78,7 +87,9 @@ class FormularioEmergenciasDataTable extends DataTable
             'fecha',
             'puntoReferencia_id',
             'emergencia_id',
-            'estado'
+            'estado',
+            'encardadoFicha_id',
+            'localidad'
         ];
     }
     protected function getColumnsTable()
@@ -88,7 +99,9 @@ class FormularioEmergenciasDataTable extends DataTable
             'fecha',
             'puntoReferencia_id'=>['title'=>'Lugar'],
             'emergencia_id'=>['title'=>'Emergencia'],
-            'estado'=>['title'=>'Estado'],           
+            'encardadoFicha_id'=>['title'=>'Encargado del formulario'],
+            'estado'=>['title'=>'Estado'],   
+            
         ];
     }
     /**

@@ -11,7 +11,7 @@ use iobom\Models\Asistencia\AsistenciaPersonal;
 use Spatie\Permission\Traits\HasRoles;
 use iobom\Models\Estacion;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use Notifiable,HasRoles;
 

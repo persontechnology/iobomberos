@@ -16,45 +16,49 @@
         @csrf
         <div class="card-body">
 
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group row">
-                        <label for="emergencia" class="col-md-3 col-form-label text-md-right">{{ __('Emergencia') }}<name class="text-danger">*</i></label>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="emergencia">Emergencia<i class="text-danger">*</i></label>
+                    @if(count($emergencias)>0)
+                        <select class="form-control @error('emergencia') is-invalid @enderror" required name="emergencia" id="emergencia" >
+                            @foreach($emergencias as $esta)
+                            <option value="{{ $esta->id }}" {{ (old("emergencia") == $esta->id ? "selected":"") }} >{{$esta->nombre}}</option>
+                            @endforeach
+                        </select>
 
-                        <div class="col-md-9">
-                            @if($emergencias)
-                                <select class="form-control @error('emergencia') is-invalid @enderror" required name="emergencia" id="emergencia" >
-                                    @foreach($emergencias as $esta)
-                                    <option value="{{ $esta->id }}" {{ (old("emergencia") == $esta->id ? "selected":"") }} >{{$esta->nombre}}</option>
-                                    @endforeach
-                                </select>
-
-                                @error('emergencia_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                                @endif
+                        @error('emergencia_id')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    @else
+                        <div class="alert alert-danger" role="alert">
+                            <strong>No existe emergencias, para crear un formulario</strong>
                         </div>
-                    </div>
+                    @endif
                 </div>
-                <div class="col-sm-6">
-                    <div class="form-group row">
-                            <label for="institucion" class="col-md-4 col-form-label text-md-right">{{ __(' Nombre Institución') }}<i class="text-danger">*</i></label>
+                <div class="form-group col-md-4">
+                    <label for="institucion">Nombre o institución que informa<i class="text-danger">*</i></label>
+                    <input id="institucion" type="text" class="form-control @error('institucion') is-invalid @enderror" name="institucion" value="{{ old('institucion') }}" required autocomplete="institucion" autofocus placeholder="Ingrese..">
         
-                            <div class="col-md-6">
-                                <input id="institucion" type="text" class="form-control @error('institucion') is-invalid @enderror" name="institucion" value="{{ old('institucion') }}" required autocomplete="institucion" autofocus placeholder="institucion">
-        
-                                @error('institucion')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+                    @error('institucion')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
-
+                <div class="form-group col-md-2">
+                    <label for="telefono"># Teléfonico del informante</label>
+                    <input id="telefono" type="text" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{ old('telefono') }}" autocomplete="telefono" autofocus placeholder="Ingrese..">
+        
+                    @error('telefono')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
             </div>
+
 
     
             <div class="row">
@@ -110,10 +114,11 @@
             {{-- ingreso del mapa con su respectiva seleción de barrio --}}            
             
             <div class="form-row">
-                <label class=" col-form-label text-md-right" for="formaAviso">Seleccione el punto de Referencia<i class="text-danger">*</i></label>
-                <div class="col-md-12"> 
-                    <select id="puntoRe" class="form-control selectpicker  @error('puntoReferencia') is-invalid @enderror" data-live-search="true" name="puntoReferencia"  required>
-                        <option value="" selected >Seleccione Un punto de referencia</option>
+                
+                <div class="col-md-6"> 
+                    <label class=" col-form-label text-md-right" for="formaAviso">Seleccione el punto de Referencia<i class="text-danger">*</i></label>
+                    <select id="puntoRe" class="form-control selectpicker  @error('puntoReferencia') is-invalid @enderror" data-live-search="true" name="puntoReferencia" title="Selecionar punto de referencia" data-header="Selecionar punto de referencia" required>
+                        <option value="" >Sin punto de referencia</option>
                         @foreach ($parroquias as $parroquia)
                         <optgroup label="Parroquia: {{$parroquia->nombre}}">
                             @foreach ($parroquia->barrios as $barrio)
@@ -125,6 +130,12 @@
                         @endforeach
                     </select>
                 </div>                        	
+                <div class="col-md-6"> 
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Dirección adicional</label>
+                        <input type="text" name="direcionAdicional" class="form-control" id="direcionAdicional" placeholder="Ingrese..">
+                    </div>
+                </div>
             </div> 
             <br>
             <div id="map">
@@ -435,10 +446,10 @@
                         var latitu={{$estacion->latitud}};
                         var longi={{$estacion->longitud}};
                         var marker_{{$estacion->id}} = new google.maps.Marker({
-                        map: map,
-                        position:{lat:latitu , lng:longi } ,
-                        title:"{{$estacion->nombre}}",
-                        icon:imageEstacion,
+                            map: map,
+                            position:{lat:latitu , lng:longi } ,
+                            title:"{{$estacion->nombre}}",
+                            icon:imageEstacion,
                         });
                         
                         var nombre="{{$estacion->nombre}}";
@@ -453,51 +464,58 @@
             document.getElementById('puntoRe').addEventListener('change', function() {
                 var id=document.getElementById('puntoRe').value;
                 var selectedMode = "DRIVING";
-                // bucar punto de referencia en enfacis al id del select
-                $.blockUI({message:'<h1>Espere por favor.!</h1>'}); 
-                $.post( "{{route('buscarPuntosReferencia')}}", { id: id })
-                .done(function( data ) {
-                    $.blockUI({message:'<h1>Espere por favor.!</h1>'});                  
-                    if(data){
-                        @if($estaciones->count()>0)
-                            @foreach($estaciones as $estacion)
-                            @if ($estacion->latitud&&$estacion->longitud)
+                if(id){
+                    // bucar punto de referencia en enfacis al id del select
+                    $.blockUI({message:'<h1>Espere por favor.!</h1>'}); 
+                    $.post( "{{route('buscarPuntosReferencia')}}", { id: id })
+                    .done(function( data ) {
+                        $.blockUI({message:'<h1>Espere por favor.!</h1>'});                  
+                        if(data){
+                            @if($estaciones->count()>0)
+                                @foreach($estaciones as $estacion)
+                                @if ($estacion->latitud&&$estacion->longitud)
+                                    
+                                    var latitu={{$estacion->latitud}};
+                                    var longi={{$estacion->longitud}};
+                                        
+                                        directionsService{{$estacion->id}}.route({
+                                            
+                                        origin: {lat: latitu, lng: longi},  // Haight.
+                                        destination: {lat: parseFloat(data.latitud), lng: parseFloat(data.longitud)},  // Ocean Beach.
+                                        
+                                        travelMode: google.maps.TravelMode[selectedMode]
+                                        }, function(response, status) {
+                                            
+                                        if (status == 'OK') {
+                                        
+                                            directionsRenderer{{$estacion->id}}.setDirections(response);
+                                        } else {
+                                            window.alert('Directions request failed due to ' + status);
+                                        }
+                                        });
+                                        
+                                @endif
                                 
-                                var latitu={{$estacion->latitud}};
-                                var longi={{$estacion->longitud}};
-                                    
-                                    directionsService{{$estacion->id}}.route({
-                                        
-                                    origin: {lat: latitu, lng: longi},  // Haight.
-                                    destination: {lat: parseFloat(data.latitud), lng: parseFloat(data.longitud)},  // Ocean Beach.
-                                    
-                                    travelMode: google.maps.TravelMode[selectedMode]
-                                    }, function(response, status) {
-                                        
-                                    if (status == 'OK') {
-                                    
-                                        directionsRenderer{{$estacion->id}}.setDirections(response);
-                                    } else {
-                                        window.alert('Directions request failed due to ' + status);
-                                    }
-                                    });
-                                    
-                            @endif
-                            
-                            @endforeach
-                        @endif   
-                    }else{
-                        notificar("info","no se encontraron datos");
-                    }
-                
-                }).always(function(){
-                    $.unblockUI();
-                }).fail(function(){
-                    notificar("error","Ocurrio un error");
-                });               
+                                @endforeach
+                            @endif   
+                        }else{
+                            notificar("info","no se encontraron datos");
+                        }
+                    
+                    }).always(function(){
+                        $.unblockUI();
+                    }).fail(function(){
+                        notificar("error","Ocurrio un error");
+                    }); 
+                }else{
+                    initMap()
+                }
+                              
                 
             });    
         }
+
+
         @if($estaciones->count()>0)
         @foreach($estaciones as $estacion)
             @if ($estacion->latitud&&$estacion->longitud)

@@ -16,7 +16,7 @@ class CreateAtencionPrehospitalariasTable extends Migration
     {
         Schema::create('atencion_prehospitalarias', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('numero');
+            $table->string('numero');
             $table->string('ambulancia');
             $table->string('nombres');
             $table->string('cedula');
@@ -44,7 +44,7 @@ class CreateAtencionPrehospitalariasTable extends Migration
             $table->string('resposableRecibe');
             $table->time('horaEntrada');
 
-            $table->enum('tipoTransporte',['Transporte Innecesario','Tratamiento Rehusado','Transporte Rehusado'])->nullable();
+            $table->enum('tipoTransporte',['Transporte Innecesario','Tratamiento Rehusado','Transporte Rehusado','Ninguno'])->nullable()->default('Ninguno');
             $table->string('motivo')->nullable();
             $table->string('nombresDescargo')->nullable();
             $table->string('cedulaDescargo')->nullable();

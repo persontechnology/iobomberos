@@ -239,20 +239,14 @@ trait HasPermissions
 
         if (is_string($permission)) {
             $permission = $permissionClass->findByName($permission, $this->getDefaultGuardName());
-            if (! $permission) {
-                return false;
-            }
         }
 
         if (is_int($permission)) {
             $permission = $permissionClass->findById($permission, $this->getDefaultGuardName());
-            if (! $permission) {
-                return false;
-            }
         }
 
         if (! $permission instanceof Permission) {
-            return false;
+            throw new PermissionDoesNotExist;
         }
 
         return $this->permissions->contains('id', $permission->id);
@@ -263,17 +257,10 @@ trait HasPermissions
      */
     public function getPermissionsViaRoles(): Collection
     {
-        $relationships = ['roles', 'roles.permissions'];
-
-        if (method_exists($this, 'loadMissing')) {
-            $this->loadMissing($relationships);
-        } else {
-            $this->load($relationships);
-        }
-
-        return $this->roles->flatMap(function ($role) {
-            return $role->permissions;
-        })->sort()->values();
+        return $this->loadMissing('roles', 'roles.permissions')
+            ->roles->flatMap(function ($role) {
+                return $role->permissions;
+            })->sort()->values();
     }
 
     /**

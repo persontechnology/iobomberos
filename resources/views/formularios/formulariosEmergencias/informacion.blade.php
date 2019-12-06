@@ -34,7 +34,7 @@
                    </tr>
                    <tr>
                         <th>
-                            <strong>Lugar del Incidente: </strong> {{$formulario->puntoReferencia->referencia}}
+                            <strong>Lugar del Incidente: </strong> {{$formulario->puntoReferencia->referencia??''}}
                         </th>
                         <th>
                             <strong>Nombre de la Institución que informa: </strong> {{$formulario->institucion}}

@@ -47,13 +47,17 @@ class FormularioEmergencias extends Controller
         $diaHoy=Carbon::now();
         $sumarUnDia=$diaHoy->addDays(1);
         $fechaMenor=$diaHoy->setDateTime($sumarUnDia->year,$sumarUnDia->month,$sumarUnDia->day,7,30,0,0)->toDateTimeString();
+        
         $asistenciaHoy=Asistencia::where('fecha',Carbon::now()->toDateString())
         ->where('fechaFin','<=',$fechaMenor)->get();
+
         $astenciaPersonal=AsistenciaPersonal::
         whereIn('asistencia_id',$asistenciaHoy->pluck('id'))->get();
+
         $user = User::whereHas('roles', function($q){
             $q->where('name','!=', 'Administrador');
         })->get();
+
         $asistenciaHoyFitro=$astenciaPersonal->whereIn('user_id',$user->pluck('id'));      
         //fin de la busqueda de usuarios
         $numero=FormularioEmergencia::latest()->value('numero');
@@ -62,13 +66,16 @@ class FormularioEmergencias extends Controller
         }else{
             $numero=1;
         }
-        $data = array('emergencias' => $emergencias,
-                    'puntoReferencias'=>$puntoReferencias,
-                    'estaciones'=>$estacines, 
-                    'parroquias'=>$parroquias,
-                    'asistenciaHoy'=> $asistenciaHoyFitro, 
-                    'numero'=>$numero,      
-                );
+        
+        $data = array(
+            'emergencias' => $emergencias,
+            'puntoReferencias'=>$puntoReferencias,
+            'estaciones'=>$estacines, 
+            'parroquias'=>$parroquias,
+            'asistenciaHoy'=> $asistenciaHoyFitro, 
+            'numero'=>$numero,      
+        );
+
         return view('formularios.formulariosEmergencias.nuevo',$data);
         
     }
@@ -102,10 +109,12 @@ class FormularioEmergencias extends Controller
             $form->horaSalida=Carbon::now()->toTimeString();
 
             $form->institucion=$request->institucion;
+            $form->telefono=$request->telefono;
             $form->formaAviso=$request->formaAviso;;
             $form->estado='Asignado';
             $form->frecuencia=$request->frecuencia;
             $form->puntoReferencia_id=$request->puntoReferencia;
+            $form->localidad=$request->direcionAdicional;
 
             // maxima autoridad
             $maximaAutoridad = User::role('Máxima autoridad')->first();

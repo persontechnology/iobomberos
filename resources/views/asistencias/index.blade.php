@@ -3,8 +3,8 @@
 @section('content')
 
 
-@if (count($estaciones))
-    
+@if (count($estaciones)>0)
+    <p>Los usuarios con rol: <strong>Clase de guardía,Oficial de guardía</strong> y que tengan el permiso <strong>Generar asistencia</strong>.</p>
         <div class="container">
             <div class="row">
                 @foreach ($estaciones as $est)
@@ -44,7 +44,7 @@
     
 @else
     <div class="alert alert-primary" role="alert">
-        <strong>NO existe estaciiones</strong>
+        <strong>No existe estaciiones</strong>
     </div>
 @endif
 

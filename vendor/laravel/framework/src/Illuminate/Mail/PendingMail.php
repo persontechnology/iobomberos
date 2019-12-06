@@ -2,10 +2,10 @@
 
 namespace Illuminate\Mail;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Contracts\Mail\Mailer as MailerContract;
-use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
+use Illuminate\Contracts\Mail\Mailer as MailerContract;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 
 class PendingMail
 {
@@ -130,7 +130,7 @@ class PendingMail
     /**
      * Send a mailable message immediately.
      *
-     * @param  \Illuminate\Contracts\Mail\Mailable $mailable;
+     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
      * @return mixed
      */
     public function sendNow(MailableContract $mailable)
@@ -141,7 +141,7 @@ class PendingMail
     /**
      * Push the given mailable onto the queue.
      *
-     * @param  \Illuminate\Contracts\Mail\Mailable $mailable;
+     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
      * @return mixed
      */
     public function queue(MailableContract $mailable)
@@ -159,7 +159,7 @@ class PendingMail
      * Deliver the queued message after the given delay.
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
-     * @param  \Illuminate\Contracts\Mail\Mailable $mailable;
+     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
      * @return mixed
      */
     public function later($delay, MailableContract $mailable)
@@ -170,14 +170,17 @@ class PendingMail
     /**
      * Populate the mailable with the addresses.
      *
-     * @param  \Illuminate\Contracts\Mail\Mailable $mailable;
+     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
      * @return \Illuminate\Mail\Mailable
      */
     protected function fill(MailableContract $mailable)
     {
-        return $mailable->to($this->to)
-                        ->cc($this->cc)
-                        ->bcc($this->bcc)
-                        ->locale($this->locale);
+        return tap($mailable->to($this->to)
+            ->cc($this->cc)
+            ->bcc($this->bcc), function ($mailable) {
+                if ($this->locale) {
+                    $mailable->locale($this->locale);
+                }
+            });
     }
 }

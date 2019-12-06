@@ -10,8 +10,8 @@
             @csrf
                 <input type="hidden" value="{{$formulario->id}}" name="formulario">
                 <div class="form-group">
-                        <label for="exampleInputEmail1">N° de Registro</label>
-                        <input  type="text" class="form-control {{ $errors->has('numero') ? ' is-invalid' : '' }}"  id="numero"  value="{{ old('numero') }}" name="numero" >                    
+                        <label for="numero">N° de Registro<i class="text-danger">*</i></label>
+                        <input  type="text" class="form-control {{ $errors->has('numero') ? ' is-invalid' : '' }}"  id="numero"  value="{{ old('numero') }}" name="numero" placeholder="Ingrese.." required>                    
                         @if ($errors->has('numero'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('numero') }}</strong>
@@ -19,8 +19,8 @@
                         @endif
                     </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">N° Ambulancia</label>
-                    <input  type="text" class="form-control {{ $errors->has('ambulancia') ? ' is-invalid' : '' }}"  id="ambulancia"  value="{{ old('ambulancia') }}" name="ambulancia" >                    
+                    <label for="ambulancia">N° Ambulancia<i class="text-danger">*</i></label>
+                    <input  type="text" class="form-control {{ $errors->has('ambulancia') ? ' is-invalid' : '' }}"  id="ambulancia"  value="{{ old('ambulancia') }}" name="ambulancia" required placeholder="Ingrese.."> 
                     @if ($errors->has('ambulancia'))
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $errors->first('ambulancia') }}</strong>
@@ -36,25 +36,45 @@
                         </tr>
                         <tr>
                             <th  colspan="2">
-                                <strong>Nombres</strong>
-                                <input  type="text"  value="{{ old('nombres') }}" name="nombres" value="{{ old('nombres') }}" class="form-control {{ $errors->has('nombres') ? ' is-invalid' : '' }}" >
+                                <label for="nombres">Nombres<i class="text-danger">*</i></label>
+                                <input  type="text"  value="{{ old('nombres') }}" name="nombres" value="{{ old('nombres') }}" class="form-control {{ $errors->has('nombres') ? ' is-invalid' : '' }}" placeholder="Ingrese.." required >
                                 @if ($errors->has('nombres'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('nombres') }}</strong>
                                     </span>
                                 @endif
                             </th>
-                            <th><strong>Cédula</strong>
-                                <input  type="text"  value="{{ old('cedula') }}" name="cedula" class="form-control {{ $errors->has('cedula') ? ' is-invalid' : '' }}" >
-                                @if ($errors->has('cedula'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('cedula') }}</strong>
-                                    </span>
-                                @endif
+                            <th>
+                                <div class="form-group">
+                                    <label for="tipo_identificacion">Tipo de identificación<i class="text-danger">*</i></label>
+                                    <select id="tipo_identificacion" class="form-control @error('tipo_identificacion') is-invalid @enderror" name="tipo_identificacion" required>
+                                        <option value="Cédula" {{ old('tipo_identificacion')=='Cédula'?'selected':'' }}>Cédula</option>
+                                        <option value="Ruc persona Natural" {{ old('tipo_identificacion')=='Ruc persona Natural'?'selected':'' }}>Ruc persona Natural</option>
+                                        <option value="Ruc Sociedad Pública" {{ old('tipo_identificacion')=='Ruc Sociedad Pública'?'selected':'' }}>Ruc Sociedad Pública</option>
+                                        <option value="Ruc Sociedad Privada" {{ old('tipo_identificacion')=='Ruc Sociedad Privada'?'selected':'' }}>Ruc Sociedad Privada</option>
+                                        <option value="Pasaporte" {{ old('tipo_identificacion')=='Pasaporte'?'selected':'' }}>Pasaporte</option>
+                                        <option value="Otros" {{ old('tipo_identificacion')=='Otros'?'selected':'' }}>Otros</option>
+                                        
+                                    </select>
+                                    @error('tipo_identificacion')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="identificacion">Identificación<i class="text-danger">*</i></label>
+                                    <input type="text" class="form-control @error('identificacion') is-invalid @enderror" id="identificacion" name="identificacion" value="{{ old('identificacion') }}" required placeholder="Ingrese..">
+                                    @error('identificacion')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                             </th>
                             <th>
-                                <strong>Edad</strong>
-                                <input  type="text"  value="{{ old('edad') }}" name="edad" class="form-control {{ $errors->has('edad') ? ' is-invalid' : '' }}" >
+                                <label for="edad">Edad<i class="text-danger">*</i></label>
+                                <input  type="text"  value="{{ old('edad') }}" id="edad" name="edad" class="form-control {{ $errors->has('edad') ? ' is-invalid' : '' }}" required>
                                 @if ($errors->has('edad'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('edad') }}</strong>
@@ -62,7 +82,7 @@
                                 @endif
                             </th>
                             <th>
-                                <strong>Sexo</strong>
+                                <label for=""> Sexo<i class="text-danger">*</i></label>
                                 <div class="form-group row">
                                         
                                         <div class="custom-control custom-radio">
@@ -84,8 +104,8 @@
                         </tr>
                         <tr>
                             <th >
-                                <strong>Hora</strong>
-                                <input type="time"   value="{{ old('horaAtencion') }}" name="horaAtencion" class="form-control {{ $errors->has('horaAtencion') ? ' is-invalid' : '' }}" >
+                                <label for="horaAtencion">Hora<i class="text-danger">*</i></label>
+                                <input type="time"   value="{{ old('horaAtencion') }}" name="horaAtencion" id="horaAtencion" class="form-control {{ $errors->has('horaAtencion') ? ' is-invalid' : '' }}" required>
                                 @if ($errors->has('horaAtencion'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('horaAtencion') }}</strong>
@@ -99,8 +119,8 @@
                             <th>
                                 <strong>Fecha Atención : </strong> <br>{{$formulario->fecha}}</th>
                             <th>
-                                <strong>Número Placa</strong>
-                                <input type="text"  value="{{ old('placa') }}" name="placa" class="form-control {{ $errors->has('placa') ? ' is-invalid' : '' }}" >
+                                <label for="placa">Número de placa</label>
+                                <input type="text"  value="{{ old('placa') }}" name="placa" id="placa" class="form-control {{ $errors->has('placa') ? ' is-invalid' : '' }}" placeholder="Ingrese.." >
                             </th>
                         </tr>
 
@@ -109,8 +129,8 @@
                 <br>
                 <p class="bg-dark text-center p-2"> <strong>Examen Físico y Diagnóstico</strong></p>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Diagnóstico Presuntivo</label>                    
-                    <textarea  class="form-control {{ $errors->has('diagnostico') ? ' is-invalid' : '' }}"  id="diagnostico"   name="diagnostico">{{ old('diagnostico') }}</textarea>                    
+                    <label for="diagnostico">Diagnóstico Presuntivo<i class="text-center">*</i></label>                    
+                    <textarea  class="form-control {{ $errors->has('diagnostico') ? ' is-invalid' : '' }}"  id="diagnostico"   name="diagnostico" required>{{ old('diagnostico') }}</textarea>                    
                     @if ($errors->has('diagnostico'))
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $errors->first('diagnostico') }}</strong>
@@ -127,8 +147,8 @@
                         <tr>
                             <th>
                                 <div class="form-group" class="text-center">
-                                    <label for="">Pulso</label>
-                                    <input  type="number" id="pulso"  value="{{ old('pulso') }}" name="pulso"  class="form-control {{ $errors->has('pulso') ? ' is-invalid' : '' }}" >
+                                    <label for="pulso">Pulso<i class="text-danger">*</i></label>
+                                    <input  type="number" id="pulso"  value="{{ old('pulso') }}" name="pulso"  class="form-control {{ $errors->has('pulso') ? ' is-invalid' : '' }}" placeholder="Ingrese.." required>
                                     @if ($errors->has('pulso'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('pulso') }}</strong>
@@ -138,8 +158,8 @@
                             </th>
                             <th>
                                 <div class="form-group" class="text-center">
-                                    <label for="">Temperatura</label>
-                                    <input  type="number" id="temperatura"  value="{{ old('temperatura') }}" name="temperatura" value="" class="form-control {{ $errors->has('temperatura') ? ' is-invalid' : '' }}" >
+                                    <label for="temperatura">Temperatura<i class="text-danger">*</i></label>
+                                    <input  type="number" id="temperatura"  value="{{ old('temperatura') }}" name="temperatura" value="" class="form-control {{ $errors->has('temperatura') ? ' is-invalid' : '' }}" placeholder="Ingrese.." required>
                                     @if ($errors->has('temperatura'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('temperatura') }}</strong>
@@ -149,8 +169,8 @@
                             </th>
                             <th>
                                 <div class="form-group" class="text-center">
-                                    <label for="">Presión Arterial</label>
-                                    <input  type="text" id="presion"  value="{{ old('presion') }}" name="presion"  class="form-control {{ $errors->has('presion') ? ' is-invalid' : '' }}" >
+                                    <label for="presion">Presión Arterial<i class="text-danger">*</i></label>
+                                    <input  type="text" id="presion"  value="{{ old('presion') }}" name="presion"  class="form-control {{ $errors->has('presion') ? ' is-invalid' : '' }}" placeholder="Ingrese.." required>
                                     @if ($errors->has('presion'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('presion') }}</strong>
@@ -160,8 +180,8 @@
                             </th>
                             <th>
                                 <div class="form-group" class="text-center">
-                                    <label for="">SP02%</label>
-                                    <input  type="number" id="sp"  value="{{ old('sp') }}" name="sp" value="" class="form-control {{ $errors->has('sp') ? ' is-invalid' : '' }}" >
+                                    <label for="sp">SP02%<i class="text-danger">*</i></label>
+                                    <input  type="number" id="sp"  value="{{ old('sp') }}" name="sp" class="form-control {{ $errors->has('sp') ? ' is-invalid' : '' }}" placeholder="Ingrese.." required>
                                     @if ($errors->has('sp'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('sp') }}</strong>
@@ -171,8 +191,8 @@
                             </th>
                             <th>
                                 <div class="form-group" class="text-center">
-                                    <label for="glasgow">Total Glasgow (15) </label>
-                                    <input  type="number" id="glasgow"  value="{{ old('glasgow') }}" name="glasgow" value="" class="form-control {{ $errors->has('glasgow') ? ' is-invalid' : '' }}" >
+                                    <label for="glasgow">Total Glasgow (15)<i class="text-danger">*</i> </label>
+                                    <input  type="number" id="glasgow"  value="{{ old('glasgow') }}" name="glasgow" class="form-control {{ $errors->has('glasgow') ? ' is-invalid' : '' }}" placeholder="Ingrese.." required >
                                     @if ($errors->has('glasgow'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('glasgow') }}</strong>
@@ -285,9 +305,9 @@
                 <div class="row">
                     <div class="col-sm-5">
                         <div class="form-group" class="text-center">
-                        <label for="clinica">Selecione un establecimiento que recibe</label>
+                        <label for="clinica">Selecione un establecimiento que recibe<i class="text-danger">*</i></label>
                         @if ($clinicas->count()>0)                        
-                        <select  class="form-control {{ $errors->has('clinica') ? ' is-invalid' : '' }}"   name="clinica" id="clinica" >
+                        <select  class="form-control {{ $errors->has('clinica') ? ' is-invalid' : '' }}"   name="clinica" id="clinica" required >
                             @foreach ($clinicas as $clinica)
                             <option value="{{$clinica->id}}" {{ (old("clinica") == $clinica->id ? "selected":"") }}>{{$clinica->nombre}}</option>                            
                             @endforeach
@@ -307,8 +327,8 @@
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group"  class="text-center">
-                            <label for="resposableRecibe">Responsable que recibe</label>
-                            <input type="text" id="resposableRecibe"  value="{{ old('resposableRecibe') }}" name="resposableRecibe" class="form-control {{ $errors->has('resposableRecibe') ? ' is-invalid' : '' }}" >
+                            <label for="resposableRecibe">Responsable que recibe<i class="text-danger">*</i></label>
+                            <input type="text" id="resposableRecibe"  value="{{ old('resposableRecibe') }}" name="resposableRecibe" class="form-control {{ $errors->has('resposableRecibe') ? ' is-invalid' : '' }}" placeholder="Ingrese.." required>
                             @if ($errors->has('resposableRecibe'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('resposableRecibe') }}</strong>
@@ -318,8 +338,8 @@
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group"  class="text-center">
-                            <label for="horaEntrada">Hora de entrada</label>
-                            <input type="time" id="horaEntrada"  value="{{ old('horaEntrada') }}" name="horaEntrada"  class="form-control {{ $errors->has('horaEntrada') ? ' is-invalid' : '' }}" >
+                            <label for="horaEntrada">Hora de entrada<i class="text-danger">*</i></label>
+                            <input type="time" id="horaEntrada"  value="{{ old('horaEntrada') }}" name="horaEntrada"  class="form-control {{ $errors->has('horaEntrada') ? ' is-invalid' : '' }}" required>
                             @if ($errors->has('horaEntrada'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('horaEntrada') }}</strong>
@@ -337,21 +357,20 @@
                                 <table class="table-bordered ">
                                     <thead>
                                         <tr class="text-center bg-orange">
-                                            <th colspan="3">
+                                            <th colspan="2">
                                                 <strong>{{$insumo->nombre}}</strong></p>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($insumo->medicamentos as $medicamentos)
+                                        @foreach ($insumo->medicamentos as $medicamento)
                                         <tr>
                                             <td>                                                
-                                                {{$medicamentos->nombre}}                                    
-                                                <th>
-                                                    <input type="hidden"  name="medicamentos[]" value="{{$medicamentos->id}}"  >
-                                                    <input type="number" min="0" name="cantidades[]" class="form-control" >
-                                                </th>
-                                                
+                                                {{$medicamento->nombre}}                                     
+                                            </td>
+                                            <td>
+                                                <input type="hidden"  name="medicamentos[{{ $medicamento->id }}]" value="{{$medicamento->id}}"  >
+                                                <input type="number" min="0" name="cantidades[{{ $medicamento->id }}]" value="{{ old('cantidades.'.$medicamento->id) }}" class="form-control @error('cantidades.'.$medicamento->id) is-invalid @enderror" >
                                             </td>
                                         </tr>                                    
                                         @endforeach
@@ -373,17 +392,20 @@
                         <div class="col-sm-4 text-center">
 
                             <div class="form-group" class="text-center">
-                                                               
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input {{ $errors->has('tipoTransporte') ? ' is-invalid' : '' }}" value="Transporte Innecesario" id="Transporte Innecesario" name="tipoTransporte"   {{ old('tipoTransporte')=='DN'?'checked':'' }}>
+                                    <input type="radio" class="custom-control-input" value="Ninguno" id="Ninguna" name="tipoTransporte"   {{ old('tipoTransporte')=='Ninguno'?'checked':'' }}>
+                                    <label class="custom-control-label" for="Ninguna">Ninguno</label>
+                                </div>                               
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" value="Transporte Innecesario" id="Transporte Innecesario" name="tipoTransporte"   {{ old('tipoTransporte')=='Transporte Innecesario'?'checked':'' }}>
                                     <label class="custom-control-label" for="Transporte Innecesario">Transporte Innecesario</label>
                                 </div>
                                 <div class="custom-control custom-radio ml-1">
-                                    <input type="radio" class="custom-control-input{{ $errors->has('tipoTransporte') ? ' is-invalid' : '' }}" value="Tratamiento Rehusado" id="Tratamiento Rehusado" name="tipoTransporte"  {{ old('tipoTransporte')=='Tratamiento Rehusado'?'checked':'' }}>
+                                    <input type="radio" class="custom-control-input" value="Tratamiento Rehusado" id="Tratamiento Rehusado" name="tipoTransporte"  {{ old('tipoTransporte')=='Tratamiento Rehusado'?'checked':'' }}>
                                     <label class="custom-control-label" for="Tratamiento Rehusado">Tratamiento Rehusado</label>
                                 </div> 
                                 <div class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input {{ $errors->has('tipoTransporte') ? ' is-invalid' : '' }}" value="Transporte Rehusado" id="Transporte Rehusado" name="tipoTransporte"   {{ old('tipoTransporte')=='Transporte Rehusado'?'checked':'' }}>
+                                        <input type="radio" class="custom-control-input" value="Transporte Rehusado" id="Transporte Rehusado" name="tipoTransporte"   {{ old('tipoTransporte')=='Transporte Rehusado'?'checked':'' }}>
                                         <label class="custom-control-label" for="Transporte Rehusado">Transporte Rehusado</label>
                                         
                                 @if ($errors->has('tipoTransporte'))
@@ -396,8 +418,8 @@
                         </div>
                         <div class="col-sm-8">
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Motivo</label>                    
-                                <textarea class="form-control {{ $errors->has('motivo') ? ' is-invalid' : '' }}"  id="motivo"  value="{{ old('motivo') }}" name="motivo"></textarea>                    
+                                <label for="motivo">Motivo</label>                    
+                                <textarea class="form-control {{ $errors->has('motivo') ? ' is-invalid' : '' }}"  id="motivo" name="motivo">{{ old('motivo') }}</textarea>                    
                                 @if ($errors->has('motivo'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('motivo') }}</strong>
