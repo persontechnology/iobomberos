@@ -35,8 +35,17 @@ class FormularioEmergenciasDataTable extends DataTable
             })
 
             ->editColumn('encardadoFicha_id',function($pr){
-                return $pr->asitenciaEncardado->usuario->name;
+                return $pr->asitenciaEncardado->usuario->name??'';
             })
+
+            ->filterColumn('encardadoFicha_id',function($query, $keyword){
+                $query->whereHas('asitenciaEncardado', function($query) use ($keyword) {
+                    $query->whereHas('usuario', function($query) use ($keyword) {
+                        $query->whereRaw("name like ?", ["%{$keyword}%"]);
+                    });
+                });
+            })
+            
             ->filterColumn('puntoReferencia_id',function($query, $keyword){
                 $query->whereHas('puntoReferencia', function($query) use ($keyword) {
                     $query->whereRaw("referencia like ?", ["%{$keyword}%"]);

@@ -67,15 +67,15 @@
                         <label class="col-md-3 col-form-label text-md-right" for="formaAviso">Frecuencia<i class="text-danger">*</i></label>
                         <div class="col-md-9">
                         <div class="custom-control custom-radio">
-                            <input type="radio" checked class="custom-control-input {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Lunes-Viernes" id="L-V" name="frecuencia"  required >
+                            <input type="radio" checked class="custom-control-input {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Lunes-Viernes" id="L-V" {{ old('frecuencia')=='Lunes-Viernes'?'checked':'' }} name="frecuencia"  required >
                             <label class="custom-control-label" for="L-V">Lunes-Viernes</label>
                         </div>                                
                         <div class="custom-control custom-radio">
-                            <input type="radio"  class="custom-control-input {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Fin de semana" id="Fin de Semana" name="frecuencia"  required >
+                            <input type="radio"  class="custom-control-input {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Fin de semana" id="Fin de Semana" {{ old('frecuencia')=='Fin de semana'?'checked':'' }} name="frecuencia"  required >
                             <label class="custom-control-label" for="Fin de Semana">Fin de Semana</label>
                         </div> 
                         <div class="custom-control custom-radio ">
-                            <input type="radio" class="custom-control-input{{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Feriado" id="Feriado" name="frecuencia" required >
+                            <input type="radio" class="custom-control-input{{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Feriado" id="Feriado" name="frecuencia" {{ old('frecuencia')=='Feriado'?'checked':'' }} required >
                             <label class="custom-control-label" for="Feriado">Feriado</label>
                                 
                                 @if ($errors->has('frecuencia'))
@@ -92,19 +92,19 @@
                         <label class="col-md-4 col-form-label text-md-right" for="formaAviso">Forma de Aviso<i class="text-danger">*</i></label>
                             <div class="col-md-6"> 
                             <div class="custom-control custom-radio">
-                                <input type="radio" checked class="custom-control-input {{ $errors->has('formaAviso') ? ' is-invalid' : '' }}" value="Personal" id="Personal" name="formaAviso"  required >
+                                <input type="radio" checked class="custom-control-input {{ $errors->has('formaAviso') ? ' is-invalid' : '' }}" value="Personal" id="Personal" {{ old('formaAviso')=='Personal'?'checked':'' }} name="formaAviso"  required >
                                 <label class="custom-control-label" for="Personal">Personal</label>
                             </div>                                
         
                             <div class="custom-control custom-radio ">
-                                <input type="radio" class="custom-control-input{{ $errors->has('formaAviso') ? ' is-invalid' : '' }}" value="Teléfonico" id="Telefonico" name="formaAviso" required >
+                                <input type="radio" class="custom-control-input{{ $errors->has('formaAviso') ? ' is-invalid' : '' }}" value="Teléfonico" id="Telefonico" {{ old('formaAviso')=='Teléfonico'?'checked':'' }} name="formaAviso" required >
                                 <label class="custom-control-label" for="Telefonico">Telefónico</label>
                                     
-                                    @if ($errors->has('formaAviso'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('formaAviso') }}</strong>
-                                    </span>
-                                    @endif
+                                @if ($errors->has('formaAviso'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('formaAviso') }}</strong>
+                                </span>
+                                @endif
                                 </div>
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                 
                 <div class="col-md-6"> 
                     <label class=" col-form-label text-md-right" for="formaAviso">Seleccione el punto de Referencia<i class="text-danger">*</i></label>
-                    <select id="puntoRe" class="form-control selectpicker  @error('puntoReferencia') is-invalid @enderror" data-live-search="true" name="puntoReferencia" title="Selecionar punto de referencia" data-header="Selecionar punto de referencia" required>
+                    <select id="puntoRe" class="form-control selectpicker  @error('puntoReferencia') is-invalid @enderror" data-live-search="true" name="puntoReferencia" title="Selecionar punto de referencia" data-header="Selecionar punto de referencia">
                         <option value="" >Sin punto de referencia</option>
                         @foreach ($parroquias as $parroquia)
                         <optgroup label="Parroquia: {{$parroquia->nombre}}">
@@ -133,7 +133,7 @@
                 <div class="col-md-6"> 
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Dirección adicional</label>
-                        <input type="text" name="direcionAdicional" class="form-control" id="direcionAdicional" placeholder="Ingrese..">
+                        <input type="text" name="direcionAdicional" value="{{ old('direcionAdicional') }}" class="form-control" id="direcionAdicional" placeholder="Ingrese..">
                     </div>
                 </div>
             </div> 
@@ -249,13 +249,19 @@
                 @if (count($asistenciaHoy)>0)
                     <li  class="list-group-item">
                         Seleccione Encargado del formulario
-                        <select name="encargadoFormulario" id="encargadoFormulario" class="form-control selectpicker" data-live-search="true">
-                            <option value=" ">--Seleccione Encargado del formulario-- </option>
+                        <select name="encargadoFormulario" id="encargadoFormulario" class="form-control selectpicker  @error('encargadoFormulario') is-invalid @enderror" data-live-search="true" required>
                             
                             @foreach ($asistenciaHoy as $asistencia)                         
                                 <option value="{{$asistencia->id}}">{{$asistencia->usuario->name}}</option>                        
                             @endforeach
                         </select>
+                        @if ($errors->has('encargadoFormulario'))
+                        
+                            <span class="invalid-feedback" role="alert">
+                                <br>
+                                <strong>{{ $errors->first('encargadoFormulario') }}</strong>
+                            </span>
+                        @endif
                     </li>                 
                     @if (count($estaciones)>0)        
                         @foreach ($estaciones as $estacion_c)                        

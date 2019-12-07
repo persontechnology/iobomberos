@@ -36,7 +36,9 @@ class RqIngreso extends FormRequest
             "operativos.*"  => "required|exists:asistencia_personals,id",
             'emergencia'=>'required|exists:emergencia,id',
             'puntoReferencia'=>'nullable|exists:puntoReferencia,id',
-            'direcionAdicional'=>'required|string|max:255'
+            'direcionAdicional'=>'nullable|string|max:255',
+            'telefono'=>'nullable|digits_between:1,6',
+            'encargadoFormulario'=>'required|exists:asistencia_personals,id'
         ];
     }
 }

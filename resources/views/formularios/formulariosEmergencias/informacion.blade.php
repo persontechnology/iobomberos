@@ -21,7 +21,7 @@
                     </tr>
                    <tr>
                         <th colspan="2">
-                            <strong>Emeregencia: </strong> {{$formulario->emergencia->nombre}}
+                            <strong>Emergencia: </strong> {{$formulario->emergencia->nombre}}
                         </th>
                    </tr>
                    <tr>
@@ -34,7 +34,7 @@
                    </tr>
                    <tr>
                         <th>
-                            <strong>Lugar del Incidente: </strong> {{$formulario->puntoReferencia->referencia??''}}
+                            <strong>Lugar del Incidente: </strong> {{$formulario->puntoReferencia->referencia??'XXXXXXXXXX'}}
                         </th>
                         <th>
                             <strong>Nombre de la Institución que informa: </strong> {{$formulario->institucion}}
@@ -50,7 +50,7 @@
                    </tr>
                    <tr>
                         <th class="text-primary">
-                            <strong>Creado Por: </strong> {{$formulario->creadoPorUsuario->name}}
+                            <strong>Creado Por: </strong> {{$formulario->creadoPorUsuario->name??''}}
                         </th>
                         <th class="text-success">
                             <strong >Creado el: </strong> {{$formulario->created_at}}
@@ -61,7 +61,7 @@
                            <h4><strong>Personal y unidades despachadas <br>
                            </strong></h4>
                            <div class="text-info">
-                                <strong>Encargado Formulario: </strong>{{$formulario->asitenciaEncardado->usuario->name}}
+                                <strong>Encargado Formulario: </strong>{{$formulario->asitenciaEncardado->usuario->name??'XXXXXXXXXX'}}
                             </div>
                             </th>
                    </tr>
@@ -77,7 +77,7 @@
                             <strong>{{$estaciones->estacion->nombre}}</strong>
                             <br>
                             <div class="text-warning">
-                                <strong>Encargado de la estación: </strong>{{$estaciones->responsable->name}}
+                                <strong>Encargado de la estación: </strong>{{$estaciones->responsable->name??'XXXXXXXXXX'}}
                             </div>
                         </th>
                     </tr>

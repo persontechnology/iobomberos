@@ -216,14 +216,11 @@ class FormularioEmergencias extends Controller
             }
             DB::commit();
             $request->flash('success','Formulario # '.$form->numero.' registrado exitosamente');
-            return redirect()->route('formularios');
         } catch (\Exception $th) {
             DB::rollback();
-            //$request->session()->flash('danger','Ocurrio un error, vuelva intentar');
-            //return redirect()->route('formularios');
-            echo $th;
-           
+            $request->session()->flash('danger','Ocurrio un error, vuelva intentar');
         }
+        return redirect()->route('formularios');
     }
     
     public function completarFormulario($idFormulario)

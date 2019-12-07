@@ -20,7 +20,12 @@ class UsersImport implements ToModel
     {
         $user=User::where('email',$row[1])->first();
         
-        $est=Estacion::where('nombre','Latacunga')->first();
+        $est=Estacion::where('nombre',$row[4])->first();
+        if(!$est){
+            $est=new Estacion();
+            $est->nombre=$row[4];
+            $est->save();
+        }
 
         if(!$user){
             $user= new User();
