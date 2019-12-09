@@ -79,7 +79,8 @@ class FormularioEmergencia extends Model
         return $this->belongsTo(User::class, 'creadoPor');
     }
     
-    // A:
+    // A:deivid
+    // De: un formulario tiene una asistencia del encargado del formulario, para poder notificar la nueva emergencia 
     public function asitenciaEncardado()
     {
         return $this->belongsTo(AsistenciaPersonal::class, 'encardadoFicha_id');

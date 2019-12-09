@@ -27,6 +27,7 @@ use iobom\User;
 use iobom\Models\FormularioEmergencia\VehiculoOperador;
 use iobom\Models\FormularioEmergencia\VehiculoOperativo;
 use iobom\Models\FormularioEmergencia\VehiculoParamedico;
+use iobom\Notifications\NoticarEncargadoNuevoFormulario;
 
 class FormularioEmergencias extends Controller
 {
@@ -127,6 +128,12 @@ class FormularioEmergencias extends Controller
             $encargadoFormulario=FormularioEmergencia::findOrFail($form->id);
             $encargadoFormulario->encardadoFicha_id=$request->encargadoFormulario;
             $encargadoFormulario->save();
+
+            // A:deivid
+            // D: enviar notificacion por email al encargado del formulario
+            $encargadoFormulario->asitenciaEncardado->usuario->notify(new NoticarEncargadoNuevoFormulario() );
+
+
             // crear formulario y los vehiculos asignados
             $i=0;
             foreach ($request->vehiculos as $vehiculos) {
@@ -197,13 +204,13 @@ class FormularioEmergencias extends Controller
                 //guardar Paramedico
                 
                 if($request->paramedico[$i]){
-                $vehiculoParamedico=new VehiculoParamedico();  
-                $vehiculoParamedico->estacionForVehiculo_id=$formularioEstacionVehiculo->id;
-                $vehiculoParamedico->asistenciaPersonal_id=$request->paramedico[$i];
-                $vehiculoParamedico->save();
-                $personalParamedico=AsistenciaPersonal::where('id',$request->paramedico[$i])->first();
-                $personalParamedico->estadoEMergencia="Emergencia";
-                $personalParamedico->save();
+                    $vehiculoParamedico=new VehiculoParamedico();  
+                    $vehiculoParamedico->estacionForVehiculo_id=$formularioEstacionVehiculo->id;
+                    $vehiculoParamedico->asistenciaPersonal_id=$request->paramedico[$i];
+                    $vehiculoParamedico->save();
+                    $personalParamedico=AsistenciaPersonal::where('id',$request->paramedico[$i])->first();
+                    $personalParamedico->estadoEMergencia="Emergencia";
+                    $personalParamedico->save();
                 }
                 // cambiar de estado al vehiculo 
                 $asistenciaVehiculo->estadoEMergencia="Emergencia";

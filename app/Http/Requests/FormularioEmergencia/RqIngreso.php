@@ -37,7 +37,7 @@ class RqIngreso extends FormRequest
             'emergencia'=>'required|exists:emergencia,id',
             'puntoReferencia'=>'nullable|exists:puntoReferencia,id',
             'direcionAdicional'=>'nullable|string|max:255',
-            'telefono'=>'nullable|digits_between:1,6',
+            'telefono'=>'nullable|digits_between:1,15',
             'encargadoFormulario'=>'required|exists:asistencia_personals,id'
         ];
     }
