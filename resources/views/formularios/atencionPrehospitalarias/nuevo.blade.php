@@ -113,9 +113,9 @@
                                 @endif
                             </th>
                             <th>
-                                <strong>Dirección Evento : </strong> <br>{{$formulario->puntoReferencia->referencia}}</th>
+                                <strong>Dirección Evento : </strong> <br>{{$formulario->direcionAdicional??' No existe referencia'}}</th>
                             <th>
-                                <strong>Punto Referencia : </strong> <br>{{$formulario->puntoReferencia->referencia}}</th>
+                                <strong>Punto Referencia : </strong> <br>{{$formulario->puntoReferencia->referencia??'No existe punto de referencia'}}</th>
                             <th>
                                 <strong>Fecha Atención : </strong> <br>{{$formulario->fecha}}</th>
                             <th>

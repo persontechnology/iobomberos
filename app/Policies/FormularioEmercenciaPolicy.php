@@ -23,4 +23,16 @@ class FormularioEmercenciaPolicy
             return true;
         }
     }
+    public function editarFormulario(User $user,FormularioEmergencia $formularioEmergencia)
+    {
+        if($user->id == $formularioEmergencia->creadoPor || $user->hasRole('Radio operador')){
+            if($formularioEmergencia->estado=="Asignado"){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
 }

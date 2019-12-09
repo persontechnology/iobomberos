@@ -198,6 +198,8 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::get('formularios','FormularioEmergencias@index' )->name('formularios');
         Route::get('/nuevo-formulario','FormularioEmergencias@nuevo' )->name('nuevo-formulario');
         Route::get('/proceso-formulario/{id}','FormularioEmergencias@proceso' )->name('proceso-formulario');
+        Route::get('/editar-formulario/{id}','FormularioEmergencias@editarFormulario' )->name('editar-formulario');
+
         Route::post('/formulario-guardar', 'FormularioEmergencias@guardarFormulario')->name('guardarFormulario');
         Route::post('/buscar-puntos-referencia', 'FormularioEmergencias@buscarPuntoReferenciaId')->name('buscarPuntosReferencia');
         Route::post('/formulario-buscar-personal-Operador', 'FormularioEmergencias@buscarPersonalOperador')->name('buscarPersonalOperadorFormulario');
@@ -209,7 +211,9 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/guardar-atencion','AtencionPrehospitalarias@guardarAtencion' )->name('guardar-atencion');
         Route::get('/editar-atencion/{id}','AtencionPrehospitalarias@editarAtencion' )->name('editar-atencion');
         Route::post('/actualizar-atencion','AtencionPrehospitalarias@actualizarAtencion' )->name('actualizar-atencion');
-        
+        //Completar mis formularios 
+        Route::get('/mis-formularios','FormularioEmergencias@misFormularios' )->name('mis-formulario');
+
          
     });
        

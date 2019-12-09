@@ -146,6 +146,14 @@
                         
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('mis-formulario') }}" class="nav-link" id="menuMisFormularios">
+                        <i class="fa fa-life-ring" aria-hidden="true"></i>
+                        <span>
+                            Mis formularios
+                        </span>
+                    </a>
+                </li>
                 @role('Administrador')
                 <li class="nav-item-header">
                     <div class="text-uppercase font-size-xs line-height-xs">SISTEMA</div> 

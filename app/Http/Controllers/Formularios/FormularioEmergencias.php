@@ -39,6 +39,7 @@ class FormularioEmergencias extends Controller
     
     public function nuevo( )
     {
+        $this->authorize('crearNuevoFormularioEmergencia', Auth::user());   
         
         $emergencias=Emergencia::get();
         $puntoReferencias=PuntoReferencia::get();
@@ -93,7 +94,7 @@ class FormularioEmergencias extends Controller
 
     public function guardarFormulario(RqIngreso $request)
     {
-
+        $this->authorize('crearNuevoFormularioEmergencia', Auth::user()); 
         
         try {
             DB::beginTransaction();
@@ -327,5 +328,60 @@ class FormularioEmergencias extends Controller
         // $user=User::findOrFail($formulario->cread)
         $data = array('formulario' => $formulario, );
         return view('formularios.formulariosEmergencias.informacion',$data);
+    }
+
+    public function editarFormulario($idFormulario)
+    {
+        $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $this->authorize('editarFormulario', $formulario); 
+        $emergencias=Emergencia::get();
+        $puntoReferencias=PuntoReferencia::get();
+        $parroquias=Parroquia::get();
+        $estacines=Estacion::get();
+        //buscar usuario que esten el la lista 
+        $diaHoy=Carbon::now();
+        $sumarUnDia=$diaHoy->addDays(1);
+        $fechaMenor=$diaHoy->setDateTime($sumarUnDia->year,$sumarUnDia->month,$sumarUnDia->day,7,30,0,0)->toDateTimeString();
+        
+        $asistenciaHoy=Asistencia::where('fecha',Carbon::now()->toDateString())
+        ->where('fechaFin','<=',$fechaMenor)->get();
+
+        $astenciaPersonal=AsistenciaPersonal::
+        whereIn('asistencia_id',$asistenciaHoy->pluck('id'))->get();
+
+        $user = User::whereHas('roles', function($q){
+            $q->where('name','!=', 'Administrador');
+        })->get();
+
+        $asistenciaHoyFitro=$astenciaPersonal->whereIn('user_id',$user->pluck('id'));      
+       
+        $data = array(
+            'emergencias' => $emergencias,
+            'puntoReferencias'=>$puntoReferencias,
+            'estaciones'=>$estacines, 
+            'parroquias'=>$parroquias,
+            'asistenciaHoy'=> $asistenciaHoyFitro, 
+            
+            'formulario'=>$formulario,      
+        );
+        
+        return view('formularios.formulariosEmergencias.editar',$data); 
+    }
+
+    public function misFormularios()
+    {
+        $asistenciaPersonal=AsistenciaPersonal::where('user_id',Auth::id())->get();
+        $formulariosAsignados=FormularioEmergencia::where('estado','Proceso')
+        ->whereIn('encardadoFicha_id',$asistenciaPersonal->pluck('id'))
+        ->get();
+        
+        $formulariosFinalizados=FormularioEmergencia::where('estado','Finalizado')
+        ->whereIn('encardadoFicha_id',$asistenciaPersonal->pluck('id'))
+        ->get();
+        
+        $data = array('formulariosAsignados' =>$formulariosAsignados, 
+                    'formulariosFinalizados'=>$formulariosFinalizados, );
+        // return $formularios;
+        return view('formularios.formulariosEmergencias.misFormularios',$data); 
     }
 }
