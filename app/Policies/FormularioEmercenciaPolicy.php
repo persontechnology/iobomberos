@@ -23,6 +23,10 @@ class FormularioEmercenciaPolicy
             return true;
         }
     }
+    public function noPreospitalario( User $user,FormularioEmergencia $formularioEmergencia)
+    {
+            return true;
+    }
     public function editarFormulario(User $user,FormularioEmergencia $formularioEmergencia)
     {
         if($user->id == $formularioEmergencia->creadoPor || $user->hasRole('Radio operador')){

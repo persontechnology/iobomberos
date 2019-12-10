@@ -155,13 +155,11 @@
             </table>
             @endforeach
         <br>
-        @can('comprobarAtensionHospitalaria', $formu)
-            <button class="btn btn-primary"> Crear fichas medica</button>
-        @endcan
+        
         @can('comprobarContraIncendio', $formu)
         <h6 class="mt-1"><strong>4.- ETAPAS DE INCENDIO Y EDIFICACIÓN.</strong></h6>
         <div class="border">
-            @if($formu->etapaIncendio&& $formu->edificacion)
+            
             
             <table class="table-border text-center">
                 <tr>
@@ -172,27 +170,27 @@
                 <tr>
                     <th>
                         Incipiente
-                        <input class="mt-1" type="checkbox" {{$formu->etapaIncendio->incipiente==true?'checked':''  }} name="" id="">
+                        <input class="mt-1" type="checkbox"  name="" id="">
                     </th>
                     <th>
                         Desarrollo
-                        <input class="mt-1" type="checkbox" {{$formu->etapaIncendio->desarrollo==true?'checked':''  }} name="" id="">
+                        <input class="mt-1" type="checkbox"  name="" id="">
 
                     <th>
                         Combustión libre
-                        <input class="mt-1" type="checkbox" {{$formu->etapaIncendio->combustion==true?'checked':''  }} name="" id="">
+                        <input class="mt-1" type="checkbox"  name="" id="">
   
                     <th>
                         Flashover
-                        <input class="mt-1" type="checkbox" {{$formu->etapaIncendio->flashover==true?'checked':''  }} name="" id="">
+                        <input class="mt-1" type="checkbox"  name="" id="">
   
                     <th>
                         Decadencia
-                        <input class="mt-1" type="checkbox" {{$formu->etapaIncendio->decadencia==true?'checked':''  }} name="" id="">
+                        <input class="mt-1" type="checkbox"  name="" id="">
 
                     <th>
                         Arder sin llama
-                        <input class="mt-1" type="checkbox" {{$formu->etapaIncendio->arder==true?'checked':''  }} name="" id="">
+                        <input class="mt-1" type="checkbox"  name="" id="">
                     </th>
                        
 
@@ -211,23 +209,23 @@
                         </th>
                         <th>
                             Madera
-                            <input class="mt-1" type="checkbox" {{$formu->edificacion->madera==true?'checked':''  }} name="" id="">
+                            <input class="mt-1" type="checkbox"  name="" id="">
                         </th>
                         <th>
                             Hormigón
-                            <input class="mt-1" type="checkbox" {{$formu->edificacion->hormigon==true?'checked':''  }} name="" id="">
+                            <input class="mt-1" type="checkbox"  name="" id="">
                         </th>
                         <th>
                             Mixta
-                            <input class="mt-1" type="checkbox" {{$formu->edificacion->mixta==true?'checked':''  }} name="" id="">
+                            <input class="mt-1" type="checkbox"  name="" id="">
                         </th>
                         <th>
                             Metálica
-                            <input class="mt-1" type="checkbox" {{$formu->edificacion->metalica==true?'checked':''  }} name="" id="">
+                            <input class="mt-1" type="checkbox"  name="" id="">
                         </th>
                         <th>
                             Adobe
-                            <input class="mt-1" type="checkbox" {{$formu->edificacion->adobe==true?'checked':''  }} name="" id="">
+                            <input class="mt-1" type="checkbox"  name="" id="">
                         </th>                          
     
                     </tr>
@@ -238,38 +236,45 @@
                             </th>
                             <th>
                                 Planta baja
-                                <input class="mt-1" type="checkbox" {{$formu->edificacion->plantaBaja==true?'checked':''  }} name="" id="">
+                                <input class="mt-1" type="checkbox"  name="" id="">
                             </th>
                             <th>
                                 1 Planta
-                                <input class="mt-1" type="checkbox" {{$formu->edificacion->primerPiso==true?'checked':''  }} name="" id="">
+                                <input class="mt-1" type="checkbox"  name="" id="">
                             </th>
                             <th>
                                 2 Planta
-                                <input class="mt-1" type="checkbox" {{$formu->edificacion->segundoPiso==true?'checked':''  }} name="" id="">
+                                <input class="mt-1" type="checkbox"  name="" id="">
                             </th>
                             <th>
                                 3 Planta
-                                <input class="mt-1" type="checkbox" {{$formu->edificacion->tercerPiso==true?'checked':''  }} name="" id="">
+                                <input class="mt-1" type="checkbox"  name="" id="">
                             </th>
                             <th>
                                 Patio
-                                <input class="mt-1" type="checkbox" {{$formu->edificacion->patio==true?'checked':''  }} name="" id="">
+                                <input class="mt-1" type="checkbox"  name="" id="">
                             </th>                          
         
                         </tr>
-                </table>
-
-            @else
-            <button type="button" class="btn btn-primary" onclick="crearEtapas(this);">
-                    CREAR ETAPAS DE INCENDIO Y EDIFICACIÓN
-            </button>
-            @endif
-            
+                </table>          
         </div>
-            
+         
         @endcan
+        
+        @can('comprobarAtensionHospitalaria', $formu)
+            <button class="btn btn-primary"> Crear fichas medica</button>
+        @elsecan('noPreospitalario', $formu)
+        <h6 class="mt-1"><strong>5.- ORIGEN Y CAUSAS DEL EVENTO.</strong></h6>
+        <textarea class="form-control" name="" id="" cols="20" rows="5"></textarea>
+        <h6 class="mt-1"><strong>6.- TRABAJO REALIZADO.</strong></h6>  
+        <textarea class="form-control" name="" id="" cols="20" rows="10"></textarea>
+        <h6 class="mt-1"><strong>7.- RECURSOS UTILIZADOS.</strong></h6>
+        <ul class="">
+            <li>
 
+            </li>
+        </ul>
+        @endcan
     </div>
     <div class="card-footer text-muted">
         Footer
@@ -315,7 +320,10 @@
             }
             
           });
+         
     </script>
     
+    
+
 @endprepend
 @endsection
