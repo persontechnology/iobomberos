@@ -384,4 +384,11 @@ class FormularioEmergencias extends Controller
         // return $formularios;
         return view('formularios.formulariosEmergencias.misFormularios',$data); 
     }
+    public function proceso($idFormulario)
+    {
+        $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $data = array('formu' =>$formulario );
+        return view('formularios.formulariosEmergencias.completarFormulario',$data); 
+    }
+   
 }

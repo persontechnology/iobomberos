@@ -53,9 +53,16 @@
         @endif
         <h6 class="mt-1"><strong>2.- INFORMACIÓN GENERAL.</strong></h6>
         <div class="border">
-            Fecha: <strong>{{ $formu->fecha }} (solo fecha)</strong>  Fecha de aviso del incidente: <strong>{{ $formu->fecha }} (solo hora)</strong>
+            Fecha: <strong>{{\Carbon\Carbon::parse($formu->fecha)->format('d/m/Y')  }}</strong>  Hora de aviso del incidente: <strong>{{ $formu->horaSalida }} </strong>
             Hora de salida: <strong>{{ $formu->horaSalida }}</strong><br>
-            Hora de Arrivo del Incidente: <strong>{{ $formu->horaEntrada}}</strong> Lugar de Incidente: <strong>{{ $formu->puntoReferencia->barrio->nombre.' '.$formu->puntoReferencia->referencia }}</strong>
+            Hora de Arrivo del Incidente: <strong><input type="time" name="horaEntrada" id="horaEntrada" class="" required></strong> Lugar de Incidente:  
+            <strong> 
+                @if ($formu->puntoReferencia_id)
+                {{$formu->puntoReferencia->barrio->nombre.'-'.$formu->puntoReferencia->referencia}}
+                @else
+                    {{$formu->localidad}}
+                @endif
+            </strong>
             Nombre o Institución que Informa: <strong>{{ $formu->institucion}}</strong> <br>
             
             Aviso del evento: <strong>{{ $formu->responsable->hasRole('Radio operador')?'Radio operador':'Personal de guardia' }}</strong>
@@ -76,9 +83,77 @@
         </div>
         <h6 class="mt-1"><strong>3.- PERSONAL Y UNIDADES DESPACHADAS.</strong></h6>
 
-        <div id="cargarPersonalUnidades">
-            
-        </div>
+        @foreach ($formu->estacionFormularioEmergencias as $estaciones)                      
+                   
+            <table class="table-bordered">
+                <tbody>
+                    <tr class="text-center">
+                        <th colspan="4">
+                            <strong>{{$estaciones->estacion->nombre}}</strong>
+                            
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Unidades</th>
+                        <th>Operador</th>
+                        <th>Acompañantes</th>
+                        <th>Paramédico</th>
+                    </tr>
+                    @foreach ($estaciones->formularioEstacionVehiculo as $vehiculo)
+                    <tr >
+                        <th>
+                            <strong>{{$vehiculo->asistenciaVehiculo->vehiculo->tipoVehiculo->nombre}} <br>
+                                {{$vehiculo->asistenciaVehiculo->vehiculo->tipoVehiculo->codigo}}
+                                {{$vehiculo->asistenciaVehiculo->vehiculo->codigo}}
+                            </strong>
+                        </th>
+                        <th>
+                            <ul>
+                                @if ($vehiculo->vehiculoOperador)
+                                    <li>
+                                        {{$vehiculo->vehiculoOperador->asistenciaPersonal->usuario->name}}  
+                                    </li> 
+                                @else
+                                <li class="text-danger">
+                                    Operador  no asignado
+                                </li> 
+                                @endif
+                                
+                            </ul>
+
+                        </th>
+                        <th>
+                            <ul>
+                                @foreach ($vehiculo->vehiculoOperativos as $operativos)
+                                    
+                                    <li>
+                                        {{$operativos->asistenciaPersonal->usuario->name}}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </th>
+                        <th>
+                            <ul>
+                                
+                                    @if ($vehiculo->vehiculoParamedico)
+                                        <li>
+                                            {{$vehiculo->vehiculoParamedico->asistenciaPersonal->usuario->name}}   
+                                        </li> 
+                                    @else
+                                    <li class="text-danger">
+                                       Paramédico no asignado
+                                    </li> 
+                                    @endif
+                               
+                            </ul>
+                        </th>
+
+                    </tr>  
+                    @endforeach
+                    
+                </tbody>
+            </table>
+            @endforeach
         <br>
         @can('comprobarAtensionHospitalaria', $formu)
             <button class="btn btn-primary"> Crear fichas medica</button>
@@ -242,36 +317,5 @@
           });
     </script>
     
-    <script>
-            function crearEtapas(){
-                var url="{{ route('crearEdificacionFormulario') }}";
-                var id="{{ $formu->id }}";
-                swal({
-                    title: "¿Estás seguro?",
-                    text: "Que desea crear crear etapas de incendio y edificación.!",
-                    type: "info",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-dark",
-                    cancelButtonClass: "btn-danger",
-                    confirmButtonText: "¡Sí, crear!",
-                    cancelButtonText:"Cancelar",
-                    closeOnConfirm: false
-                },
-                function(){
-                    swal.close();
-                    $.blockUI({message:'<h1>Espere por favor.!</h1>'});
-                    $.post( url, { formulario: id })
-                    .done(function( data ) {
-                        
-                       location.replace("{{ route('completarFormulario',$formu->id) }}");
-                    }).always(function(){
-                        $.unblockUI();
-                    }).fail(function(){
-                        notificar("error","Ocurrio un error");
-                    });
-        
-                });
-            }
-        </script>
 @endprepend
 @endsection

@@ -32,14 +32,11 @@
                         </div>
                         <div class="card-footer bg-transparent d-flex justify-content-between border-top-0 pt-0">
                                 <span class="text-muted">Creado {{$atension->created_at->diffForHumans()}}</span>
-
-
 								<ul class="list-inline mb-0">
-                                <li class="list-inline-item"><a href="{{route('editar-atencion',$atension->id)}}">Editar</a></li>
+                                    <li class="list-inline-item"><a href="{{route('editar-atencion',$atension->id)}}">Editar</a></li>
 									<li class="list-inline-item "><a class="text-danger" href="#">Eliminar</a></li>
 								</ul>
-							</div>
-                       
+							</div>                       
                     </div>
                 </div>
                 

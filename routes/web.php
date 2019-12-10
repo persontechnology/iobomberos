@@ -199,7 +199,10 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::get('/nuevo-formulario','FormularioEmergencias@nuevo' )->name('nuevo-formulario');
         Route::get('/proceso-formulario/{id}','FormularioEmergencias@proceso' )->name('proceso-formulario');
         Route::get('/editar-formulario/{id}','FormularioEmergencias@editarFormulario' )->name('editar-formulario');
-
+        
+        Route::get('/cargarPersonalUnidadesDespachadas/{id}','FormularioEmergencias@cargarPersonalUnidadesDespachadas' )->name('cargarPersonalUnidadesDespachadas');
+        
+        
         Route::post('/formulario-guardar', 'FormularioEmergencias@guardarFormulario')->name('guardarFormulario');
         Route::post('/buscar-puntos-referencia', 'FormularioEmergencias@buscarPuntoReferenciaId')->name('buscarPuntosReferencia');
         Route::post('/formulario-buscar-personal-Operador', 'FormularioEmergencias@buscarPersonalOperador')->name('buscarPersonalOperadorFormulario');

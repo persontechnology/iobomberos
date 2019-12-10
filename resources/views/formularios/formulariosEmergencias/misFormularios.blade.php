@@ -54,10 +54,10 @@
         <!-- Tabs content -->
         <div class="tab-content card-body">
             <div class="tab-pane active fade show" id="messages-tue">
-                <ul class="media-list">
+                <ul class="list-group ">
                     @if($formulariosAsignados->count()>0)
                     @foreach ($formulariosAsignados as $asignados)
-                    <li class="media">
+                    <li class="list-group-item">
                         <div class="mr-3 position-relative">
                             <img src="{{asset('img/user.png') }}" class="rounded-circle" width="36" height="36" alt="">
                             <span class="badge bg-danger-400 badge-pill badge-float border-2 border-white">{{ $asignados->numero}}</span>
@@ -66,10 +66,12 @@
                         <div class="media-body">
                             <div class="d-flex justify-content-between">
                                 
-                                <a href="#">Completar formulario N° <strong>{{ $asignados->numero}}</strong></a>
+                            <a href="{{route('proceso-formulario',$asignados->id)}}">Completar formulario N° <strong>{{ $asignados->numero}}</strong></a>
                                 <span class="font-size-sm text-muted">Fecha: {{$asignados->fecha}}</span>
-                                <span class="font-size-sm text-muted">Punto Referencia: {{$asignados->fecha}}</span>
-                                <span class="font-size-sm text-muted">14:58</span>
+                                <span class="font-size-sm text-muted align-left">Punto Referencia: {{$asignados->PuntoReferencia->referencia??'No existe punto de referencia'}}</span>
+                                <span class="font-size-sm text-muted">Referencia: {{$asignados->localidad??'No existe punto de referencia'}}</span>
+                                
+                                <span class="font-size-sm text-muted">Creada: {{ $asignados->created_at}}</span>
 
                             </div>
 
