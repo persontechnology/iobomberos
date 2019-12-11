@@ -216,7 +216,19 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/actualizar-atencion','AtencionPrehospitalarias@actualizarAtencion' )->name('actualizar-atencion');
         //Completar mis formularios 
         Route::get('/mis-formularios','FormularioEmergencias@misFormularios' )->name('mis-formulario');
+        //rutas para los materiales
+        Route::get('/materiales-formularios/{id}','FormularioEmergencias@materialesFormulario' )->name('materiales-formulario');
+        Route::post('/guardar-material','FormularioEmergencias@guardarMateriales' )->name('guardar-material');
+        Route::post('/eliminar-material','FormularioEmergencias@eliminarMaterial' )->name('eliminar-material');
 
+        //rutas para los materiales
+        Route::get('/danios-formularios/{id}','FormularioEmergencias@daniosFormulario' )->name('danios-formulario');
+        Route::post('/guardar-danio','FormularioEmergencias@guardarDanios' )->name('guardar-danio');
+        Route::post('/eliminar-danio','FormularioEmergencias@eliminarDanio' )->name('eliminar-danio');
+        //completar informacion del formulario
+         
+        Route::post('/completar-informacion','FormularioEmergencias@completarFormularioResposable' )->name('completar-informacion');       
+        
          
     });
        

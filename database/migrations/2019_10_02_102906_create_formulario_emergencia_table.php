@@ -41,6 +41,10 @@ class CreateFormularioEmergenciaTable extends Migration
             $table->unsignedBigInteger('emergencia_id');            
             $table->foreign('emergencia_id')->references('id')->on('emergencia');
             
+            $table->text('origenCausa')->nullable();
+            $table->text('tabajoRealizado')->nullable();
+            $table->enum('localidadEjecutada', ['Urbano','Rural'])->nullable();
+
             $table->bigInteger('creadoPor')->nullable();
             $table->bigInteger('actualizadoPor')->nullable();
             $table->timestamps();

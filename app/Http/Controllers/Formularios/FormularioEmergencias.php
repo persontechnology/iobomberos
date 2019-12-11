@@ -16,10 +16,12 @@ use iobom\Models\Asistencia\AsistenciaVehiculo;
 use iobom\Models\Emergencia\Emergencia;
 use iobom\Models\Estacion;
 use iobom\Models\FormularioEmergencia;
+use iobom\Models\FormularioEmergencia\Danio;
 use iobom\Models\FormularioEmergencia\Edificacion;
 use iobom\Models\FormularioEmergencia\EstacionFormularioEmergencia;
 use iobom\Models\FormularioEmergencia\EtapaIncendio;
 use iobom\Models\FormularioEmergencia\FormularioEstacionVehiculo;
+use iobom\Models\FormularioEmergencia\Material;
 use iobom\Models\Parroquia;
 use iobom\Models\PuntoReferencia;
 use iobom\Models\Vehiculo;
@@ -389,6 +391,97 @@ class FormularioEmergencias extends Controller
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
         $data = array('formu' =>$formulario );
         return view('formularios.formulariosEmergencias.completarFormulario',$data); 
+    }
+    //gfuncion para completar los materiales que se utilizarn dentro de un formulrio
+    public function materialesFormulario($idFormulario)
+    {
+        $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $data = array('formulario' =>$formulario );
+        return view('formularios.materiales.index',$data); 
+    }
+    public function guardarMateriales(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|max:191',
+            'formulario' => 'required|exists:formularioEmergencia,id',
+        ]);
+        $materiales=new Material();
+        $materiales->nombre=$request->nombre;
+        $materiales->formularioEmergencia_id=$request->formulario;
+        $materiales->save();
+    }
+    public function eliminarMaterial(Request $request)
+    {        
+        $request->validate([
+            'material'=>'required|exists:materials,id',
+        ]);
+        try {
+            DB::beginTransaction();
+            $material=Material::findOrFail($request->material);
+            $material->delete();
+            DB::commit();
+            return response()->json(['success'=>'Material eliminada exitosamente']);
+        } catch (\Exception $th) {
+            DB::rollBack();
+            return response()->json(['default'=>'No se puede eliminar el material']);
+        }
+        
+    }
+
+    //funcion para completar los materiales que se utilizarn dentro de un formulrio
+    public function daniosFormulario($idFormulario)
+    {
+        $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $data = array('formulario' =>$formulario );
+        return view('formularios.danios.index',$data); 
+    }
+    public function guardarDanios(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|max:191',
+            'idFormulario' => 'required|exists:formularioEmergencia,id',
+        ]);
+        $danio=new Danio();
+        $danio->nombre=$request->nombre;
+        $danio->formularioEmergencia_id=$request->idFormulario;
+        $danio->save();
+    }
+    public function eliminarDanio(Request $request)
+    {        
+        $request->validate([
+            'danio'=>'required|exists:danios,id',
+        ]);
+        try {
+            DB::beginTransaction();
+            $danio=Danio::findOrFail($request->danio);
+            $danio->delete();
+            DB::commit();
+            return response()->json(['success'=>'Daño ocasional eliminada exitosamente']);
+        } catch (\Exception $th) {
+            DB::rollBack();
+            return response()->json(['default'=>'No se puede eliminar el daño ocasional']);
+        }
+        
+    }
+    public function completarFormularioResposable(Request $request)
+    {    $request->validate([            
+            'formulario' => 'required|exists:formularioEmergencia,id',
+            'tipoEmergencia'=>'required|exists:tipoEmergencia,id',
+            'horaEntrada'=>'required',
+            'origenCausa'=>'min:150|string',
+            'numeroHeridos'=>'integer'
+        ]);
+        $formulario=FormularioEmergencia::findOrFail($request->formulario);
+        $formulario->tipoEmergencia_id=$request->tipoEmergencia;
+        $formulario->horaEntrada=$request->horaEntrada;
+        $formulario->origenCausa=$request->origenCausa;
+        $formulario->tabajoRealizado=$request->tabajoRealizado;
+        $formulario->heridos=$request->numeroHeridos;
+        $formulario->actualizadoPor=Auth::id();
+        $formulario->save();
+        $request->flash('success','Formulario # '.$formulario->numero.' Completado exitosamente');
+        return redirect()->route('proceso-formulario',$formulario->id);
+        
     }
    
 }

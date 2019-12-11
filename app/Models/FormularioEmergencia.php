@@ -9,8 +9,11 @@ use iobom\Models\FormularioEmergencia\AtencionPrehospitalaria;
 use iobom\Models\FormularioEmergencia\Edificacion;
 use iobom\Models\FormularioEmergencia\EstacionFormularioEmergencia;
 use iobom\Models\FormularioEmergencia\EtapaIncendio;
+use iobom\Models\FormularioEmergencia\Material;
+use iobom\Models\FormularioEmergencia\Danio;
 use iobom\Models\PuntoReferencia;
 use iobom\User;
+
 
 class FormularioEmergencia extends Model
 {
@@ -89,5 +92,15 @@ class FormularioEmergencia extends Model
     public function atenciones()
     {
         return $this->hasMany(AtencionPrehospitalaria::class,'formularioEmergencia_id');
+    }
+    //un formulario tiene varios materiales
+    public function materiales()
+    {
+        return $this->hasMany(Material::class,'formularioEmergencia_id');
+    }
+    //un formulario tiene varios danios
+    public function danios()
+    {
+        return $this->hasMany(Danio::class,'formularioEmergencia_id');
     }
 }
