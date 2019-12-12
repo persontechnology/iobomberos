@@ -277,3 +277,12 @@ Breadcrumbs::for('editarRegistroHospitalario', function ($trail,$atencion) {
     $trail->parent('registroHospitalario',$atencion->formulario);
     $trail->push(' N. Registro Pre-Hospitalaria ', route('nueva-atencion',$atencion->id));
 });
+//Completr formularios
+Breadcrumbs::for('misFormularios', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Mis formularios', route('mis-formulario'));
+});
+Breadcrumbs::for('completarFormulario', function ($trail,$formulario) {
+    $trail->parent('misFormularios');
+    $trail->push('Completar formulario', route('proceso-formulario',$formulario->id));
+});

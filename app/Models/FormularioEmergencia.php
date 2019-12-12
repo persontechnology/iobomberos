@@ -5,12 +5,14 @@ namespace iobom\Models;
 use Illuminate\Database\Eloquent\Model;
 use iobom\Models\Asistencia\AsistenciaPersonal;
 use iobom\Models\Emergencia\Emergencia;
+use iobom\Models\FormularioEmergencia\Anexo;
 use iobom\Models\FormularioEmergencia\AtencionPrehospitalaria;
 use iobom\Models\FormularioEmergencia\Edificacion;
 use iobom\Models\FormularioEmergencia\EstacionFormularioEmergencia;
 use iobom\Models\FormularioEmergencia\EtapaIncendio;
 use iobom\Models\FormularioEmergencia\Material;
 use iobom\Models\FormularioEmergencia\Danio;
+use iobom\Models\FormularioEmergencia\FormularioEstacionVehiculo;
 use iobom\Models\PuntoReferencia;
 use iobom\User;
 
@@ -102,5 +104,25 @@ class FormularioEmergencia extends Model
     public function danios()
     {
         return $this->hasMany(Danio::class,'formularioEmergencia_id');
+    }
+
+    // A:fabian 
+    // D:un formualrio tiene vehiculo
+    public function formularioVehiculos()
+    {
+        return $this->belongsToMany(
+            FormularioEstacionVehiculo::class,
+            EstacionFormularioEmergencia::class,            
+            'formularioEmergencia_id', // Foreign key on estacion table...
+            'estacionForEmergencias_id', // Foreign key on vehiculo table...
+            'id', // Local key on formulario table...
+            'id'
+
+        );
+    }
+    //anexos
+    public function anexos()
+    {
+        return $this->hasMany(Anexo::class,'formularioEmergencia_id'); 
     }
 }

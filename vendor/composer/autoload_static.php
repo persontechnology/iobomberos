@@ -4863,6 +4863,7 @@ class ComposerStaticInit0888a77089df3ccd83869f78a4f6651b
         'iobom\\Models\\Emergencia\\TipoEmergencia' => __DIR__ . '/../..' . '/app/Models/Emergencia/TipoEmergencia.php',
         'iobom\\Models\\Estacion' => __DIR__ . '/../..' . '/app/Models/Estacion.php',
         'iobom\\Models\\FormularioEmergencia' => __DIR__ . '/../..' . '/app/Models/FormularioEmergencia.php',
+        'iobom\\Models\\FormularioEmergencia\\Anexo' => __DIR__ . '/../..' . '/app/Models/FormularioEmergencia/Anexo.php',
         'iobom\\Models\\FormularioEmergencia\\AtencionInsumo' => __DIR__ . '/../..' . '/app/Models/FormularioEmergencia/AtencionInsumo.php',
         'iobom\\Models\\FormularioEmergencia\\AtencionPrehospitalaria' => __DIR__ . '/../..' . '/app/Models/FormularioEmergencia/AtencionPrehospitalaria.php',
         'iobom\\Models\\FormularioEmergencia\\Danio' => __DIR__ . '/../..' . '/app/Models/FormularioEmergencia/Danio.php',

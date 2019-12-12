@@ -85,5 +85,11 @@ class User extends Authenticatable
         ->wherePivot('estado',true)
         ->where('fecha',Carbon::now()->toDateString())->where('fechaFin','<=',$fechaMenor);
     }
+    //A: Fabian Lopez
+    //D:Buscar las asistencias del usuario
+    public function asistencias()
+    {
+        return $this->hasMany(AsistenciaPersonal::class,'user_id');
+    }
 
 }

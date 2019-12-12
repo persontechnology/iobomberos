@@ -9,6 +9,7 @@ use iobom\DataTables\Formularios\FormularioEmergenciasDataTable;
 use iobom\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use iobom\Http\Requests\FormularioEmergencia\RqIngreso;
 use iobom\Models\Asistencia\Asistencia;
 use iobom\Models\Asistencia\AsistenciaPersonal;
@@ -20,6 +21,7 @@ use iobom\Models\FormularioEmergencia\Danio;
 use iobom\Models\FormularioEmergencia\Edificacion;
 use iobom\Models\FormularioEmergencia\EstacionFormularioEmergencia;
 use iobom\Models\FormularioEmergencia\EtapaIncendio;
+use iobom\Models\FormularioEmergencia\Anexo;
 use iobom\Models\FormularioEmergencia\FormularioEstacionVehiculo;
 use iobom\Models\FormularioEmergencia\Material;
 use iobom\Models\Parroquia;
@@ -372,6 +374,7 @@ class FormularioEmergencias extends Controller
 
     public function misFormularios()
     {
+
         $asistenciaPersonal=AsistenciaPersonal::where('user_id',Auth::id())->get();
         $formulariosAsignados=FormularioEmergencia::where('estado','Proceso')
         ->whereIn('encardadoFicha_id',$asistenciaPersonal->pluck('id'))
@@ -388,7 +391,9 @@ class FormularioEmergencias extends Controller
     }
     public function proceso($idFormulario)
     {
+        
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $this->authorize('misFormularios', $formulario); 
         $data = array('formu' =>$formulario );
         return view('formularios.formulariosEmergencias.completarFormulario',$data); 
     }
@@ -472,16 +477,147 @@ class FormularioEmergencias extends Controller
             'numeroHeridos'=>'integer'
         ]);
         $formulario=FormularioEmergencia::findOrFail($request->formulario);
-        $formulario->tipoEmergencia_id=$request->tipoEmergencia;
-        $formulario->horaEntrada=$request->horaEntrada;
-        $formulario->origenCausa=$request->origenCausa;
-        $formulario->tabajoRealizado=$request->tabajoRealizado;
-        $formulario->heridos=$request->numeroHeridos;
-        $formulario->actualizadoPor=Auth::id();
-        $formulario->save();
-        $request->flash('success','Formulario # '.$formulario->numero.' Completado exitosamente');
+        $diaHoy=Carbon::now();
+        
+        try {
+            DB::beginTransaction();
+            $formulario->tipoEmergencia_id=$request->tipoEmergencia;
+            $formulario->horaEntrada=$request->horaEntrada;
+            $formulario->origenCausa=$request->origenCausa;
+            $formulario->tabajoRealizado=$request->tabajoRealizado;
+            $formulario->heridos=$request->numeroHeridos;
+            $formulario->actualizadoPor=Auth::id();
+            $formulario->save();
+            //ingresar etapas de incendio
+            if($formulario->etapaIncendio){
+                $etapaIncendio=EtapaIncendio::findOrFail($formulario->etapaIncendio->id);
+                $etapaIncendio->incipiente=$this->conversioCheckbox($request->incipiente);
+                $etapaIncendio->desarrollo=$this->conversioCheckbox($request->desarrollo);
+                $etapaIncendio->combustion=$this->conversioCheckbox($request->combustion);
+                $etapaIncendio->flashover=$this->conversioCheckbox($request->flashover);
+                $etapaIncendio->decadencia=$this->conversioCheckbox($request->decadencia);
+                $etapaIncendio->arder=$this->conversioCheckbox($request->arder);
+                $etapaIncendio->save();
+
+            }else{
+                $etapaIncendioNuevo=new EtapaIncendio();
+                $etapaIncendioNuevo->formularioEmergencia_id=$formulario->id;
+                $etapaIncendioNuevo->incipiente=$this->conversioCheckbox($request->incipiente);
+                $etapaIncendioNuevo->desarrollo=$this->conversioCheckbox($request->desarrollo);
+                $etapaIncendioNuevo->combustion=$this->conversioCheckbox($request->combustion);
+                $etapaIncendioNuevo->flashover=$this->conversioCheckbox($request->flashover);
+                $etapaIncendioNuevo->decadencia=$this->conversioCheckbox($request->decadencia);
+                $etapaIncendioNuevo->arder=$this->conversioCheckbox($request->arder);
+                $etapaIncendioNuevo->save();
+            }
+            //registro de edificacion
+            if($formulario->edificacion){
+                $edificacion=Edificacion::findOrFail($formulario->edificacion->id);;
+                $edificacion->formularioEmergencia_id=$formulario->id;
+                $edificacion->madera=$this->conversioCheckbox($request->madera);
+                $edificacion->hormigon=$this->conversioCheckbox($request->hormigon);
+                $edificacion->mixta=$this->conversioCheckbox($request->mixta);
+                $edificacion->metalica=$this->conversioCheckbox($request->metalica);
+                $edificacion->adobe=$this->conversioCheckbox($request->adobe);
+                $edificacion->plantaBaja=$this->conversioCheckbox($request->plantaBaja);
+                $edificacion->primerPiso=$this->conversioCheckbox($request->primerPiso);
+                $edificacion->segundoPiso=$this->conversioCheckbox($request->segundoPiso);
+                $edificacion->tercerPiso=$this->conversioCheckbox($request->tercerPiso);
+                $edificacion->patio=$this->conversioCheckbox($request->patio);
+                $edificacion->save();  
+            }else{
+                $edificacion=new Edificacion();
+                $edificacion->formularioEmergencia_id=$formulario->id;
+                $edificacion->madera=$this->conversioCheckbox($request->madera);
+                $edificacion->hormigon=$this->conversioCheckbox($request->hormigon);
+                $edificacion->mixta=$this->conversioCheckbox($request->mixta);
+                $edificacion->metalica=$this->conversioCheckbox($request->metalica);
+                $edificacion->adobe=$this->conversioCheckbox($request->adobe);
+                $edificacion->plantaBaja=$this->conversioCheckbox($request->plantaBaja);
+                $edificacion->primerPiso=$this->conversioCheckbox($request->primerPiso);
+                $edificacion->segundoPiso=$this->conversioCheckbox($request->segundoPiso);
+                $edificacion->tercerPiso=$this->conversioCheckbox($request->tercerPiso);
+                $edificacion->patio=$this->conversioCheckbox($request->patio);
+                $edificacion->save();
+            }
+            //Subir imagenes
+            if ($request->hasFile('foto')) {
+                $i=0;
+                foreach ($request->file('foto') as $imagen) {
+                    
+                    if ($imagen->isValid()) {
+                        $anexos=new Anexo();
+                        $extension =$imagen->extension();
+                        $path = Storage::putFileAs(
+                            'public/anexos', $imagen,$diaHoy->format('Y/m/d H:i:s').$i.'_'.$formulario->id.'.'.$extension
+                        );
+                        $anexos->formularioEmergencia_id=$formulario->id;
+                        $anexos->foto=$path;
+                        $anexos->save();
+                    }
+                    $i++;
+                }
+            }
+
+            DB::commit();
+            $request->session()->flash('success','Formulario completado exitosamente ');
+            
+        } catch (\Exception $th) {
+            DB::rollBack();
+            $request->session()->flash('warning','no se puede completar el formulario verifique los datos y vuelva a intentar ');
+        }
         return redirect()->route('proceso-formulario',$formulario->id);
         
     }
-   
+   public function cambiarEstadoProceso(Request $request)
+   {
+    $request->validate([            
+        'formulario' => 'required|exists:formularioEmergencia,id',        
+    ]);
+    try {
+        DB::beginTransaction();
+            $formulario=FormularioEmergencia::findOrFail($request->formulario);
+            $formulario->estado='Proceso';
+            $formulario->save();
+            foreach ($formulario->estacionFormularioEmergencias as $estacione) {
+                foreach ($estacione->formularioEstacionVehiculo as $vehiculo) {
+                    $asistenciaVehiculo=AsistenciaVehiculo::findOrFail($vehiculo->asistenciaVehiculo_id);
+                    $asistenciaVehiculo->estadoEmergencia='Disponible';
+                    $asistenciaVehiculo->save();
+                    if($vehiculo->vehiculoOperador){
+                        $asistenciaPersonal=AsistenciaPersonal::findOrFail($vehiculo->vehiculoOperador->asistenciaPersonal_id);
+                        $asistenciaPersonal->estadoEmergencia='Disponible';
+                        $asistenciaPersonal->save();
+                    }
+                    if($vehiculo->vehiculoOperativos->count()>0){
+                        foreach ($vehiculo->vehiculoOperativos as $vehiculoOperativo) {
+                            
+                            $asistenciaPersonaloperativos=AsistenciaPersonal::findOrFail($vehiculoOperativo->asistenciaPersonal_id);
+                            $asistenciaPersonaloperativos->estadoEmergencia='Disponible';
+                            $asistenciaPersonaloperativos->save();
+                        }
+                    }
+                    if($vehiculo->vehiculoParamedico){
+                        $asistenciaPersonalParamedico=AsistenciaPersonal::findOrFail($vehiculo->vehiculoParamedico->asistenciaPersonal_id);
+                        $asistenciaPersonalParamedico->estadoEmergencia='Disponible';
+                        $asistenciaPersonalParamedico->save();
+                                    
+                    }
+                }
+            }
+            DB::commit();
+            return response()->json(['success'=>'El cambio de estado del formulario fue exitosamente']);
+        } catch (\Exception $th) {
+            DB::rollBack();
+            return response()->json(['default'=>'No se puede cambiar de estado']);
+        }
+   }
+   public function conversioCheckbox($var)
+   {
+       if($var==1||$var=='on'){
+           return 1;
+       }else{
+        return 0;
+       }
+   }
 }

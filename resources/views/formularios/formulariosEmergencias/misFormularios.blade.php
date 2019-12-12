@@ -1,5 +1,5 @@
 @extends('layouts.app',['title'=>'Nuevo Registro Pre-Hospitalaria '])
-@section('breadcrumbs', Breadcrumbs::render('formularios'))
+@section('breadcrumbs', Breadcrumbs::render('misFormularios'))
 @section('content')
 <!-- My messages -->
 <div class="card">

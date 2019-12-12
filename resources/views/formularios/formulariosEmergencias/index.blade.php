@@ -31,6 +31,43 @@
      $('#menuFormularios').addClass('active');
 </script>
  {!! $dataTable->scripts() !!}
+ <script>
+function cambiarProceso(arg){
+        
+        swal({
+            title: "¿Estás seguro?",
+            text: "Que desea cambiar de estado el formulario !",
+            type: "error",
+            showCancelButton: true,
+            confirmButtonClass: "btn-dark",
+            cancelButtonClass: "btn-danger",
+            confirmButtonText: "¡Sí, cambiar!",
+            cancelButtonText:"Cancelar",
+            closeOnConfirm: false
+        },
+        function(){
+            swal.close();
+            $.blockUI({message:'<h1>Espere por favor.!</h1>'});
+            $.post( "{{ route('cambio-proceso-formulario') }}", { formulario: $(arg).data('id') })
+            .done(function( data ) {
+                if(data.success){
+                    $('#dataTableBuilder').DataTable().draw(false);
+                    notificar("info",data.success);
+                }
+                if(data.default){
+                    notificar("default",data.default);   
+                }
+                console.log(data)
+            }).always(function(){
+                $.unblockUI();
+            }).fail(function(){
+                notificar("error","Ocurrio un error");
+            });
+
+        });
+    }
+
+</script>
 @endprepend
 
 @endsection

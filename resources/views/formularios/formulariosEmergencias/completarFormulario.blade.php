@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.app',['title'=>'Completar formulario '])
+@section('breadcrumbs', Breadcrumbs::render('completarFormulario',$formu))
 
 @section('content')
 
@@ -31,7 +32,7 @@
         <h3 class="text-center"><strong>INFORME N° {{ $formu->numero }} DEL EVENTO ADEVERSO</strong></h3>
 
     </div>
-    <form action="{{ route('completar-informacion') }}" method="post">
+    <form action="{{ route('completar-informacion') }}" method="post" enctype="multipart/form-data">
         @csrf
         <input type="hidden" value="{{$formu->id }}" name="formulario" id="formulario">
         <div class="card-body">
@@ -43,10 +44,10 @@
                 <div class="form-group row mt-1">
                     <label for="inputEmail3" class="col-sm-3 col-form-label"><strong> Seleccione el tipo de emergencia </strong></label>
                     <div class="col-sm-9">
-                        <select class="form-control @error('tipoEmergencia') is-invalid @enderror" name="tipoEmergencia"  id="tipoEmergencia" data-live-search="true">
+                        <select class="form-control @error('tipoEmergencia') is-invalid @enderror" required name="tipoEmergencia"  id="tipoEmergencia" data-live-search="true">
                             <option value="">---Seleccione un tipo de emergencia---</option>
                             @foreach ($formu->emergencia->tipos as $tipoEme)
-                                <option value="{{$tipoEme->id}}" {{ old('tipoEmergencia'),$formu->tipoEMergencia_id==$tipoEme->id?'selected':''  }}>{{$tipoEme->nombre}}</option> 
+                                <option value="{{$tipoEme->id}}" {{ old('tipoEmergencia',$formu->tipoEmergencia_id)==$tipoEme->id?'selected':''  }}>{{$tipoEme->nombre}}</option> 
                             @endforeach
                         </select>
                         @error('tipoEmergencia')
@@ -67,7 +68,7 @@
                 Fecha: <strong>{{\Carbon\Carbon::parse($formu->fecha)->format('d/m/Y')  }}</strong>  Hora de aviso del incidente: <strong>{{ $formu->horaSalida }} </strong>
                 Hora de salida: <strong>{{ $formu->horaSalida }}</strong><br>
                 Hora de Arrivo del Incidente: <strong>
-                    <input type="time" name="horaEntrada" id="horaEntrada" value="{{ old('horaEntrada',$formu->horaEntrada)}}" class="form-control form-control-sm @error('horaEntrada') is-invalid @enderror" >
+                    <input type="time" name="horaEntrada" id="horaEntrada" required value="{{ old('horaEntrada',$formu->horaEntrada)}}" class="form-control form-control-sm @error('horaEntrada') is-invalid @enderror" >
                     @error('horaEntrada')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -187,27 +188,27 @@
                         <tr>
                             <th>
                                 Incipiente
-                                <input class="mt-1" type="checkbox"  name="incipiente" id="incipiente" {{ old('incipiente',$formu->etapaIncendio->incipiente)=='true'?'checked':'' }}>
+                                <input class="mt-1" type="checkbox"  name="incipiente" id="incipiente" {{ old('incipiente',$formu->etapaIncendio->incipiente)=='1'?'checked':'' }}>
                             </th>
                             <th>
                                 Desarrollo
-                                <input class="mt-1" type="checkbox"  name="" id="">
+                                <input class="mt-1" type="checkbox"  name="desarrollo" id="desarrollo" {{ old('desarrollo',$formu->etapaIncendio->desarrollo)=='1'?'checked':''}}>
     
                             <th>
                                 Combustión libre
-                                <input class="mt-1" type="checkbox"  name="" id="">
+                                <input class="mt-1" type="checkbox"  name="combustion" id="combustion" {{ old('combustion',$formu->etapaIncendio->combustion)=='1'?'checked':''}}>
         
                             <th>
                                 Flashover
-                                <input class="mt-1" type="checkbox"  name="" id="">
+                                <input class="mt-1" type="checkbox"  name="flashover" id="flashover" {{ old('flashover',$formu->etapaIncendio->flashover)=='1'?'checked':''}}>
         
                             <th>
                                 Decadencia
-                                <input class="mt-1" type="checkbox"  name="" id="">
+                                <input class="mt-1" type="checkbox"  name="decadencia" id="decadencia" {{ old('decadencia',$formu->etapaIncendio->decadencia)=='1'?'checked':''}}>
     
                             <th>
                                 Arder sin llama
-                                <input class="mt-1" type="checkbox"  name="" id="">
+                                <input class="mt-1" type="checkbox"  name="arder" id="arder" {{ old('arder',$formu->etapaIncendio->arder)=='1'?'checked':''}}>
                             </th>
                             
     
@@ -224,27 +225,27 @@
                     <tr>
                         <th>
                             Incipiente
-                            <input class="mt-1" type="checkbox"  name="incipiente" id="incipiente" {{ old('incipiente')?'checked':'' }}>
+                            <input class="mt-1" type="checkbox" value="1" name="incipiente" id="incipiente" {{ old('incipiente')?'checked':'' }}>
                         </th>
                         <th>
                             Desarrollo
-                            <input class="mt-1" type="checkbox"  name="desarrollo" id="desarrollo" {{ old('desarrollo')?'checked':'' }} >
+                            <input class="mt-1" type="checkbox" value="1" name="desarrollo" id="desarrollo" {{ old('desarrollo')?'checked':'' }} >
 
                         <th>
                             Combustión libre
-                            <input class="mt-1" type="checkbox"  name="combustion" id="combustion" {{ old('combustion')?'checked':'' }} >
+                            <input class="mt-1" type="checkbox" value="1" name="combustion" id="combustion" {{ old('combustion')?'checked':'' }} >
     
                         <th>
                             Flashover
-                            <input class="mt-1" type="checkbox"  name="flashover" id="flashover" {{ old('flashover')?'checked':'' }} >
+                            <input class="mt-1" type="checkbox" value="1" name="flashover" id="flashover" {{ old('flashover')?'checked':'' }} >
     
                         <th>
                             Decadencia
-                            <input class="mt-1" type="checkbox"  name="decadencia" id="decadencia" {{ old('decadencia')?'checked':'' }} >
+                            <input class="mt-1" type="checkbox" value="1" name="decadencia" id="decadencia" {{ old('decadencia')?'checked':'' }} >
 
                         <th>
                             Arder sin llama
-                            <input class="mt-1" type="checkbox"  name="	arder" id="	arder" {{ old('	arder')?'checked':'' }} >
+                            <input class="mt-1" type="checkbox" value="1" name="arder" id="arder" {{ old('arder')?'checked':'' }} >
                         </th>
                         
 
@@ -253,6 +254,7 @@
                 @endif
                 
                 <br>
+                @if ($formu->edificacion)
                 <table class="table-border text-center">
                         <tr>
                             <th colspan="6">
@@ -265,23 +267,23 @@
                             </th>
                             <th>
                                 Madera
-                                <input class="mt-1" type="checkbox"  name="" id="">
+                                <input class="mt-1" type="checkbox"  value="1" name="madera" id="madera" {{ old('madera',$formu->edificacion->madera)=='1'?'checked':'' }}>
                             </th>
                             <th>
                                 Hormigón
-                                <input class="mt-1" type="checkbox"  name="" id="">
+                                <input class="mt-1" type="checkbox"  value="1" name="hormigon" id="hormigon" {{ old('hormigon',$formu->edificacion->hormigon)=='1'?'checked':'' }}>
                             </th>
                             <th>
                                 Mixta
-                                <input class="mt-1" type="checkbox"  name="" id="">
+                                <input class="mt-1" type="checkbox"  value="1" name="mixta" id="mixta" {{ old('mixta',$formu->edificacion->mixta)=='1'?'checked':'' }}>
                             </th>
                             <th>
                                 Metálica
-                                <input class="mt-1" type="checkbox"  name="" id="">
+                                <input class="mt-1" type="checkbox"  value="1" name="metalica" id="metalica" {{ old('metalica',$formu->edificacion->metalica)=='1'?'checked':'' }}>
                             </th>
                             <th>
                                 Adobe
-                                <input class="mt-1" type="checkbox"  name="" id="">
+                                <input class="mt-1" type="checkbox"  value="1" name="adobe" id="adobe" {{ old('adobe',$formu->edificacion->adobe)=='1'?'checked':'' }}>
                             </th>                          
         
                         </tr>
@@ -292,27 +294,89 @@
                                 </th>
                                 <th>
                                     Planta baja
-                                    <input class="mt-1" type="checkbox"  name="" id="">
+                                    <input class="mt-1" type="checkbox"  value="1" name="plantaBaja" id="plantaBaja" {{ old('plantaBaja',$formu->edificacion->plantaBaja)=='1'?'checked':'' }}>
                                 </th>
                                 <th>
                                     1 Planta
-                                    <input class="mt-1" type="checkbox"  name="" id="">
+                                    <input class="mt-1" type="checkbox"  value="1" name="primerPiso" id="primerPiso" {{ old('primerPiso',$formu->edificacion->primerPiso)=='1'?'checked':'' }}>
                                 </th>
                                 <th>
                                     2 Planta
-                                    <input class="mt-1" type="checkbox"  name="" id="">
+                                    <input class="mt-1" type="checkbox"  value="1" name="segundoPiso" id="segundoPiso" {{ old('segundoPiso',$formu->edificacion->segundoPiso)=='1'?'checked':'' }}>
                                 </th>
                                 <th>
                                     3 Planta
-                                    <input class="mt-1" type="checkbox"  name="" id="">
+                                    <input class="mt-1" type="checkbox"  value="1" name="tercerPiso" id="tercerPiso" {{ old('tercerPiso',$formu->edificacion->tercerPiso)=='1'?'checked':'' }}>
                                 </th>
                                 <th>
                                     Patio
-                                    <input class="mt-1" type="checkbox"  name="" id="">
+                                    <input class="mt-1" type="checkbox"  value="1" name="patio" id="patio" {{ old('patio',$formu->edificacion->patio)=='1'?'checked':'' }}>
                                 </th>                          
             
                             </tr>
-                    </table>          
+                </table>   
+                @else                    
+                <table class="table-border text-center">
+                        <tr>
+                            <th colspan="6">
+                                    <h6 class="mt-1"><strong> EDIFICACIÓN.</strong></h6>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                Tipo de construción    
+                            </th>
+                            <th>
+                                Madera
+                                <input class="mt-1" type="checkbox"  value="1" name="madera" id="madera" {{ old('madera')?'checked':'' }}>
+                            </th>
+                            <th>
+                                Hormigón
+                                <input class="mt-1" type="checkbox"  value="1" name="hormigon" id="hormigon" {{ old('hormigon')?'checked':'' }}>
+                            </th>
+                            <th>
+                                Mixta
+                                <input class="mt-1" type="checkbox"  value="1" name="mixta" id="mixta" {{ old('mixta')?'checked':'' }}>
+                            </th>
+                            <th>
+                                Metálica
+                                <input class="mt-1" type="checkbox"  value="1" name="metalica" id="metalica" {{ old('metalica')?'checked':'' }}>
+                            </th>
+                            <th>
+                                Adobe
+                                <input class="mt-1" type="checkbox"  value="1" name="adobe" id="adobe" {{ old('adobe')?'checked':'' }}>
+                            </th>                          
+        
+                        </tr>
+
+                        <tr>
+                                <th>
+                                    Número de plantas  
+                                </th>
+                                <th>
+                                    Planta baja
+                                    <input class="mt-1" type="checkbox"  value="1" name="plantaBaja" id="plantaBaja" {{ old('plantaBaja')?'checked':'' }}>
+                                </th>
+                                <th>
+                                    1 Planta
+                                    <input class="mt-1" type="checkbox"  value="1" name="primerPiso" id="primerPiso" {{ old('primerPiso')?'checked':'' }}>
+                                </th>
+                                <th>
+                                    2 Planta
+                                    <input class="mt-1" type="checkbox"  value="1" name="segundoPiso" id="segundoPiso" {{ old('segundoPiso')?'checked':'' }}>
+                                </th>
+                                <th>
+                                    3 Planta
+                                    <input class="mt-1" type="checkbox"  value="1" name="tercerPiso" id="tercerPiso" {{ old('tercerPiso')?'checked':'' }}>
+                                </th>
+                                <th>
+                                    Patio
+                                    <input class="mt-1" type="checkbox"  value="1" name="patio" id="patio" {{ old('patio')?'checked':'' }}>
+                                </th>                          
+            
+                            </tr>
+                </table>          
+                @endif
             </div>
             
             @endcan
@@ -321,14 +385,14 @@
                 <a class="btn btn-primary"> Crear fichas medica</a>
             @elsecan('noPreospitalario', $formu)
             <h6 class="mt-1"><strong>5.- ORIGEN Y CAUSAS DEL EVENTO.</strong></h6>
-            <textarea class="form-control @error('origenCausa') is-invalid @enderror" name="origenCausa" id="origenCausa" cols="20"  rows="5"> {{ old('origenCausa',$formu->origenCausa) }}</textarea>
+            <textarea class="form-control @error('origenCausa') is-invalid @enderror" name="origenCausa" id="origenCausa" cols="20" required rows="5"> {{ old('origenCausa',$formu->origenCausa) }}</textarea>
             @error('origenCausa')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
             <h6 class="mt-1"><strong>6.- TRABAJO REALIZADO.</strong></h6>  
-            <textarea class="form-control @error('tabajoRealizado') is-invalid @enderror" name="tabajoRealizado" id="tabajoRealizado" cols="20"  rows="10">{{ old('tabajoRealizado',$formu->tabajoRealizado) }}</textarea>
+            <textarea class="form-control @error('tabajoRealizado') is-invalid @enderror" name="tabajoRealizado" id="tabajoRealizado" cols="20" required rows="10">{{ old('tabajoRealizado',$formu->tabajoRealizado) }}</textarea>
             @error('tabajoRealizado')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -343,6 +407,46 @@
 
             </div>
             <h6 class="mt-1"><strong>10.- ANEXOS FOTOGRÁFICOS.</strong></h6>
+            @if ($formu->anexos->count()>0)
+            <div class="row">
+                @php
+                    $i=0;
+                @endphp
+                    @foreach ($formu->anexos as $anexo)
+                    @php
+                        $i++;
+                    @endphp
+					<div class="col-xl-3 col-sm-6">
+						<div class="card">
+							<div class="card-img-actions">
+								<img class="card-img-top img-fluid" src="{{ Storage::url($anexo->foto) }}" width="60px"  height="50%">
+								<div class="card-img-actions-overlay card-img-top">
+									<a href="#" class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round">
+										<i class="icon-plus3"></i>
+									</a>
+									
+								</div>
+							</div>
+
+					    	<div class="card-body text-center">
+					    		<h6 class="font-weight-semibold mb-0">Anexo N° {{ $i }}</h6>
+					    		
+
+				    			<div class="list-icons list-icons-extended mt-3">
+			                    	<a href="#" class="list-icons-item" data-popup="tooltip" title="Google Drive" data-container="body"><i class="icon-google-drive"></i></a>
+			                    	
+		                    	</div>
+					    	</div>
+				    	</div>
+					</div>                    
+                    @endforeach
+				</div>
+                
+            @else
+                <div class="alert alert-danger" role="alert">
+                    No existen imagenes
+                </div>
+            @endif
             <input type="file" id="foto" name="foto[]" multiple>
             <h6 class="mt-1"><strong>11.- NÚMERO DE HERIDOS.</strong></h6>
             <input type="number" class="form-control @error('numeroHeridos') is-invalid @enderror" id="numeroHeridos" name="numeroHeridos" value="{{ old('numeroHeridos',$formu->heridos) }}">
@@ -388,7 +492,7 @@
 @prepend('linksPie')
     <script>
          $('select').selectpicker();
-        $('#menuEscritorio').addClass('active');
+         $('#menuMisFormularios').addClass('active');
 
         $("#foto").fileinput({           
             rtl: true,

@@ -4322,6 +4322,7 @@ return array(
     'iobom\\Models\\Emergencia\\TipoEmergencia' => $baseDir . '/app/Models/Emergencia/TipoEmergencia.php',
     'iobom\\Models\\Estacion' => $baseDir . '/app/Models/Estacion.php',
     'iobom\\Models\\FormularioEmergencia' => $baseDir . '/app/Models/FormularioEmergencia.php',
+    'iobom\\Models\\FormularioEmergencia\\Anexo' => $baseDir . '/app/Models/FormularioEmergencia/Anexo.php',
     'iobom\\Models\\FormularioEmergencia\\AtencionInsumo' => $baseDir . '/app/Models/FormularioEmergencia/AtencionInsumo.php',
     'iobom\\Models\\FormularioEmergencia\\AtencionPrehospitalaria' => $baseDir . '/app/Models/FormularioEmergencia/AtencionPrehospitalaria.php',
     'iobom\\Models\\FormularioEmergencia\\Danio' => $baseDir . '/app/Models/FormularioEmergencia/Danio.php',

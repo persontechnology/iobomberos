@@ -228,8 +228,9 @@ Route::middleware(['verified', 'auth'])->group(function () {
         //completar informacion del formulario
          
         Route::post('/completar-informacion','FormularioEmergencias@completarFormularioResposable' )->name('completar-informacion');       
-        
-         
+        //cambiar a proceso el formulario
+        Route::post('/cambio-proceso-formularios','FormularioEmergencias@cambiarEstadoProceso' )->name('cambio-proceso-formulario');
+       
     });
        
 
