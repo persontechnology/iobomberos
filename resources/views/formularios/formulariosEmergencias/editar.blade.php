@@ -67,15 +67,15 @@
                         <label class="col-md-3 col-form-label text-md-right" for="formaAviso">Frecuencia<i class="text-danger">*</i></label>
                         <div class="col-md-9">
                         <div class="custom-control custom-radio">
-                            <input type="radio" checked class="custom-control-input {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Lunes-Viernes" id="L-V" {{ old('frecuencia')=='Lunes-Viernes'?'checked':'' }} name="frecuencia"  required >
+                            <input type="radio" checked class="custom-control-input {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Lunes-Viernes" id="L-V" {{ old('frecuencia',$formulario->frecuencia)=='Lunes-Viernes'?'checked':'' }} name="frecuencia"  required >
                             <label class="custom-control-label" for="L-V">Lunes-Viernes</label>
                         </div>                                
                         <div class="custom-control custom-radio">
-                            <input type="radio"  class="custom-control-input {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Fin de semana" id="Fin de Semana" {{ old('frecuencia')=='Fin de semana'?'checked':'' }} name="frecuencia"  required >
+                            <input type="radio"  class="custom-control-input {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Fin de semana" id="Fin de Semana" {{ old('frecuencia',$formulario->frecuencia)=='Fin de semana'?'checked':'' }} name="frecuencia"  required >
                             <label class="custom-control-label" for="Fin de Semana">Fin de Semana</label>
                         </div> 
                         <div class="custom-control custom-radio ">
-                            <input type="radio" class="custom-control-input{{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Feriado" id="Feriado" name="frecuencia" {{ old('frecuencia')=='Feriado'?'checked':'' }} required >
+                            <input type="radio" class="custom-control-input{{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="Feriado" id="Feriado" name="frecuencia" {{ old('frecuencia',$formulario->frecuencia)=='Feriado'?'checked':'' }} required >
                             <label class="custom-control-label" for="Feriado">Feriado</label>
                                 
                                 @if ($errors->has('frecuencia'))
@@ -92,12 +92,12 @@
                         <label class="col-md-4 col-form-label text-md-right" for="formaAviso">Forma de Aviso<i class="text-danger">*</i></label>
                             <div class="col-md-6"> 
                             <div class="custom-control custom-radio">
-                                <input type="radio" checked class="custom-control-input {{ $errors->has('formaAviso') ? ' is-invalid' : '' }}" value="Personal" id="Personal" {{ old('formaAviso')=='Personal'?'checked':'' }} name="formaAviso"  required >
+                                <input type="radio" checked class="custom-control-input {{ $errors->has('formaAviso') ? ' is-invalid' : '' }}" value="Personal" id="Personal" {{ old('formaAviso',$formulario->formaAviso)=='Personal'?'checked':'' }} name="formaAviso"  required >
                                 <label class="custom-control-label" for="Personal">Personal</label>
                             </div>                                
         
                             <div class="custom-control custom-radio ">
-                                <input type="radio" class="custom-control-input{{ $errors->has('formaAviso') ? ' is-invalid' : '' }}" value="Teléfonico" id="Telefonico" {{ old('formaAviso')=='Teléfonico'?'checked':'' }} name="formaAviso" required >
+                                <input type="radio" class="custom-control-input{{ $errors->has('formaAviso') ? ' is-invalid' : '' }}" value="Teléfonico" id="Telefonico" {{ old('formaAviso',$formulario->formaAviso)=='Teléfonico'?'checked':'' }} name="formaAviso" required >
                                 <label class="custom-control-label" for="Telefonico">Telefónico</label>
                                     
                                 @if ($errors->has('formaAviso'))
@@ -123,7 +123,7 @@
                         <optgroup label="Parroquia: {{$parroquia->nombre}}">
                             @foreach ($parroquia->barrios as $barrio)
                                 @foreach ($barrio->puntosRefencias as $puntoReferencia)
-                                <option data-subtext="P.R : {{ $puntoReferencia->referencia }} " value="{{ $puntoReferencia->id }}" {{ (old("puntoReferencia") == $puntoReferencia->id ? "selected":"") }}>Barrio: {{ $barrio->nombre }}</option>                                    
+                                <option data-subtext="P.R : {{ $puntoReferencia->referencia }} " value="{{ $puntoReferencia->id }}" {{ (old("puntoReferencia",$formulario->puntoReferencia_id) == $puntoReferencia->id ? "selected":"") }}>Barrio: {{ $barrio->nombre }}</option>                                    
                                 @endforeach
                             @endforeach
                             </optgroup>
@@ -133,14 +133,88 @@
                 <div class="col-md-6"> 
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Dirección adicional</label>
-                        <input type="text" name="direcionAdicional" value="{{ old('direcionAdicional') }}" class="form-control" id="direcionAdicional" placeholder="Ingrese..">
+                        <input type="text" name="direcionAdicional" value="{{ old('direcionAdicional',$formulario->direcionAdicional) }}" class="form-control" id="direcionAdicional" placeholder="Ingrese..">
                     </div>
                 </div>
             </div> 
             <br>
             <div id="map">
             </div>
+            <br>
+            @foreach ($formulario->estacionFormularioEmergencias as $estacion)                      
+                   
+            <table class="table table-bordered">
+                <tbody>
+                    <tr class="text-center">
+                        <th colspan="4">
+                            <strong>{{$estacion->estacion->nombre}}</strong>
+                            <br>
+                            <div class="text-warning">
+                                <strong>Encargado de la estación: </strong>{{$estacion->responsable->name??'XXXXXXXXXX'}}
+                            </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Unidades</th>
+                        <th>Operador</th>
+                        <th>Acompañantes</th>
+                        <th>Paramédico</th>
+                    </tr>
+                    @foreach ($estacion->formularioEstacionVehiculo as $vehiculo)
+                    <tr >
+                        <th>
+                            <strong>{{$vehiculo->asistenciaVehiculo->vehiculo->tipoVehiculo->nombre}} <br>
+                                {{$vehiculo->asistenciaVehiculo->vehiculo->tipoVehiculo->codigo}}
+                                {{$vehiculo->asistenciaVehiculo->vehiculo->codigo}}
+                            </strong>
+                        </th>
+                        <th>
+                            <ul>
+                                @if ($vehiculo->vehiculoOperador)
+                                    <li>
+                                        {{$vehiculo->vehiculoOperador->asistenciaPersonal->usuario->name}}  
+                                    </li> 
+                                @else
+                                <li class="text-danger">
+                                    Operador  no asignado
+                                </li> 
+                                @endif
+                                
+                            </ul>
 
+                        </th>
+                        <th>
+                            <ul>
+                                @foreach ($vehiculo->vehiculoOperativos as $operativos)
+                                    
+                                    <li>
+                                        {{$operativos->asistenciaPersonal->usuario->name}}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </th>
+                        <th>
+                            <ul>
+                                
+                                    @if ($vehiculo->vehiculoParamedico)
+                                        <li>
+                                            {{$vehiculo->vehiculoParamedico->asistenciaPersonal->usuario->name}}   
+                                        </li> 
+                                    @else
+                                    <li class="text-danger">
+                                       Paramédico no asignado
+                                    </li> 
+                                    @endif
+                               
+                            </ul>
+                        </th>
+
+                    </tr>  
+                    @endforeach
+                    
+                </tbody>
+            </table>
+            @endforeach
             <div class="border mb-1 mt-1">
                 <label for="">Selecione Vehículos</label>
 
@@ -252,7 +326,7 @@
                         <select name="encargadoFormulario" id="encargadoFormulario" class="form-control selectpicker  @error('encargadoFormulario') is-invalid @enderror" data-live-search="true" required>
                             
                             @foreach ($asistenciaHoy as $asistencia)                         
-                                <option value="{{$asistencia->id}}">{{$asistencia->usuario->name}}</option>                        
+                                <option value="{{$asistencia->id}}" {{ old('encargadoFormulario',$asistencia->id) }}>{{$asistencia->usuario->name}}</option>                        
                             @endforeach
                         </select>
                         @if ($errors->has('encargadoFormulario'))
