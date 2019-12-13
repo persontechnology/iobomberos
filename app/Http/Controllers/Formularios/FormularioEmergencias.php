@@ -566,10 +566,10 @@ class FormularioEmergencias extends Controller
             
         } catch (\Exception $th) {
             DB::rollBack();
-            echo $th;
-            // $request->session()->flash('warning','no se puede completar el formulario verifique los datos y vuelva a intentar '.$th);
+            
+            $request->session()->flash('warning','no se puede completar el formulario verifique los datos y vuelva a intentar ');
         }
-        // return redirect()->route('proceso-formulario',$formulario->id);
+        return redirect()->route('proceso-formulario',$formulario->id);
         
     }
    public function cambiarEstadoProceso(Request $request)

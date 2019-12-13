@@ -377,10 +377,8 @@
                             </tr>
                 </table>          
                 @endif
-            </div>
-            
-            @endcan
-            
+            </div>            
+            @endcan            
             @can('comprobarAtensionHospitalaria', $formu)
                 <a href="{{ route('atenciones',$formu->id) }}" class="btn btn-primary text-white"> Crear fichas medica</a>
             @elsecan('noPreospitalario', $formu)

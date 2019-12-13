@@ -22,11 +22,11 @@
                     @if(count($emergencias)>0)
                         <select class="form-control @error('emergencia') is-invalid @enderror" required name="emergencia" id="emergencia" >
                             @foreach($emergencias as $esta)
-                            <option value="{{ $esta->id }}" {{ (old("emergencia") == $esta->id ? "selected":"") }} >{{$esta->nombre}}</option>
+                            <option value="{{ $esta->id }}" {{ old('emergencia',$formulario->emergencia_id)==$esta->id?'selected':''  }} >{{$esta->nombre}}</option>
                             @endforeach
                         </select>
 
-                        @error('emergencia_id')
+                        @error('emergencia')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="institucion">Nombre o institución que informa<i class="text-danger">*</i></label>
-                    <input id="institucion" type="text" class="form-control @error('institucion') is-invalid @enderror" name="institucion" value="{{ old('institucion') }}" required autocomplete="institucion" autofocus placeholder="Ingrese..">
+                    <input id="institucion" type="text" class="form-control @error('institucion') is-invalid @enderror" name="institucion" value="{{ old('institucion',$formulario->institucion) }}" required autocomplete="institucion" autofocus placeholder="Ingrese..">
         
                     @error('institucion')
                         <span class="invalid-feedback" role="alert">
@@ -49,8 +49,8 @@
                 </div>
                 <div class="form-group col-md-2">
                     <label for="telefono"># Teléfonico del informante</label>
-                    <input id="telefono" type="text" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{ old('telefono') }}" autocomplete="telefono" autofocus placeholder="Ingrese..">
-        
+                    <input id="telefono" type="text" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{ old('telefono',$formulario->telefono) }}" autocomplete="telefono" autofocus placeholder="Ingrese..">
+                           
                     @error('telefono')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
