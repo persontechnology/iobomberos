@@ -230,6 +230,12 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/completar-informacion','FormularioEmergencias@completarFormularioResposable' )->name('completar-informacion');       
         //cambiar a proceso el formulario
         Route::post('/cambio-proceso-formularios','FormularioEmergencias@cambiarEstadoProceso' )->name('cambio-proceso-formulario');
+
+        //anexos
+        Route::get('/cambiar-anexos-formularios/{id}','FormularioEmergencias@cargarAnexos' )->name('cambiar-anexos-formulario');
+        Route::post('/eliminar-anexos-formularios','FormularioEmergencias@eliminarAnexo' )->name('eliminar-anexos-formulario');
+
+        
        
     });
        

@@ -407,46 +407,9 @@
 
             </div>
             <h6 class="mt-1"><strong>10.- ANEXOS FOTOGRÁFICOS.</strong></h6>
-            @if ($formu->anexos->count()>0)
-            <div class="row">
-                @php
-                    $i=0;
-                @endphp
-                    @foreach ($formu->anexos as $anexo)
-                    @php
-                        $i++;
-                    @endphp
-					<div class="col-xl-3 col-sm-6">
-						<div class="card">
-							<div class="card-img-actions">
-								<img class="card-img-top img-fluid" src="{{ Storage::url($anexo->foto) }}" width="60px"  height="50%">
-								<div class="card-img-actions-overlay card-img-top">
-									<a href="#" class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round">
-										<i class="icon-plus3"></i>
-									</a>
-									
-								</div>
-							</div>
-
-					    	<div class="card-body text-center">
-					    		<h6 class="font-weight-semibold mb-0">Anexo N° {{ $i }}</h6>
-					    		
-
-				    			<div class="list-icons list-icons-extended mt-3">
-			                    	<a href="#" class="list-icons-item" data-popup="tooltip" title="Google Drive" data-container="body"><i class="icon-google-drive"></i></a>
-			                    	
-		                    	</div>
-					    	</div>
-				    	</div>
-					</div>                    
-                    @endforeach
-				</div>
+            <div id="cargarAnexos">
                 
-            @else
-                <div class="alert alert-danger" role="alert">
-                    No existen imagenes
-                </div>
-            @endif
+            </div>
             <input type="file" id="foto" name="foto[]" multiple>
             <h6 class="mt-1"><strong>11.- NÚMERO DE HERIDOS.</strong></h6>
             <input type="number" class="form-control @error('numeroHeridos') is-invalid @enderror" id="numeroHeridos" name="numeroHeridos" value="{{ old('numeroHeridos',$formu->heridos) }}">
@@ -462,6 +425,7 @@
         </div>
     </form>
         
+    
 </div>
 @push('linksCabeza')
 <script src="{{ asset('admin/plus/bootstrap-fileinput/js/fileinput.min.js') }}"></script>
@@ -539,7 +503,21 @@
                     }            
               });
             }
-            cargarDanios(); 
+            cargarDanios();
+            function cargarAnexos() {
+              
+              $("#cargarAnexos").load("{{ route('cambiar-anexos-formulario',$formu->id) }}", function(responseTxt, statusTxt, xhr){
+                    if(statusTxt == "success"){
+                        console.log('ok')
+                    }              
+                    if(statusTxt == "error"){
+                        notificar('error','NO se pudo cargar los anexos del formulario');
+                    }            
+              });
+            }
+            cargarAnexos();
+
+            
     </script>
 @endprepend
 @endsection

@@ -620,4 +620,29 @@ class FormularioEmergencias extends Controller
         return 0;
        }
    }
+    //anexos
+    public function cargarAnexos($idformulario)
+    {
+        $formulario=FormularioEmergencia::findOrFail($idformulario);
+        $data = array('formulario' =>$formulario);
+        return view('formularios.anexos.index',$data);
+    }
+   //funcion para eliminar las images
+   public function eliminarAnexo(Request $request)
+    {        
+        $request->validate([
+            'anexo'=>'required|exists:anexos,id',
+        ]);
+        try {
+            DB::beginTransaction();
+            $anexo=Anexo::findOrFail($request->anexo);
+            $anexo->delete();
+            DB::commit();
+            return response()->json(['success'=>'Anexo eliminado exitosamente']);
+        } catch (\Exception $th) {
+            DB::rollBack();
+            return response()->json(['default'=>'No se puede eliminar el anexo']);
+        }
+        
+    }
 }

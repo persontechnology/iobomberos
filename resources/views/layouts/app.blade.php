@@ -44,7 +44,8 @@
 	{{--  Lobibox.min  --}}
 	<link rel="stylesheet" href="{{ asset('admin/plus/select2/dist/css/select2.css') }}">
 	<script src="{{ asset('admin/plus/select2/dist/js/select2.js') }}"></script>
-
+	<script src="{{ asset('admin/plus/media/jquery.fancybox.js')}}"></script>
+	<link href="{{ asset('admin/plus/media/jquery.fancybox.css') }}" rel="stylesheet" type="text/css">
 	@stack('linksCabeza')
 	<script>
 		Lobibox.notify.DEFAULTS = $.extend({}, Lobibox.notify.DEFAULTS, {

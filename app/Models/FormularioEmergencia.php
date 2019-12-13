@@ -120,7 +120,8 @@ class FormularioEmergencia extends Model
 
         );
     }
-    //anexos
+   
+
     public function anexos()
     {
         return $this->hasMany(Anexo::class,'formularioEmergencia_id'); 
