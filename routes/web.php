@@ -16,12 +16,13 @@ use iobom\Models\FormularioEmergencia;
 Route::get('/', function () {
 
     return view('welcome');
-    #$A=Artisan::call('cache:clear');
-    #$A=Artisan::call('config:clear');
-    #$A=Artisan::call('config:cache');
-    #$A=Artisan::call('storage:link');
-    #$A=Artisan::call('key:generate');
-    #$A=Artisan::call('migrate:fresh --seed');
+    // $A=Artisan::call('migrate:fresh --seed');
+    // $A=Artisan::call('cache:clear');
+    // $A=Artisan::call('config:clear');
+    // $A=Artisan::call('config:cache');
+    // $A=Artisan::call('storage:link');
+    // $A=Artisan::call('key:generate');
+    
 });
 
 Auth::routes(['verify' => true]);
