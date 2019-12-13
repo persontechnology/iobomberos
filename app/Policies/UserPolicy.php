@@ -14,12 +14,10 @@ class UserPolicy
     // D: un usuario puede crear un nuevo formulario de emergencia
     public function crearNuevoFormularioEmergencia(User $user)
     {
-        if (count($user->asistenciaHoy)>0) {
+        if (count($user->asistenciaHoy)>0||$user->hasRole('Radio operador')) {
             return true;
         }
-        if($user->hasRole('Radio operador')){
-            return true;
-        }
+       
     }
 
     public function view(User $user, User $model)

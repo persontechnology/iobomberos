@@ -485,7 +485,9 @@ class FormularioEmergencias extends Controller
             $formulario->horaEntrada=$request->horaEntrada;
             $formulario->origenCausa=$request->origenCausa;
             $formulario->tabajoRealizado=$request->tabajoRealizado;
-            $formulario->heridos=$request->numeroHeridos;
+            if($request->numeroHeridos){
+                $formulario->heridos=$request->numeroHeridos;
+            }
             $formulario->actualizadoPor=Auth::id();
             $formulario->save();
             //ingresar etapas de incendio
@@ -564,9 +566,10 @@ class FormularioEmergencias extends Controller
             
         } catch (\Exception $th) {
             DB::rollBack();
-            $request->session()->flash('warning','no se puede completar el formulario verifique los datos y vuelva a intentar ');
+            echo $th;
+            // $request->session()->flash('warning','no se puede completar el formulario verifique los datos y vuelva a intentar '.$th);
         }
-        return redirect()->route('proceso-formulario',$formulario->id);
+        // return redirect()->route('proceso-formulario',$formulario->id);
         
     }
    public function cambiarEstadoProceso(Request $request)

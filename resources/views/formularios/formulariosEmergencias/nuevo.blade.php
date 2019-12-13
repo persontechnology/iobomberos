@@ -317,7 +317,10 @@
     $('#menuGestionFomularios').addClass('nav-item-expanded nav-item-open');
      $('#menuNuevoFormularios').addClass('active');
      $('selectpicker').selectpicker();
-
+     //Cargar gif
+     $("#formNuevoUsuario").submit(function(event) {        
+        cargarGif();
+    });
      function agregarVehiculo(arg){         
         var vehiculo=$(arg).data('nombre');
         var id=$(arg).data('id');

@@ -32,7 +32,7 @@
         <h3 class="text-center"><strong>INFORME N° {{ $formu->numero }} DEL EVENTO ADEVERSO</strong></h3>
 
     </div>
-    <form action="{{ route('completar-informacion') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('completar-informacion') }}" method="post" enctype="multipart/form-data" id="formCompletar">
         @csrf
         <input type="hidden" value="{{$formu->id }}" name="formulario" id="formulario">
         <div class="card-body">
@@ -382,7 +382,7 @@
             @endcan
             
             @can('comprobarAtensionHospitalaria', $formu)
-                <a class="btn btn-primary"> Crear fichas medica</a>
+                <a href="{{ route('atenciones',$formu->id) }}" class="btn btn-primary text-white"> Crear fichas medica</a>
             @elsecan('noPreospitalario', $formu)
             <h6 class="mt-1"><strong>5.- ORIGEN Y CAUSAS DEL EVENTO.</strong></h6>
             <textarea class="form-control @error('origenCausa') is-invalid @enderror" name="origenCausa" id="origenCausa" cols="20" required rows="5"> {{ old('origenCausa',$formu->origenCausa) }}</textarea>
@@ -507,16 +507,22 @@
             function cargarAnexos() {
               
               $("#cargarAnexos").load("{{ route('cambiar-anexos-formulario',$formu->id) }}", function(responseTxt, statusTxt, xhr){
+                $.blockUI({message:'<h1>Espere por favor.!</h1>'});
                     if(statusTxt == "success"){
+                        $.unblockUI();
                         console.log('ok')
                     }              
                     if(statusTxt == "error"){
+                        $.unblockUI();
                         notificar('error','NO se pudo cargar los anexos del formulario');
                     }            
               });
             }
             cargarAnexos();
-
+            
+            $("#formCompletar").submit(function(event) {
+                cargarGif();
+            });
             
     </script>
 @endprepend

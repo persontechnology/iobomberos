@@ -95,6 +95,10 @@
 			event.preventDefault();
 			$(this).ekkoLightbox();
 		});
+
+		function cargarGif() {
+			$.blockUI({message:'<h1><img src="http://1.bp.blogspot.com/-FYZ8tILkAk8/VTKB5W8WSGI/AAAAAAADaKQ/IWohOHlYBFQ/s1600/BOMBEROS%2B(17).gif" /> </br>Espere por favor.!</h1>'});
+		}
 	</script>
 
 	<style>
