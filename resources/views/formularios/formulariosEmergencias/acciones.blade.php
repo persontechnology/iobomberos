@@ -12,10 +12,11 @@
     @can('cambioEstadoProceso', $formulario)
         <button onclick="cambiarProceso(this)" data-id="{{ $formulario->id }}" class="btn btn-dark" data-toggle="tooltip" data-placement="top" title="Habilitar Recursos de {{ $formulario->emergencia->nombre }}"><i class="icon-bus"></i> </button>
     @endcan
-    {{-- habilitar para cear fichas medicas --}}
+    {{-- habilitar para cear fichas medicas listas--}}
     
     <a  href="{{ route('atenciones',$formulario->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Editar {{ $formulario->emergencia->nombre }}">
         <i class="fas fa-car"></i>
     </a>        
   
+
 </div>
