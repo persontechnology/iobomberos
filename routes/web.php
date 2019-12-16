@@ -11,7 +11,7 @@
 |
 */
 
-use iobom\Models\FormularioEmergencia;
+
 
 Route::get('/', function () {
 
