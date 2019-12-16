@@ -19,12 +19,14 @@ class AtencionPrehospitalarias extends Controller
     public function index($idFormulario)
     {
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $this->authorize('formularioFinalizadoPAramedico', $formulario); 
         $data = array('formulario' => $formulario);
         return view('formularios.atencionPrehospitalarias.index',$data);
     }
     public function nuevo($idFormulario)
     {
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $this->authorize('formularioFinalizadoPAramedico', $formulario); 
         $clinicas=Clinica::get();
         $insumos=Insumo::get();
         $data = array('formulario' => $formulario,'clinicas'=>$clinicas,'insumos'=>$insumos);
@@ -33,6 +35,8 @@ class AtencionPrehospitalarias extends Controller
     }
     public function guardarAtencion(RqIngreso $request)
     {
+        $formulario=FormularioEmergencia::findOrFail($request->formulario);
+        $this->authorize('formularioFinalizadoPAramedico', $formulario); 
         try {
             DB::beginTransaction();
             $atencion=new AtencionPrehospitalaria();
@@ -83,13 +87,14 @@ class AtencionPrehospitalarias extends Controller
             
             $request->session()->flash('error','Ocurrio un error, vuelva intentar');
         }
-        return redirect()->route('formularios');
+        return redirect()->route('atenciones',$request->formulario);
         
     }
     
     function editarAtencion($idAtencion)
     {
         $atencion=AtencionPrehospitalaria::findOrFail($idAtencion);
+        $this->authorize('formularioFinalizadoPAramedico', $atencion->formulario); 
         $clinicas=Clinica::get();
         $insumos=Insumo::get();
         $data = array('atencion' => $atencion,'clinicas'=>$clinicas,'insumos'=>$insumos);
@@ -100,6 +105,7 @@ class AtencionPrehospitalarias extends Controller
     public function actualizarAtencion(RqEditar $request)
     {
         $atencion=AtencionPrehospitalaria::findOrFail($request->atencion);
+        $this->authorize('formularioFinalizadoPAramedico', $atencion->formulario); 
         try {
             DB::beginTransaction();
             $atencion->numero=$request->numero;

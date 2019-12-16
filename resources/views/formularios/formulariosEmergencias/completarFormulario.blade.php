@@ -380,7 +380,14 @@
             </div>            
             @endcan            
             @can('comprobarAtensionHospitalaria', $formu)
-                <a href="{{ route('atenciones',$formu->id) }}" class="btn btn-primary text-white"> Crear fichas medica</a>
+                @if ($formu->tipoEmergencia_id)
+                    <a href="{{ route('atenciones',$formu->id) }}" class="btn btn-primary text-white"> Crear fichas medica</a>
+                    
+                @else
+                    <div class="alert alert-info" role="alert">
+                        Para crear las fichas Pre-Hospitalarias debe primero acrualizar el formulario
+                    </div>
+                @endif
             @elsecan('noPreospitalario', $formu)
             <h6 class="mt-1"><strong>5.- ORIGEN Y CAUSAS DEL EVENTO.</strong></h6>
             <textarea class="form-control @error('origenCausa') is-invalid @enderror" name="origenCausa" id="origenCausa" cols="20" required rows="5"> {{ old('origenCausa',$formu->origenCausa) }}</textarea>

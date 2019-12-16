@@ -53,6 +53,28 @@ class Estacion extends Model
         $fechaMenor=$diaHoy->setDateTime($sumarUnDia->year,$sumarUnDia->month,$sumarUnDia->day,7,30,0,0)->toDateTimeString();
         return $this->hasOne(Asistencia::class)
         ->where('fecha',Carbon::now()->toDateString())->where('fechaFin','<=',$fechaMenor);
-    }   
+    } 
+    
+    
+    public function asistenciaCreada($date,$idEstacion)
+    {      
+        $diaHoy1= Carbon::parse($date)->format('Y-m-d');
+        $diaHoy=Carbon::parse($date);
+        $sumarUnDia=$diaHoy->addDays(1);
+        $fechaMenor=$diaHoy->setDateTime($sumarUnDia->year,$sumarUnDia->month,$sumarUnDia->day,7,30,0,0)->toDateTimeString();
+        return Asistencia::where('fecha', 'like',  '%'.$diaHoy1 .'%')
+        ->where('fechaFin','<=',$fechaMenor)
+        ->where('estacion_id',$idEstacion)->first();
+    }
+    public function asistenciaCreadaEditar($date,$idEstacion)
+    {      
+        $diaHoy1= Carbon::parse($date)->format('Y-m-d');
+        $diaHoy=Carbon::parse($date);
+        $sumarUnDia=$diaHoy->addDays(1);
+        $fechaMenor=$diaHoy->setDateTime($sumarUnDia->year,$sumarUnDia->month,$sumarUnDia->day,7,30,0,0)->toDateTimeString();
+        return Asistencia::where('fecha', 'like',  '%'.$diaHoy1 .'%')
+        ->where('fechaFin','<=',$fechaMenor)
+        ->where('estacion_id',$idEstacion)->first();
+    }
 
 }

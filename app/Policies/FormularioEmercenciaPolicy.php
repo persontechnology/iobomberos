@@ -7,6 +7,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use iobom\Models\Asistencia\AsistenciaPersonal;
 use iobom\Models\FormularioEmergencia;
 use iobom\Models\FormularioEmergencia\EstacionFormularioEmergencia;
+use iobom\Models\FormularioEmergencia\VehiculoParamedico;
 
 class FormularioEmercenciaPolicy
 {
@@ -14,7 +15,7 @@ class FormularioEmercenciaPolicy
    
     public function comprobarAtensionHospitalaria( User $user,FormularioEmergencia $formularioEmergencia)
     {         
-        if ($formularioEmergencia->emergencia->nombre=="ATENCION PREHOSPITALARIA") {
+        if ($formularioEmergencia->emergencia->nombre=="ATENCION PREHOSPITALARIA" ) {
             return true;
         }
     }
@@ -62,5 +63,19 @@ class FormularioEmercenciaPolicy
         }else{
             return false;
         }
+    }
+    public function formularioFinalizadoPAramedico(User $user,FormularioEmergencia $formularioEmergencia)
+    {
+        $asistencias=AsistenciaPersonal::where('user_id',$user->id)->get(); 
+        $vehiculos= $formularioEmergencia->formularioVehiculos;
+        $vistaParamedico=VehiculoParamedico::whereIn('estacionForVehiculo_id',$vehiculos->pluck('id'))->get();
+        $verTotal=$vistaParamedico->whereIn('asistenciaPersonal_id',$asistencias->pluck('id'))->count();
+       
+        if($formularioEmergencia->estado=="Proceso" && $formularioEmergencia->heridos>0){
+            if($verTotal>0){
+                return true;
+            }
+        }
+        
     }
 }

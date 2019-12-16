@@ -3,6 +3,7 @@
 namespace iobom\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use iobom\Models\Asistencia\Asistencia;
 use iobom\Models\Asistencia\AsistenciaPersonal;
 use iobom\Models\Emergencia\Emergencia;
 use iobom\Models\FormularioEmergencia\Anexo;
@@ -110,7 +111,7 @@ class FormularioEmergencia extends Model
     // D:un formualrio tiene vehiculo
     public function formularioVehiculos()
     {
-        return $this->belongsToMany(
+        return $this->hasManyThrough(
             FormularioEstacionVehiculo::class,
             EstacionFormularioEmergencia::class,            
             'formularioEmergencia_id', // Foreign key on estacion table...
@@ -125,5 +126,12 @@ class FormularioEmergencia extends Model
     public function anexos()
     {
         return $this->hasMany(Anexo::class,'formularioEmergencia_id'); 
+    }
+
+    public function asistenciaPersonal($idformulario,$idEstacion)
+    {      
+        return EstacionFormularioEmergencia::where('formularioEmergencia_id',$idformulario )
+        
+        ->where('estacion_id',$idEstacion)->first();
     }
 }

@@ -12,10 +12,10 @@
        <p><h4><strong>Editar Formulario N° {{$formulario->numero}}</strong></h4></p>
    </div>
       
-    <form method="POST" action="{{ route('guardarFormulario') }}" id="formNuevoUsuario" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('ActualizarFormulario') }}" id="formEditarUsuario" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
-
+            <input type="hidden" name="formulario" id="formulario" value="{{ $formulario->id }}">
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="emergencia">Emergencia<i class="text-danger">*</i></label>
@@ -133,7 +133,7 @@
                 <div class="col-md-6"> 
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Dirección adicional</label>
-                        <input type="text" name="direcionAdicional" value="{{ old('direcionAdicional',$formulario->direcionAdicional) }}" class="form-control" id="direcionAdicional" placeholder="Ingrese..">
+                        <input type="text" name="direcionAdicional" value="{{ old('direcionAdicional',$formulario->localidad) }}" class="form-control" id="direcionAdicional" placeholder="Ingrese..">
                     </div>
                 </div>
             </div> 
@@ -242,12 +242,13 @@
                             
                                 @php($est_c++)
                                 <div class="tab-pane fade {{ $est_c==1?'show active':'' }}" id="pills-{{ $estacion_c->id }}" role="tabpanel" aria-labelledby="pills-{{ $estacion_c->id }}-tab">
-                                   
-                                    @if ($estacion_c->asistenciaHoy)
-                                    @if ($estacion_c->asistenciaHoy->asistenciasAsistenciaVehiculo->count()>0)
+                                    
+                                                                       
+                                    @if ($estacion_c->asistenciaCreada($formulario->fecha,$estacion_c->id))
+                                    @if ($estacion_c->asistenciaCreada($formulario->fecha,$estacion_c->id)->asistenciasAsistenciaVehiculo->count()>0)
                                         <label for="" class="ml-1">Vehículos</label>
                                         <div class="row">
-                                            @foreach ($estacion_c->asistenciaHoy->asistenciasAsistenciaVehiculo as $asistenciaVehiculo)
+                                            @foreach ($estacion_c->asistenciaCreada($formulario->fecha,$estacion_c->id)->asistenciasAsistenciaVehiculo as $asistenciaVehiculo)
                                             <div class="col-xl-2 col-xs-6">
                                                 @if ($asistenciaVehiculo->estado==false)                                                           
                                                     <div class="card bg-warning" >
@@ -266,7 +267,7 @@
                                                 <div class="form-check text-center">
                                                     @if ($asistenciaVehiculo->estado==true &&  $asistenciaVehiculo->estadoEmergencia=='Disponible' )
                                                     <input type="checkbox" onchange="agregarVehiculo(this);" class="form-check-input" data-idasistencia="{{$asistenciaVehiculo->id }}" data-id="{{$asistenciaVehiculo->vehiculo->id }}" data-nombre="{{ $asistenciaVehiculo->vehiculo->tipoVehiculo->codigo.''.$asistenciaVehiculo->vehiculo->codigo }}" value="{{ $asistenciaVehiculo->vehiculo->id }}" id="check_v_{{ $asistenciaVehiculo->vehiculo->id }}">
-                                                        
+                                                  
                                                     @endif
                                                     <label class="form-check-label" for="check_v_{{ $asistenciaVehiculo->vehiculo->id }}">
                                                         {{ $asistenciaVehiculo->vehiculo->tipoVehiculo->codigo.''.$asistenciaVehiculo->vehiculo->codigo }}
@@ -326,7 +327,7 @@
                         <select name="encargadoFormulario" id="encargadoFormulario" class="form-control selectpicker  @error('encargadoFormulario') is-invalid @enderror" data-live-search="true" required>
                             
                             @foreach ($asistenciaHoy as $asistencia)                         
-                                <option value="{{$asistencia->id}}" {{ old('encargadoFormulario',$asistencia->id) }}>{{$asistencia->usuario->name}}</option>                        
+                                <option value="{{$asistencia->id}}" {{ old('encargadoFormulario',$asistencia->id) == $formulario->encardadoFicha_id ? "selected":""}}>{{  $asistencia->usuario->name}}</option>                        
                             @endforeach
                         </select>
                         @if ($errors->has('encargadoFormulario'))
@@ -337,25 +338,15 @@
                             </span>
                         @endif
                     </li>                 
-                    @if (count($estaciones)>0)        
-                        @foreach ($estaciones as $estacion_c)                        
-                            @if ($estacion_c->asistenciaHoy)                    
+                    @if (count($formulario->estacionFormularioEmergencias)>0)        
+                        @foreach ($formulario->estacionFormularioEmergencias as $estacion_c)                        
+                         
                                 <li  class="list-group-item">
-                                      Seleccione encargado de la estación {{$estacion_c->nombre}}
-                                        <Select name="encargadoEstacion[]" id="representanteEstacion{{$estacion_c->nombre}}" name="representanteEstacion" data-live-search="true" class="form-control selectpicker" required>
-                                            <option value=" ">--Seleccione Encargado de estacion-- </option>
-                                            @foreach ($estacion_c->asistenciaHoy->asietenciaAsistenciaPersonalesEncargado as $asistencialis)
-                                                <option value="{{$estacion_c->id.'-'.$asistencialis->asistenciaPersonal->id}}">{{$asistencialis->name}}</option>
-                                                
-                                            @endforeach
-                                        </Select>
+                                     Responsable de  {{  $estacion_c->estacion->nombre }} : <strong> {{ $estacion_c->user_id!=""?$estacion_c->responsable->name:'no existe' }}  </strong>  
+                                        
                                     </li>
                                
-                            @else
-                                <div class="alert alert-warning" role="alert">
-                                    <strong>No existe un registro de asistencia de vehículos en la estación {{$estacion_c->nombre}} </strong>
-                                </div>
-                            @endif
+                           
                            
                         @endforeach   
                     @else
@@ -373,7 +364,7 @@
             
         </div>
         <div class="card-footer">
-            <button type="submit" class="btn btn-dark">Generar Ficha</button>
+            <button type="submit" class="btn btn-dark">Actualizar formulario</button>
         </div>
     </form>
 </div>
@@ -396,9 +387,9 @@
         var vehiculo=$(arg).data('nombre');
         var id=$(arg).data('id');
         var idAsistencia=$(arg).data('idasistencia');
-        
+        var fecha="{{ $formulario->fecha }}"
         var estado=arg.checked;
-        
+   
         if($('#fila_'+id).length){
             notificar("warning","Vehículo removido");
             $('#fila_'+id).remove();
@@ -420,14 +411,15 @@
                     '</tr>';
             $('#personales').append(fila);
 
-            cargarOperadores(id);
-            cargarOperativos(id,idAsistencia);
-            cargarParamedico(id);
+            cargarOperadoresEditar(id,fecha);
+            cargarOperativosEditar(id,idAsistencia,fecha);
+            cargarParamedicoEditar(id,fecha);
         }
         
-        function cargarOperadores(id){
+        function cargarOperadoresEditar(id){
+            
             $.blockUI({message:'<h1>Espere por favor.!</h1>'});
-            $.post( "{{route('buscarPersonalOperadorFormulario')}}", { vehiculo: id })
+            $.post( "{{route('buscarPersonalOperadorFormularioEditar')}}", { vehiculo: id,fecha:fecha })
             .done(function( data ) {
                 var fila;
                 var palabraClave;
@@ -445,9 +437,9 @@
 			});   
         }
         
-        function cargarOperativos(id,idAsistencia){
+        function cargarOperativosEditar(id,idAsistencia,$fecha){
             $.blockUI({message:'<h1>Espere por favor.!</h1>'});
-            $.post( "{{route('buscarPersonalOperativoFormulario')}}", { vehiculo: id })
+            $.post( "{{route('buscarPersonalOperativoFormularioEditar')}}", { vehiculo: id,fecha:fecha })
             .done(function( data ) {
                 var fila;
                 var palabraClave;
@@ -464,9 +456,9 @@
 				console.log('existe un error ')
 			});   
         }
-        function cargarParamedico(id){
+        function cargarParamedicoEditar(id){
             $.blockUI({message:'<h1>Espere por favor.!</h1>'});
-            $.post( "{{route('buscarPersonalParamedicoFormulario')}}", { vehiculo: id })
+            $.post( "{{route('buscarPersonalParamedicoFormularioEditar')}}", { vehiculo: id, fecha:fecha})
             .done(function( data ) {
                 var fila;
                 var palabraClave;
@@ -494,7 +486,9 @@
         $('#operador_'+id).select2();
               
     }
-
+    $('#formEditarUsuario').submit(function (event) {
+        cargarGif();
+    })
 
 </script>
 

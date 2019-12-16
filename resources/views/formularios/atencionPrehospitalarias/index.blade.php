@@ -16,6 +16,7 @@
     <div class="card-header text-center">
         Registros Pre-Hospitalaria del formulario N° <strong> {{$formulario->numero}} </strong>
     </div>
+   
     <div class="card-body">
         <div class="row">
             @if ($formulario->atenciones->count()>0)

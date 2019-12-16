@@ -209,6 +209,17 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/formulario-buscar-personal-Operador', 'FormularioEmergencias@buscarPersonalOperador')->name('buscarPersonalOperadorFormulario');
         Route::post('/formulario-buscar-personal-Operativo', 'FormularioEmergencias@buscarPersonalOperativo')->name('buscarPersonalOperativoFormulario');
         Route::post('/formulario-buscar-personal-Paramedico', 'FormularioEmergencias@buscarPersonalParamedico')->name('buscarPersonalParamedicoFormulario');
+        
+        //buscar usuarios para editar
+        Route::post('/formulario-buscar-personal-Operador-ediatar', 'FormularioEmergencias@buscarPersonalOperadorEditar')->name('buscarPersonalOperadorFormularioEditar');
+        Route::post('/formulario-buscar-personal-Operativo-ediatar', 'FormularioEmergencias@buscarPersonalOperativoEditar')->name('buscarPersonalOperativoFormularioEditar');
+        Route::post('/formulario-buscar-personal-Paramedico-ediatar', 'FormularioEmergencias@buscarPersonalParamedicoEditar')->name('buscarPersonalParamedicoFormularioEditar');
+        
+        //artualizar formulario
+        Route::post('/formulario-actualizar', 'FormularioEmergencias@actualizarFormulario')->name('ActualizarFormulario');
+
+        
+
         Route::get('/informacion-formulario/{id}','FormularioEmergencias@informacionFormulario' )->name('informacion-formulario');
         Route::get('/atenciones/{formulario}','AtencionPrehospitalarias@index' )->name('atenciones');
         Route::get('/nueva-atencion/{id}','AtencionPrehospitalarias@nuevo' )->name('nueva-atencion');
