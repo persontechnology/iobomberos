@@ -43,7 +43,7 @@ class FormularioEmercenciaPolicy
     }
     public function cambioEstadoProceso(User $user,FormularioEmergencia $formularioEmergencia)
     {
-        if ($formularioEmergencia->estado=="Asignado"&&$user->hasAnyRole('Radio operador','Operativos')) {
+        if ($formularioEmergencia->estado=="Asignado"&&$user->hasAnyRole('Radio operador','Operativos','Clase de guardía','Oficial de guardía')) {
             return true;
         }else{
             return false;
