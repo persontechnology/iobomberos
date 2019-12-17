@@ -19,11 +19,11 @@
             <li class="nav-item">
                 <a href="" class="navbar-nav-link" target="_blank"><i class="icon-file-text2 mr-2"></i> Documentación</a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a href="" class="navbar-nav-link font-weight-semibold">
                     <span class="text-pink-400"><i class="fas fa-heart"></i> PAO & DEIVID</span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </div>
 
