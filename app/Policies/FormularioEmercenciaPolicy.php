@@ -33,7 +33,7 @@ class FormularioEmercenciaPolicy
     public function editarFormulario(User $user,FormularioEmergencia $formularioEmergencia)
     {
         if($user->id == $formularioEmergencia->creadoPor || $user->hasRole('Radio operador')){
-            if($formularioEmergencia->estado=="Asignado"){
+            if($formularioEmergencia->estado!="Finalizado"){
                 return true;
             }else{
                 return false;
@@ -75,7 +75,14 @@ class FormularioEmercenciaPolicy
             if($verTotal>0){
                 return true;
             }
+        }else{
+            if($formularioEmergencia->estado=="Proceso" && $formularioEmergencia->emergencia->nombre=="ATENCION PREHOSPITALARIA"){
+                if($verTotal>0){
+                    return true;
+                }
+            }
         }
         
     }
+    
 }

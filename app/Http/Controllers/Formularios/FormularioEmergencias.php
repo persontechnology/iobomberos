@@ -826,9 +826,27 @@ class FormularioEmergencias extends Controller
             $request->session()->flash('success','Formulario # '.$form->numero.' editado exitosamente');
         } catch (\Exception $th) {
             DB::rollback();
-            echo $th;
+            
              $request->session()->flash('danger','Ocurrio un error, vuelva intentar');
         }
         return redirect()->route('editar-formulario',$form->id);
+    }
+    public function finalizarFormulario(Request $request)
+    {
+        $request->validate([
+            'formulario'=>'required|exists:formularioEmergencia,id',
+        ]);
+        try {
+            DB::beginTransaction();
+            $formulario=FormularioEmergencia::findOrFail($request->formulario);
+            $formulario->estado='Finalizado';
+            $formulario->save();
+            DB::commit();
+            return $request->session()->flash('success','Formulario finalizado exitosamente');
+        } catch (\Exception $th) {
+            DB::rollBack();
+            return $request->session()->flash('default','No se puede finalizar el formulario');
+        }
+        
     }
 }

@@ -228,6 +228,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/actualizar-atencion','AtencionPrehospitalarias@actualizarAtencion' )->name('actualizar-atencion');
         //Completar mis formularios 
         Route::get('/mis-formularios','FormularioEmergencias@misFormularios' )->name('mis-formulario');
+        Route::post('/finalizar-formularios','FormularioEmergencias@finalizarFormulario' )->name('finalizar-formulario');
         //rutas para los materiales
         Route::get('/materiales-formularios/{id}','FormularioEmergencias@materialesFormulario' )->name('materiales-formulario');
         Route::post('/guardar-material','FormularioEmergencias@guardarMateriales' )->name('guardar-material');

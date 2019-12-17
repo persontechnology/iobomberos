@@ -266,7 +266,7 @@ Breadcrumbs::for('formularios', function ($trail) {
     $trail->push('G. Formularios', route('formularios'));
 });
 Breadcrumbs::for('registroHospitalario', function ($trail,$formulario) {
-    $trail->parent('formularios');
+    $trail->parent('completarFormulario',$formulario);
     $trail->push(' G. Pre-Hospitalaria ', route('atenciones',$formulario->id));
 });
 Breadcrumbs::for('nuevoRegistroHospitalario', function ($trail,$formulario) {

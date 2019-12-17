@@ -99,7 +99,8 @@ class FormularioEmergenciasDataTable extends DataTable
             'estado',
             'encardadoFicha_id',
             'localidad',
-            'creadoPor'
+            'creadoPor',
+            'heridos'
         ];
     }
     protected function getColumnsTable()

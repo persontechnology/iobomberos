@@ -71,11 +71,21 @@
                                 <span class="font-size-sm text-muted align-left">Punto Referencia: {{$asignados->PuntoReferencia->referencia??'No existe punto de referencia'}}</span>
                                 <span class="font-size-sm text-muted">Referencia: {{$asignados->localidad??'No existe punto de referencia'}}</span>
                                 
-                                <span class="font-size-sm text-muted">Creada: {{ $asignados->created_at}}</span>
-
                             </div>
 
                             Emergencia: {{$asignados->emergencia->nombre}}
+                        </div>
+                        <div class="ml-3 align-self-center">
+                            <div class="list-icons">
+                                <div class="dropdown">
+                                    <a href="#" class="list-icons-item dropdown-toggle caret-0" data-toggle="dropdown"><i class="icon-menu7"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <button onclick="cambiarProcesoFinalizado(this)" data-id="{{ $asignados->id }}" class="dropdown-item"><i class="
+                                            icon-file-check"></i> Finalizar formulario</button>
+                                        
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </li>                      
                         
@@ -91,20 +101,30 @@
             <div class="tab-pane fade" id="messages-mon">
                 <ul class="media-list">
                     @if ($formulariosFinalizados->count()>0)
+                    @foreach ($formulariosFinalizados as $asignados)
                     <li class="media">
-                        <div class="mr-3">
-                            <img src="../../../../global_assets/images/demo/users/face2.jpg" class="rounded-circle" width="36" height="36" alt="">
-                        </div>
-
-                        <div class="media-body">
-                            <div class="d-flex justify-content-between">
-                                <a href="#">Isak Temes</a>
-                                <span class="font-size-sm text-muted">Tue, 19:58</span>
+                        <li class="list-group-item">
+                            <div class="mr-3 position-relative">
+                                <img src="{{asset('img/user.png') }}" class="rounded-circle" width="36" height="36" alt="">
+                                <span class="badge bg-danger-400 badge-pill badge-float border-2 border-white">{{ $asignados->numero}}</span>
                             </div>
-
-                            Reasonable palpably rankly expressly grimy...
-                        </div>
-                    </li>                   
+    
+                            <div class="media-body">
+                                <div class="d-flex justify-content-between">
+                                    
+                                <a href="{{route('proceso-formulario',$asignados->id)}}">Completar formulario N° <strong>{{ $asignados->numero}}</strong></a>
+                                    <span class="font-size-sm text-muted">Fecha: {{$asignados->fecha}}</span>
+                                    <span class="font-size-sm text-muted align-left">Punto Referencia: {{$asignados->PuntoReferencia->referencia??'No existe punto de referencia'}}</span>
+                                    <span class="font-size-sm text-muted">Referencia: {{$asignados->localidad??'No existe punto de referencia'}}</span>
+                                    
+                                </div>
+    
+                                Emergencia: {{$asignados->emergencia->nombre}}
+                            </div>
+                            
+                        </li>                      
+                         @endforeach   
+                                   
                         
                     @else
                     <div class="alert alert-danger" role="alert">
@@ -133,6 +153,36 @@
      $(document).ready( function () {
     $('#myTable').DataTable();
 } );
+function cambiarProcesoFinalizado(arg){
+        
+        swal({
+            title: "¿Estás seguro?",
+            text: "Que desea finalizar el formulario !",
+            type: "error",
+            showCancelButton: true,
+            confirmButtonClass: "btn-dark",
+            cancelButtonClass: "btn-danger",
+            confirmButtonText: "¡Sí, cambiar!",
+            cancelButtonText:"Cancelar",
+            closeOnConfirm: false
+        },
+        function(){
+            swal.close();
+            $.blockUI({message:'<h1>Espere por favor.!</h1>'});
+            $.post( "{{ route('finalizar-formulario') }}", { formulario: $(arg).data('id') })
+            .done(function( data ) {
+               
+                var url="{{ route('mis-formulario') }}";
+                    window.location.href=url;
+                
+            }).always(function(){
+                $.unblockUI();
+            }).fail(function(){
+                notificar("error","Ocurrio un error");
+            });
+
+        });
+    }
 </script>
 
 @endprepend
