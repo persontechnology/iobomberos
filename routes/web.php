@@ -16,12 +16,12 @@
 Route::get('/', function () {
 
     return view('welcome');
-    // $A=Artisan::call('migrate:fresh --seed');
-    // $A=Artisan::call('cache:clear');
-    // $A=Artisan::call('config:clear');
-    // $A=Artisan::call('config:cache');
-    // $A=Artisan::call('storage:link');
-    // $A=Artisan::call('key:generate');
+    // Artisan::call('migrate:fresh --seed');
+    // Artisan::call('cache:clear');
+    // Artisan::call('config:clear');
+    // Artisan::call('config:cache');
+    // Artisan::call('storage:link');
+    // Artisan::call('key:generate');
     
 });
 
