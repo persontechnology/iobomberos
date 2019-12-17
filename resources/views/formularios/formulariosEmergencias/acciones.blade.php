@@ -15,7 +15,7 @@
     {{-- habilitar para cear fichas medicas listas--}}
     @can('formularioFinalizadoPAramedico',  $formulario)
         
-    <a  href="{{ route('atenciones',$formulario->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Editar {{ $formulario->emergencia->nombre }}">
+    <a  href="{{ route('atenciones',$formulario->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Crear fichas medicas {{ $formulario->emergencia->nombre }}">
         <i class="fas fa-car"></i>
     </a>        
     @endcan

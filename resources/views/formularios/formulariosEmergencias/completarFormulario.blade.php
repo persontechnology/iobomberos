@@ -29,7 +29,7 @@
             <strong>JEFE DE CUERPO DE LATACUNGA </strong> <br>
             Presente:
         </p>
-        <h3 class="text-center"><strong>INFORME N° {{ $formu->numero }} DEL EVENTO ADEVERSO</strong></h3>
+        <h3 class="text-center"><strong>INFORME N° {{ $formu->numero }} DEL EVENTO ADVERSO</strong></h3>
 
     </div>
     <form action="{{ route('completar-informacion') }}" method="post" enctype="multipart/form-data" id="formCompletar">
