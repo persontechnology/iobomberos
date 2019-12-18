@@ -22,8 +22,11 @@ use iobom\Models\FormularioEmergencia\Edificacion;
 use iobom\Models\FormularioEmergencia\EstacionFormularioEmergencia;
 use iobom\Models\FormularioEmergencia\EtapaIncendio;
 use iobom\Models\FormularioEmergencia\Anexo;
+use iobom\Models\FormularioEmergencia\EtapaIncendioForestal;
 use iobom\Models\FormularioEmergencia\FormularioEstacionVehiculo;
 use iobom\Models\FormularioEmergencia\Material;
+use iobom\Models\FormularioEmergencia\TipoEdificacion;
+use iobom\Models\FormularioEmergencia\TipoIncendioForestal;
 use iobom\Models\Parroquia;
 use iobom\Models\PuntoReferencia;
 use iobom\Models\Vehiculo;
@@ -255,8 +258,8 @@ class FormularioEmergencias extends Controller
     public function cerarEtapasIncendiEdificacion(Request $request)
     {
         $formulario=FormularioEmergencia::findOrFail($request->formulario);
-        if($formulario->etpaIncendio && $formulario->edificacion){
-            return response(['success'=>'existe']);
+        if($formulario->etpaIncendio && $formulario->edificacion && $formulario->tipoEdificacion){
+            return response(['default'=>'Ya existe etapas de incendio']);
         }else{
             $etapa=new EtapaIncendio();
             $etapa->formularioEmergencia_id=$formulario->id;
@@ -264,7 +267,42 @@ class FormularioEmergencias extends Controller
             $edificacion=new Edificacion();
             $edificacion->formularioEmergencia_id=$formulario->id;
             $edificacion->save();
-            return response(['success'=>'ok']);
+            $tipoEdificacion=new TipoEdificacion();
+            $tipoEdificacion->formularioEmergencia_id=$formulario->id;
+            $tipoEdificacion->save();
+            
+            return response(['success'=>'Edificación creada exitosamente']);
+        }
+        
+    }
+    public function eliminarEtapasIncendiEdificacion(Request $request)
+    {        
+        $request->validate([
+            'formulario'=>'required|exists:formularioEmergencia,id',
+        ]);
+        try {
+            DB::beginTransaction();
+            $formulario=FormularioEmergencia::findOrFail($request->formulario);
+             //ingresar etapas de incendio
+             if($formulario->tipoEdificacion){
+                $tipoIncendio=TipoEdificacion::findOrFail($formulario->tipoEdificacion->id);                          
+                $tipoIncendio->delete();            
+            }
+            //ingresar etapas de incendio
+            if($formulario->etapaIncendio){
+                $etapaIncendio=EtapaIncendio::findOrFail($formulario->etapaIncendio->id);               
+                $etapaIncendio->delete();            
+            }
+            //registro de edificacion
+            if($formulario->edificacion){
+                $edificacion=Edificacion::findOrFail($formulario->edificacion->id);                
+                $edificacion->delete();  
+            }
+            DB::commit();
+            return response()->json(['success'=>'Material eliminada exitosamente']);
+        } catch (\Exception $th) {
+            DB::rollBack();
+            return response()->json(['default'=>'No se puede eliminar el material']);
         }
         
     }
@@ -488,8 +526,21 @@ class FormularioEmergencias extends Controller
             if($request->numeroHeridos){
                 $formulario->heridos=$request->numeroHeridos;
             }
+            if($request->condicionClimatica){
+                $formulario->condicionClimatica=$request->condicionClimatica;
+            }
+            
             $formulario->actualizadoPor=Auth::id();
             $formulario->save();
+            //ingresar etapas de incendio
+            if($formulario->tipoEdificacion){
+                $tipoIncendio=TipoEdificacion::findOrFail($formulario->tipoEdificacion->id);
+                $tipoIncendio->domestico=$this->conversioCheckbox($request->domestico);
+                $tipoIncendio->comercial=$this->conversioCheckbox($request->comercial);
+                $tipoIncendio->industrial=$this->conversioCheckbox($request->industrial);
+                $tipoIncendio->galpones=$this->conversioCheckbox($request->galpones);             
+                $tipoIncendio->save();            
+            }
             //ingresar etapas de incendio
             if($formulario->etapaIncendio){
                 $etapaIncendio=EtapaIncendio::findOrFail($formulario->etapaIncendio->id);
@@ -499,18 +550,7 @@ class FormularioEmergencias extends Controller
                 $etapaIncendio->flashover=$this->conversioCheckbox($request->flashover);
                 $etapaIncendio->decadencia=$this->conversioCheckbox($request->decadencia);
                 $etapaIncendio->arder=$this->conversioCheckbox($request->arder);
-                $etapaIncendio->save();
-
-            }else{
-                $etapaIncendioNuevo=new EtapaIncendio();
-                $etapaIncendioNuevo->formularioEmergencia_id=$formulario->id;
-                $etapaIncendioNuevo->incipiente=$this->conversioCheckbox($request->incipiente);
-                $etapaIncendioNuevo->desarrollo=$this->conversioCheckbox($request->desarrollo);
-                $etapaIncendioNuevo->combustion=$this->conversioCheckbox($request->combustion);
-                $etapaIncendioNuevo->flashover=$this->conversioCheckbox($request->flashover);
-                $etapaIncendioNuevo->decadencia=$this->conversioCheckbox($request->decadencia);
-                $etapaIncendioNuevo->arder=$this->conversioCheckbox($request->arder);
-                $etapaIncendioNuevo->save();
+                $etapaIncendio->save();            
             }
             //registro de edificacion
             if($formulario->edificacion){
@@ -527,21 +567,27 @@ class FormularioEmergencias extends Controller
                 $edificacion->tercerPiso=$this->conversioCheckbox($request->tercerPiso);
                 $edificacion->patio=$this->conversioCheckbox($request->patio);
                 $edificacion->save();  
-            }else{
-                $edificacion=new Edificacion();
-                $edificacion->formularioEmergencia_id=$formulario->id;
-                $edificacion->madera=$this->conversioCheckbox($request->madera);
-                $edificacion->hormigon=$this->conversioCheckbox($request->hormigon);
-                $edificacion->mixta=$this->conversioCheckbox($request->mixta);
-                $edificacion->metalica=$this->conversioCheckbox($request->metalica);
-                $edificacion->adobe=$this->conversioCheckbox($request->adobe);
-                $edificacion->plantaBaja=$this->conversioCheckbox($request->plantaBaja);
-                $edificacion->primerPiso=$this->conversioCheckbox($request->primerPiso);
-                $edificacion->segundoPiso=$this->conversioCheckbox($request->segundoPiso);
-                $edificacion->tercerPiso=$this->conversioCheckbox($request->tercerPiso);
-                $edificacion->patio=$this->conversioCheckbox($request->patio);
-                $edificacion->save();
             }
+            //crear edificacion de forestal
+            if($formulario->tipoIncendioForestal ){
+                $tipoIncendioforestal=TipoIncendioForestal::findOrFail($formulario->tipoIncendioForestal->id);
+                $tipoIncendioforestal->agricola=$this->conversioCheckbox($request->agricola);
+                $tipoIncendioforestal->suelo=$this->conversioCheckbox($request->suelo);
+                $tipoIncendioforestal->copas=$this->conversioCheckbox($request->copas);
+                $tipoIncendioforestal->subSuelo=$this->conversioCheckbox($request->subSuelo);               
+                $tipoIncendioforestal->save();   
+            }
+            if($formulario->etapaIncendioForestal){
+                $etapasIncendioforestal=EtapaIncendioForestal::findOrFail($formulario->etapaIncendioForestal->id);
+                $etapasIncendioforestal->iniciacion=$this->conversioCheckbox($request->iniciacion);
+                $etapasIncendioforestal->propagacion=$this->conversioCheckbox($request->propagacion);
+                $etapasIncendioforestal->estabilizado=$this->conversioCheckbox($request->estabilizado);
+                $etapasIncendioforestal->activo=$this->conversioCheckbox($request->activo); 
+                $etapasIncendioforestal->controlado=$this->conversioCheckbox($request->controlado);
+                $etapasIncendioforestal->extinguido=$this->conversioCheckbox($request->extinguido);               
+                $etapasIncendioforestal->save(); 
+            }
+
             //Subir imagenes
             if ($request->hasFile('foto')) {
                 $i=0;
@@ -849,4 +895,69 @@ class FormularioEmergencias extends Controller
         }
         
     }
+    //modificacion para completar el formulario
+    //funcion para llama r ajax en tipo de edificacion
+    public function vistaTipoEdificacion($idFormulario)
+    {
+        $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $data = array('formulario' => $formulario );
+        return view('formularios.edificaciones.listadoEdificaciones',$data);
+        
+    }
+    public function vistaCondicionClimatica($idFormulario)
+    {
+        $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $data = array('formulario' => $formulario );
+        return view('formularios.condiciones.listadoCondiciones',$data);
+        
+    }
+
+    public function cerarCondicionClimatica(Request $request)
+    {
+        $formulario=FormularioEmergencia::findOrFail($request->formulario);        
+
+        if($formulario->tipoIncendioForestal && $formulario->etapaIncendioForestal){
+            return response(['default'=>'Ya existe etapas de incendio']);
+        }else{
+            $etapa=new EtapaIncendioForestal();
+            $etapa->formularioEmergencia_id=$formulario->id;
+            $etapa->save();
+            $edificacion=new TipoIncendioForestal();
+            $edificacion->formularioEmergencia_id=$formulario->id;
+            $edificacion->save();
+                       
+            return response(['success'=>'Edificación incendio forestal creada exitosamente']);
+        }
+        
+    }
+    public function eliminarCondicionClimatica(Request $request)
+    {        
+        $request->validate([
+            'formulario'=>'required|exists:formularioEmergencia,id',
+        ]);
+        try {
+            DB::beginTransaction();
+            $formulario=FormularioEmergencia::findOrFail($request->formulario);
+            $formulario->condicionClimatica="";  
+           $formulario->save();
+             //ingresar etapas de incendio
+             if($formulario->tipoIncendioForestal){
+                $tipoIncendio=TipoIncendioForestal::findOrFail($formulario->tipoIncendioForestal->id);                          
+                $tipoIncendio->delete();            
+            }
+            //ingresar etapas de incendio
+            if($formulario->etapaIncendioForestal){
+                $etapaIncendio=EtapaIncendioForestal::findOrFail($formulario->etapaIncendioForestal->id);               
+                $etapaIncendio->delete();            
+            }
+            
+            DB::commit();
+            return response()->json(['success'=>'etapas de incendio forestal eliminada exitosamente']);
+        } catch (\Exception $th) {
+            DB::rollBack();
+            return response()->json(['default'=>'No se puede eliminar las etapas de incendio forestal']);
+        }
+        
+    }
+  
 }

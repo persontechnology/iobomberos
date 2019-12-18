@@ -43,6 +43,7 @@ class CreateFormularioEmergenciaTable extends Migration
             
             $table->text('origenCausa')->nullable();
             $table->text('tabajoRealizado')->nullable();
+            $table->text('condicionClimatica')->nullable();
             $table->enum('localidadEjecutada', ['Urbano','Rural'])->nullable();
 
             $table->bigInteger('creadoPor')->nullable();

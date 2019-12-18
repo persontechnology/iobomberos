@@ -247,9 +247,18 @@ Route::middleware(['verified', 'auth'])->group(function () {
         //anexos
         Route::get('/cambiar-anexos-formularios/{id}','FormularioEmergencias@cargarAnexos' )->name('cambiar-anexos-formulario');
         Route::post('/eliminar-anexos-formularios','FormularioEmergencias@eliminarAnexo' )->name('eliminar-anexos-formulario');
-
+        //edificacines en base al formulario
+        Route::get('/edificaciones-formularios/{id}','FormularioEmergencias@vistaTipoEdificacion' )->name('lista-edificaciones-formulario');
         
-       
+        Route::post('/guardar-edificacion-formularios','FormularioEmergencias@cerarEtapasIncendiEdificacion' )->name('guardar-edificacion-formulario');
+        Route::post('/eliminar-edificacion-formularios','FormularioEmergencias@eliminarEtapasIncendiEdificacion' )->name('eliminar-edificacion-formulario');
+        //incendio forestal
+        Route::get('/incendio-forestal-formularios/{id}','FormularioEmergencias@vistaCondicionClimatica' )->name('incendio-forestal-formularios');
+        Route::post('/guardar-forestal-formularios','FormularioEmergencias@cerarCondicionClimatica' )->name('guardar-forestal-formulario');
+        Route::post('/eliminar-forestal-formularios','FormularioEmergencias@eliminarCondicionClimatica' )->name('eliminar-forestal-formulario');
+        
+        
+        
     });
        
 

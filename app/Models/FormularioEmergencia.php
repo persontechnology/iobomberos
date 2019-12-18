@@ -14,6 +14,10 @@ use iobom\Models\FormularioEmergencia\EtapaIncendio;
 use iobom\Models\FormularioEmergencia\Material;
 use iobom\Models\FormularioEmergencia\Danio;
 use iobom\Models\FormularioEmergencia\FormularioEstacionVehiculo;
+use iobom\Models\FormularioEmergencia\TipoEdificacion;
+use iobom\Models\FormularioEmergencia\TipoIncendioForestal;
+use iobom\Models\FormularioEmergencia\EtapaIncendioForestal;
+
 use iobom\Models\PuntoReferencia;
 use iobom\User;
 
@@ -75,6 +79,25 @@ class FormularioEmergencia extends Model
     {
         return $this->hasOne(Edificacion::class,'formularioEmergencia_id');
     }
+     // A:fabian
+    // D:un formualrio tiene un tipo de edificacion
+    public function tipoEdificacion()
+    {
+        return $this->hasOne(TipoEdificacion::class,'formularioEmergencia_id');
+    }
+     // A:fabian
+    // D:un formualrio tiene un tipo de edificacion forestal
+    public function tipoIncendioForestal()
+    {
+        return $this->hasOne(TipoIncendioForestal::class,'formularioEmergencia_id');
+    }
+    // A:fabian
+    // D:un formualrio tiene un tipo de edificacion forestal
+    public function etapaIncendioForestal()
+    {
+        return $this->hasOne(EtapaIncendioForestal::class,'formularioEmergencia_id');
+    }
+
 
     public function estacionFormularioEmergencias()
     {

@@ -173,212 +173,18 @@
                     </tbody>
                 </table>
                 @endforeach
-            <br>
-            
-            @can('comprobarContraIncendio', $formu)
-            <h6 class="mt-1"><strong>4.- ETAPAS DE INCENDIO Y EDIFICACIÓN.</strong></h6>
-            <div class="border">
-                @if ($formu->etapaIncendio)
-                <table class="table-border text-center">
-                        <tr>
-                            <th colspan="6">
-                                    <h6 class="mt-1"><strong> ETAPAS DE INCENDIO.</strong></h6>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                Incipiente
-                                <input class="mt-1" type="checkbox"  name="incipiente" id="incipiente" {{ old('incipiente',$formu->etapaIncendio->incipiente)=='1'?'checked':'' }}>
-                            </th>
-                            <th>
-                                Desarrollo
-                                <input class="mt-1" type="checkbox"  name="desarrollo" id="desarrollo" {{ old('desarrollo',$formu->etapaIncendio->desarrollo)=='1'?'checked':''}}>
-    
-                            <th>
-                                Combustión libre
-                                <input class="mt-1" type="checkbox"  name="combustion" id="combustion" {{ old('combustion',$formu->etapaIncendio->combustion)=='1'?'checked':''}}>
-        
-                            <th>
-                                Flashover
-                                <input class="mt-1" type="checkbox"  name="flashover" id="flashover" {{ old('flashover',$formu->etapaIncendio->flashover)=='1'?'checked':''}}>
-        
-                            <th>
-                                Decadencia
-                                <input class="mt-1" type="checkbox"  name="decadencia" id="decadencia" {{ old('decadencia',$formu->etapaIncendio->decadencia)=='1'?'checked':''}}>
-    
-                            <th>
-                                Arder sin llama
-                                <input class="mt-1" type="checkbox"  name="arder" id="arder" {{ old('arder',$formu->etapaIncendio->arder)=='1'?'checked':''}}>
-                            </th>
-                            
-    
-                        </tr>
-                    </table>   
-                @else
-                    
-                <table class="table-border text-center">
-                    <tr>
-                        <th colspan="6">
-                                <h6 class="mt-1"><strong> ETAPAS DE INCENDIO.</strong></h6>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>
-                            Incipiente
-                            <input class="mt-1" type="checkbox" value="1" name="incipiente" id="incipiente" {{ old('incipiente')?'checked':'' }}>
-                        </th>
-                        <th>
-                            Desarrollo
-                            <input class="mt-1" type="checkbox" value="1" name="desarrollo" id="desarrollo" {{ old('desarrollo')?'checked':'' }} >
-
-                        <th>
-                            Combustión libre
-                            <input class="mt-1" type="checkbox" value="1" name="combustion" id="combustion" {{ old('combustion')?'checked':'' }} >
-    
-                        <th>
-                            Flashover
-                            <input class="mt-1" type="checkbox" value="1" name="flashover" id="flashover" {{ old('flashover')?'checked':'' }} >
-    
-                        <th>
-                            Decadencia
-                            <input class="mt-1" type="checkbox" value="1" name="decadencia" id="decadencia" {{ old('decadencia')?'checked':'' }} >
-
-                        <th>
-                            Arder sin llama
-                            <input class="mt-1" type="checkbox" value="1" name="arder" id="arder" {{ old('arder')?'checked':'' }} >
-                        </th>
-                        
-
-                    </tr>
-                </table>
-                @endif
-                
                 <br>
-                @if ($formu->edificacion)
-                <table class="table-border text-center">
-                        <tr>
-                            <th colspan="6">
-                                    <h6 class="mt-1"><strong> EDIFICACIÓN.</strong></h6>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                Tipo de construción    
-                            </th>
-                            <th>
-                                Madera
-                                <input class="mt-1" type="checkbox"  value="1" name="madera" id="madera" {{ old('madera',$formu->edificacion->madera)=='1'?'checked':'' }}>
-                            </th>
-                            <th>
-                                Hormigón
-                                <input class="mt-1" type="checkbox"  value="1" name="hormigon" id="hormigon" {{ old('hormigon',$formu->edificacion->hormigon)=='1'?'checked':'' }}>
-                            </th>
-                            <th>
-                                Mixta
-                                <input class="mt-1" type="checkbox"  value="1" name="mixta" id="mixta" {{ old('mixta',$formu->edificacion->mixta)=='1'?'checked':'' }}>
-                            </th>
-                            <th>
-                                Metálica
-                                <input class="mt-1" type="checkbox"  value="1" name="metalica" id="metalica" {{ old('metalica',$formu->edificacion->metalica)=='1'?'checked':'' }}>
-                            </th>
-                            <th>
-                                Adobe
-                                <input class="mt-1" type="checkbox"  value="1" name="adobe" id="adobe" {{ old('adobe',$formu->edificacion->adobe)=='1'?'checked':'' }}>
-                            </th>                          
-        
-                        </tr>
-
-                        <tr>
-                                <th>
-                                    Número de plantas  
-                                </th>
-                                <th>
-                                    Planta baja
-                                    <input class="mt-1" type="checkbox"  value="1" name="plantaBaja" id="plantaBaja" {{ old('plantaBaja',$formu->edificacion->plantaBaja)=='1'?'checked':'' }}>
-                                </th>
-                                <th>
-                                    1 Planta
-                                    <input class="mt-1" type="checkbox"  value="1" name="primerPiso" id="primerPiso" {{ old('primerPiso',$formu->edificacion->primerPiso)=='1'?'checked':'' }}>
-                                </th>
-                                <th>
-                                    2 Planta
-                                    <input class="mt-1" type="checkbox"  value="1" name="segundoPiso" id="segundoPiso" {{ old('segundoPiso',$formu->edificacion->segundoPiso)=='1'?'checked':'' }}>
-                                </th>
-                                <th>
-                                    3 Planta
-                                    <input class="mt-1" type="checkbox"  value="1" name="tercerPiso" id="tercerPiso" {{ old('tercerPiso',$formu->edificacion->tercerPiso)=='1'?'checked':'' }}>
-                                </th>
-                                <th>
-                                    Patio
-                                    <input class="mt-1" type="checkbox"  value="1" name="patio" id="patio" {{ old('patio',$formu->edificacion->patio)=='1'?'checked':'' }}>
-                                </th>                          
-            
-                            </tr>
-                </table>   
-                @else                    
-                <table class="table-border text-center">
-                        <tr>
-                            <th colspan="6">
-                                    <h6 class="mt-1"><strong> EDIFICACIÓN.</strong></h6>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                Tipo de construción    
-                            </th>
-                            <th>
-                                Madera
-                                <input class="mt-1" type="checkbox"  value="1" name="madera" id="madera" {{ old('madera')?'checked':'' }}>
-                            </th>
-                            <th>
-                                Hormigón
-                                <input class="mt-1" type="checkbox"  value="1" name="hormigon" id="hormigon" {{ old('hormigon')?'checked':'' }}>
-                            </th>
-                            <th>
-                                Mixta
-                                <input class="mt-1" type="checkbox"  value="1" name="mixta" id="mixta" {{ old('mixta')?'checked':'' }}>
-                            </th>
-                            <th>
-                                Metálica
-                                <input class="mt-1" type="checkbox"  value="1" name="metalica" id="metalica" {{ old('metalica')?'checked':'' }}>
-                            </th>
-                            <th>
-                                Adobe
-                                <input class="mt-1" type="checkbox"  value="1" name="adobe" id="adobe" {{ old('adobe')?'checked':'' }}>
-                            </th>                          
-        
-                        </tr>
-
-                        <tr>
-                                <th>
-                                    Número de plantas  
-                                </th>
-                                <th>
-                                    Planta baja
-                                    <input class="mt-1" type="checkbox"  value="1" name="plantaBaja" id="plantaBaja" {{ old('plantaBaja')?'checked':'' }}>
-                                </th>
-                                <th>
-                                    1 Planta
-                                    <input class="mt-1" type="checkbox"  value="1" name="primerPiso" id="primerPiso" {{ old('primerPiso')?'checked':'' }}>
-                                </th>
-                                <th>
-                                    2 Planta
-                                    <input class="mt-1" type="checkbox"  value="1" name="segundoPiso" id="segundoPiso" {{ old('segundoPiso')?'checked':'' }}>
-                                </th>
-                                <th>
-                                    3 Planta
-                                    <input class="mt-1" type="checkbox"  value="1" name="tercerPiso" id="tercerPiso" {{ old('tercerPiso')?'checked':'' }}>
-                                </th>
-                                <th>
-                                    Patio
-                                    <input class="mt-1" type="checkbox"  value="1" name="patio" id="patio" {{ old('patio')?'checked':'' }}>
-                                </th>                          
-            
-                            </tr>
-                </table>          
-                @endif
-            </div>            
-            @endcan            
+                
+                @can('comprobarContraIncendio', $formu)
+                    <h6 class="mt-1"><strong>4.- ETAPAS DE INCENDIO Y EDIFICACIÓN.</strong></h6>
+                    <div class="border" id="edificaciones">           
+                
+                    </div> 
+                    <h6 class="mt-1"><strong>4.- CARACTERISTICAS DEL INCENDIO (FORESTAL) .</strong></h6>
+                    <div class="border" id="forestal">           
+                
+                    </div>            
+                @endcan            
             @can('comprobarAtensionHospitalaria', $formu)
                 @if ($formu->tipoEmergencia_id)
                     <a href="{{ route('atenciones',$formu->id) }}" class="btn btn-primary text-white"> Crear fichas medica</a>
@@ -477,20 +283,24 @@
         // cargara personal y unidades despachadas --> paso 3
         
         $("#cargarPersonalUnidades").load("{{ route('cargarPersonalUnidadesDespachadas',$formu->id) }}", function(responseTxt, statusTxt, xhr){
+            cargarGif();
             if(statusTxt == "success"){
-                console.log('ok')
+                $.unblockUI();
             }              
             if(statusTxt == "error"){
+                $.unblockUI();
                 notificar('error','NO se pudo cargar personal y unidades depachadas');
             }            
           });
         function cargarMateriales() {
               
           $("#materialesFormulario").load("{{ route('materiales-formulario',$formu->id) }}", function(responseTxt, statusTxt, xhr){
+            cargarGif();
                 if(statusTxt == "success"){
-                    console.log('ok')
+                    $.unblockUI();
                 }              
                 if(statusTxt == "error"){
+                    $.unblockUI();
                     notificar('error','NO se pudo cargar materiales del formulario');
                 }            
           });
@@ -500,11 +310,14 @@
           function cargarDanios() {
               
               $("#daniosFormulario").load("{{ route('danios-formulario',$formu->id) }}", function(responseTxt, statusTxt, xhr){
+                cargarGif();
                     if(statusTxt == "success"){
-                        console.log('ok')
+                        $.unblockUI();
                     }              
                     if(statusTxt == "error"){
+                        $.unblockUI();
                         notificar('error','NO se pudo cargar materiales del formulario');
+
                     }            
               });
             }
@@ -512,10 +325,9 @@
             function cargarAnexos() {
               
               $("#cargarAnexos").load("{{ route('cambiar-anexos-formulario',$formu->id) }}", function(responseTxt, statusTxt, xhr){
-                $.blockUI({message:'<h1>Espere por favor.!</h1>'});
+                cargarGif();
                     if(statusTxt == "success"){
-                        $.unblockUI();
-                        console.log('ok')
+                        $.unblockUI();                        
                     }              
                     if(statusTxt == "error"){
                         $.unblockUI();
@@ -524,7 +336,42 @@
               });
             }
             cargarAnexos();
+            //listado de eddificaciones 
             
+            function cargarEdificaciones() {
+                
+            $("#edificaciones").load("{{ route('lista-edificaciones-formulario',$formu->id) }}", function(responseTxt, statusTxt, xhr){
+                cargarGif();
+                    if(statusTxt == "success"){
+                        $.unblockUI();
+                        
+                    }              
+                    if(statusTxt == "error"){
+                        $.unblockUI();
+                        notificar('error','NO se pudo cargar las edificaciones del formulario');
+                    }            
+              });
+            
+            }
+
+            
+            cargarEdificaciones();
+            function cargarTipoIncendioForestal() {
+                
+                $("#forestal").load("{{ route('incendio-forestal-formularios',$formu->id) }}", function(responseTxt, statusTxt, xhr){
+                    cargarGif();
+                        if(statusTxt == "success"){
+                            $.unblockUI();
+                            
+                        }              
+                        if(statusTxt == "error"){
+                            $.unblockUI();
+                            notificar('error','NO se pudo cargar los tipos de incendio forestal del formulario');
+                        }            
+                  });
+                
+                }
+                cargarTipoIncendioForestal();
             $("#formCompletar").submit(function(event) {
                 cargarGif();
             });
