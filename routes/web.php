@@ -257,7 +257,9 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/guardar-forestal-formularios','FormularioEmergencias@cerarCondicionClimatica' )->name('guardar-forestal-formulario');
         Route::post('/eliminar-forestal-formularios','FormularioEmergencias@eliminarCondicionClimatica' )->name('eliminar-forestal-formulario');
         
-        
+        //imprimir formulario
+        Route::get('/imprimir-formularios/{id}','FormularioEmergencias@imprimirFormulario' )->name('imprimir-formulario');
+
         
     });
        

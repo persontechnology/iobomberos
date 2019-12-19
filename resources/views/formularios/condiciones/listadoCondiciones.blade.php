@@ -10,6 +10,8 @@
 
 @if ($formulario->puntoReferencia_id)
 <p class="mt-1"><strong> El incendio forestal se desarrollo en el cantón Latacunga, Parroquia {{ $formulario->puntoReferencia->barrio->parroquia->nombre }}, Barrio {{ $formulario->puntoReferencia->barrio->nombre }}, Sector {{ $formulario->puntoReferencia->referencia }}. Latatitud y Longitud {{ $formulario->puntoReferencia->latitud .','.$formulario->puntoReferencia->longitud }}</strong></p>  
+<div id="map">
+    </div>
 @else
     <div class="alert alert-danger" role="alert">
         no existe punto de referencia
@@ -88,74 +90,155 @@
 
 <script>
 
-        function eliminarEdificacionForestal(arg){
-                
-                swal({
-                    title: "¿Estás seguro?",
-                    text: "Que desea eliminar etapas forestales del formulario !",
-                    type: "error",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-dark",
-                    cancelButtonClass: "btn-danger",
-                    confirmButtonText: "¡Sí, eliminar!",
-                    cancelButtonText:"Cancelar",
-                    closeOnConfirm: false
-                },
-                function(){
-                    swal.close();
-                    $.blockUI({message:'<h1>Espere por favor.!</h1>'});
-                    $.post( "{{ route('eliminar-forestal-formulario') }}", { formulario: $(arg).data('id') })
-                    .done(function( data ) {
-                        if(data.success){
-                            
-                            notificar("info",data.success);
-                            cargarTipoIncendioForestal();
-                        }
-                        if(data.default){
-                            notificar("default",data.default);   
-                        }
-                        console.log(data)
-                    }).always(function(){
-                        $.unblockUI();
-                    }).fail(function(){
-                        notificar("error","Ocurrio un error");
-                    });
+function eliminarEdificacionForestal(arg){
         
-                });
-            }
-        function crearEdificacionForestal(arg){
-                
-                swal({
-                    title: "¿Estás seguro?",
-                    text: "Que desea crear edificación forestal al formulario !",
-                    type: "error",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-dark",
-                    cancelButtonClass: "btn-danger",
-                    confirmButtonText: "¡Sí, crear!",
-                    cancelButtonText:"Cancelar",
-                    closeOnConfirm: false
-                },
-                function(){
-                    swal.close();
-                    $.blockUI({message:'<h1>Espere por favor.!</h1>'});
-                    $.post( "{{ route('guardar-forestal-formulario') }}", { formulario: $(arg).data('id') })
-                    .done(function( data ) {
-                        if(data.success){
-                            
-                            notificar("info",data.success);
-                            cargarTipoIncendioForestal();
-                        }
-                        if(data.default){
-                            notificar("default",data.default);   
-                        }
-                        console.log(data)
-                    }).always(function(){
-                        $.unblockUI();
-                    }).fail(function(){
-                        notificar("error","Ocurrio un error");
-                    });
+        swal({
+            title: "¿Estás seguro?",
+            text: "Que desea eliminar etapas forestales del formulario !",
+            type: "error",
+            showCancelButton: true,
+            confirmButtonClass: "btn-dark",
+            cancelButtonClass: "btn-danger",
+            confirmButtonText: "¡Sí, eliminar!",
+            cancelButtonText:"Cancelar",
+            closeOnConfirm: false
+        },
+        function(){
+            swal.close();
+            $.blockUI({message:'<h1>Espere por favor.!</h1>'});
+            $.post( "{{ route('eliminar-forestal-formulario') }}", { formulario: $(arg).data('id') })
+            .done(function( data ) {
+                if(data.success){
+                    
+                    notificar("info",data.success);
+                    cargarTipoIncendioForestal();
+                }
+                if(data.default){
+                    notificar("default",data.default);   
+                }
+                console.log(data)
+            }).always(function(){
+                $.unblockUI();
+            }).fail(function(){
+                notificar("error","Ocurrio un error");
+            });
+
+        });
+    }
+function crearEdificacionForestal(arg){
         
-                });
-            }
-        </script>
+        swal({
+            title: "¿Estás seguro?",
+            text: "Que desea crear edificación forestal al formulario !",
+            type: "error",
+            showCancelButton: true,
+            confirmButtonClass: "btn-dark",
+            cancelButtonClass: "btn-danger",
+            confirmButtonText: "¡Sí, crear!",
+            cancelButtonText:"Cancelar",
+            closeOnConfirm: false
+        },
+        function(){
+            swal.close();
+            $.blockUI({message:'<h1>Espere por favor.!</h1>'});
+            $.post( "{{ route('guardar-forestal-formulario') }}", { formulario: $(arg).data('id') })
+            .done(function( data ) {
+                if(data.success){
+                    
+                    notificar("info",data.success);
+                    cargarTipoIncendioForestal();
+                }
+                if(data.default){
+                    notificar("default",data.default);   
+                }
+                console.log(data)
+            }).always(function(){
+                $.unblockUI();
+            }).fail(function(){
+                notificar("error","Ocurrio un error");
+            });
+
+        });
+    }
+</script>
+<script>
+    var map;
+        var marker;
+    @if( $formulario->puntoReferencia_id )
+        function initMap() {
+            @if($formulario->estaciones->count()>0)
+                @foreach($formulario->estaciones as $estacion)
+                    var directionsRenderer{{$estacion->id}} = new google.maps.DirectionsRenderer;
+                    var directionsService{{$estacion->id}} = new google.maps.DirectionsService;
+                @endforeach
+            @endif
+            var myLatLng={lat: -0.7945178, lng: -78.62189341068114}
+            map = new google.maps.Map(document.getElementById('map'), {
+              center: myLatLng,
+             
+              zoom: 15,
+            mapTypeId: 'satellite',
+            
+               
+            });
+            
+            var imageEstacion="{{ asset('img/ESTACION1.png') }}";
+            var imagePuntos="{{ asset('img/puntos.png') }}";
+        
+            @if($formulario->estaciones->count()>0)
+                @foreach($formulario->estaciones as $estacion)
+                @if ($estacion->latitud&&$estacion->longitud)
+                     
+                        var latitu={{$estacion->latitud}};
+                        var longi={{$estacion->longitud}};
+                        var marker_{{$estacion->id}} = new google.maps.Marker({
+                            map: map,
+                            position:{lat:latitu , lng:longi } ,
+                            title:"{{$estacion->nombre}}",
+                            icon:imageEstacion,
+                        });
+                        
+                        var nombre="{{$estacion->nombre}}";
+                        var geocoder = new google.maps.Geocoder;
+                        var infowindow = new google.maps.InfoWindow;
+                        infowindow.setContent(nombre);
+                        var latitud={{$formulario->puntoReferencia->latitud}};
+                        var longitud={{$formulario->puntoReferencia->longitud}};
+                        infowindow.open(map, marker_{{$estacion->id}}); 
+
+                        directionsRenderer{{$estacion->id}}.setMap(map);
+                        // des aki para ver 
+                        directionsService{{$estacion->id}}.route({
+                        origin: {lat: latitu, lng: longi},  // Haight.
+                        destination: {lat: latitud, lng:longitud},  // Ocean Beach.
+                        // Note that Javascript allows us to access the constant
+                        // using square brackets and a string value as its
+                        // "property."
+                        
+                        travelMode: 'DRIVING',
+                        }, function(response, status) {
+                        if (status == 'OK') {
+                            directionsRenderer{{$estacion->id}}.setDirections(response);
+                        } else {
+                            window.alert('Directions request failed due to ' + status);
+                        }
+                        });
+                      
+                    @endif
+                @endforeach
+            @endif         
+        }
+    @endif
+
+
+        
+</script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0Ko6qUa0EFuDWr77BpNJOdxD-QLstjBk&callback=initMap">
+  </script>
+  <style type="text/css">
+      #map {
+          height: 350px;
+          width: 100%;
+      }
+  </style>

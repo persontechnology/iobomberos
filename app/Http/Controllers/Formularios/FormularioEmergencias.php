@@ -959,5 +959,11 @@ class FormularioEmergencias extends Controller
         }
         
     }
+    public function imprimirFormulario($idFormulario)
+    {
+        $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $data = array('formulario' => $formulario, );
+        return view('formularios.formulariosEmergencias.imprimir',$data);
+    }
   
 }

@@ -217,12 +217,7 @@
             <div id="daniosFormulario">
 
             </div>
-            <h6 class="mt-1"><strong>10.- ANEXOS FOTOGRÁFICOS.</strong></h6>
-            <div id="cargarAnexos">
-                
-            </div>
-            <input type="file" id="foto" name="foto[]" multiple>
-            <h6 class="mt-1"><strong>11.- NÚMERO DE HERIDOS.</strong></h6>
+            <h6 class="mt-1"><strong>9.- NÚMERO DE HERIDOS.</strong></h6>
             <input type="number" class="form-control @error('numeroHeridos') is-invalid @enderror" id="numeroHeridos" name="numeroHeridos" value="{{ old('numeroHeridos',$formu->heridos) }}">
             @error('numeroHeridos')
                 <span class="invalid-feedback" role="alert">
@@ -230,6 +225,11 @@
                 </span>
             @enderror
             @endcan
+            <h6 class="mt-1"><strong>10.- ANEXOS FOTOGRÁFICOS.</strong></h6>
+            <div id="cargarAnexos">
+                
+            </div>
+            <input type="file" id="foto" name="foto[]" multiple>
         </div>
         <div class="card-footer">
             <button type="submit" class="btn btn-dark">Guardar ficha</button>

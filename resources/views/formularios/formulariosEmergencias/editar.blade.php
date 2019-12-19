@@ -506,7 +506,7 @@
             var myLatLng={lat: -0.7945178, lng: -78.62189341068114}
             map = new google.maps.Map(document.getElementById('map'), {
               center: myLatLng,
-              zoom: 11,
+              zoom: 15,
               
             });
             
@@ -531,6 +531,25 @@
                         var infowindow = new google.maps.InfoWindow;
                         infowindow.setContent(nombre);
                         infowindow.open(map, marker_{{$estacion->id}}); 
+                         // des aki para ver 
+                         @if( $formulario->puntoReferencia_id )
+                         var latitud={{$formulario->puntoReferencia->latitud}};
+                        var longitud={{$formulario->puntoReferencia->longitud}};
+                         directionsService{{$estacion->id}}.route({
+                        origin: {lat: latitu, lng: longi},  // Haight.
+                        destination: {lat: latitud, lng:longitud},  // Ocean Beach.
+                        // Note that Javascript allows us to access the constant
+                        // using square brackets and a string value as its
+                        // "property."
+                        travelMode: 'DRIVING',
+                        }, function(response, status) {
+                        if (status == 'OK') {
+                            directionsRenderer{{$estacion->id}}.setDirections(response);
+                        } else {
+                            window.alert('Directions request failed due to ' + status);
+                        }
+                        });
+                        @endif
                     @endif
                 @endforeach
             @endif	  

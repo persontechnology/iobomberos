@@ -19,6 +19,10 @@
         <i class="fas fa-car"></i>
     </a>        
     @endcan
+    <a  href="{{ route('imprimir-formulario',$formulario->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Editar {{ $formulario->emergencia->nombre }}">
+            <i class="fas fa-print"></i>
+    </a> 
+    
   
 
 </div>

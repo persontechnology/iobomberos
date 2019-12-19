@@ -3,9 +3,11 @@
 namespace iobom\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use iobom\Http\Controllers\Emergencias\TipoEmergencias;
 use iobom\Models\Asistencia\Asistencia;
 use iobom\Models\Asistencia\AsistenciaPersonal;
 use iobom\Models\Emergencia\Emergencia;
+use iobom\Models\Emergencia\TipoEmergencia;
 use iobom\Models\FormularioEmergencia\Anexo;
 use iobom\Models\FormularioEmergencia\AtencionPrehospitalaria;
 use iobom\Models\FormularioEmergencia\Edificacion;
@@ -56,6 +58,12 @@ class FormularioEmergencia extends Model
         return $this->belongsTo(User::class,'creadoPor');
     }
 
+    // A:Deivid
+    // D: un formulario tiene un usuario responsable, quien creao el formulario
+    public function tipoEmergencia()
+    {
+        return $this->belongsTo(TipoEmergencia::class,'tipoEmergencia_id');
+    }
 
     // A:Deivid
     // D:un formualrio tiene varias estaciones asignadas
