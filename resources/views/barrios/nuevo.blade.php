@@ -53,7 +53,7 @@
                             <label for="codigo" class="col-md-4 col-form-label text-md-right">Código<i class="text-danger">*</i></label>
         
                             <div class="col-md-6">
-                                <input id="codigo" type="text" class="form-control @error('codigo') is-invalid @enderror" name="codigo" value="{{old('codigo')}}" placeholder="Teléfono">
+                                <input id="codigo" type="text" class="form-control @error('codigo') is-invalid @enderror" name="codigo" value="{{old('codigo')}}" placeholder="Código">
         
                                 @error('codigo')
                                     <span class="invalid-feedback" role="alert">

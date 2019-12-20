@@ -12,7 +12,7 @@
     <div class="card-header">
         <form action="{{ route('guardarParroquia') }}" method="POST" id="formGuardar">
             @csrf
-            <label for="nombre">Nombre de clínica</label>
+            <label for="nombre">Nombre de la parroquia</label>
             <div class="input-group mb-3">
                 <input type="text" name="nombre" value="{{ old('nombre') }}" class="form-control @error('nombre') is-invalid @enderror" placeholder="Ingrese nombre.." aria-label="Recipient's username" aria-describedby="basic-addon2" required>
                 <input type="number" name="codigo" value="{{ old('codigo') }}" class="form-control @error('codigo') is-invalid @enderror" placeholder="Ingrese codigo.." aria-label="Recipient's username" aria-describedby="basic-addon2" required>
