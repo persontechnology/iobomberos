@@ -962,6 +962,7 @@ class FormularioEmergencias extends Controller
     public function imprimirFormulario($idFormulario)
     {
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $this->authorize('imprimirFormulario',  $formulario); 
         $data = array('formulario' => $formulario, );
         return view('formularios.formulariosEmergencias.imprimir',$data);
     }

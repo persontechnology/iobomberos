@@ -464,4 +464,10 @@
      
     </div>
 </div>
+@prepend('linksPie')
+<script type="text/javascript">
+    $('#menuGestionFomularios').addClass('nav-item-expanded nav-item-open');
+     $('#menuFormularios').addClass('active');
+</script>
+@endprepend
 @endsection

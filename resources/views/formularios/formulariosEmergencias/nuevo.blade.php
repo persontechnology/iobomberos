@@ -17,7 +17,7 @@
         <div class="card-body">
 
             <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label for="emergencia">Emergencia<i class="text-danger">*</i></label>
                     @if(count($emergencias)>0)
                         <select class="form-control @error('emergencia') is-invalid @enderror" required name="emergencia" id="emergencia" >
@@ -47,7 +47,7 @@
                         </span>
                     @enderror
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-4">
                     <label for="telefono"># Teléfonico del informante</label>
                     <input id="telefono" type="text" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{ old('telefono') }}" autocomplete="telefono" autofocus placeholder="Ingrese..">
         

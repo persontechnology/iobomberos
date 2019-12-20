@@ -27,7 +27,7 @@
 
                         <div class="card-body">
                             <h5 class="card-title"><strong>Nombres: </strong>{{$atension->nombres}}</h5>
-                            <p class="card-text"><strong>Cédula: </strong> {{$atension->cedula}} <br>
+                            <p class="card-text"><strong>Identificación: </strong> {{$atension->cedula}} <br>
                                 <strong> Edad: </strong> {{$atension->edad}}
                             </p>
                         </div>
@@ -35,7 +35,7 @@
                                 <span class="text-muted">Creado {{$atension->created_at->diffForHumans()}}</span>
 								<ul class="list-inline mb-0">
                                     <li class="list-inline-item"><a href="{{route('editar-atencion',$atension->id)}}">Editar</a></li>
-									<li class="list-inline-item "><a class="text-danger" href="#">Eliminar</a></li>
+									
 								</ul>
 							</div>                       
                     </div>

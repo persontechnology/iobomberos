@@ -114,9 +114,9 @@
                                 @endif
                             </th>
                             <th>
-                                <strong>Dirección Evento : </strong> <br>{{$atencion->formulario->puntoReferencia->referencia}}</th>
+                                <strong>Dirección Adicional : </strong> <br>{{$atencion->formulario->localidad??'No existe dirección adicional'}}</th>
                             <th>
-                                <strong>Punto Referencia : </strong> <br>{{$atencion->formulario->puntoReferencia->referencia}}</th>
+                                <strong>Punto Referencia : </strong> <br>{{$atencion->formulario->puntoReferencia->referencia??'No existe punto de referencia'}}</th>
                             <th>
                                 <strong>Fecha Atención : </strong> <br>{{$atencion->formulario->fecha}}</th>
                             <th>
@@ -465,4 +465,10 @@
      
     </div>
 </div>
+@prepend('linksPie')
+<script type="text/javascript">
+    $('#menuGestionFomularios').addClass('nav-item-expanded nav-item-open');
+     $('#menuFormularios').addClass('active');
+</script>
+@endprepend
 @endsection

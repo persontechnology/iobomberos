@@ -15,14 +15,22 @@
     {{-- habilitar para cear fichas medicas listas--}}
     @can('formularioFinalizadoPAramedico',  $formulario)
         
-    <a  href="{{ route('atenciones',$formulario->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Crear fichas medicas {{ $formulario->emergencia->nombre }}">
-        <i class="fas fa-car"></i>
+    <a  href="{{ route('atenciones',$formulario->id) }}" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Crear fichas medicas {{ $formulario->emergencia->nombre }}">
+        <i class="fas fa-ambulance"></i>
     </a>        
     @endcan
-    <a  href="{{ route('imprimir-formulario',$formulario->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Editar {{ $formulario->emergencia->nombre }}">
+    @can('imprimirFormulario', $formulario)
+    <a target="_blank" href="{{ route('imprimir-formulario',$formulario->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Editar {{ $formulario->emergencia->nombre }}">
             <i class="fas fa-print"></i>
     </a> 
+        
+    @endcan
     
+    @can('misFormularios', $formulario)
+    <a  href="{{ route('proceso-formulario',$formulario->id) }}" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Editar {{ $formulario->emergencia->nombre }}">
+        <i class="fas fa-edit"></i>
+    </a> 
+    @endcan
   
 
 </div>

@@ -44,7 +44,7 @@ class FormularioEmercenciaPolicy
     }
     public function cambioEstadoProceso(User $user,FormularioEmergencia $formularioEmergencia)
     {
-        if ($formularioEmergencia->estado=="Asignado"&&$user->hasAnyRole('Radio operador','Operativos','Clase de guardía','Oficial de guardía')) {
+        if ($formularioEmergencia->estado=="Asignado"  && $user->hasAnyRole(['Radio operador','Operativos','Clase de guardía','Oficial de guardía'])) {
             return true;
         }else{
             return false;
@@ -54,14 +54,18 @@ class FormularioEmercenciaPolicy
     {
         $asistencias=AsistenciaPersonal::where('user_id',$user->id)->get();       
    
-        $formularioEmergencia=FormularioEmergencia::where('id',$formularioEmergencia->id)
+        $formularioEmergenciaTotal=FormularioEmergencia::where('id',$formularioEmergencia->id)
         ->where('estado',"Proceso")
         ->whereIn('encardadoFicha_id',$asistencias->pluck('id'))
         ->get();
-        if($formularioEmergencia->count()>0){
+        if($formularioEmergenciaTotal->count()>0){
             return true;
         }else{
-            return false;
+            if($formularioEmergencia->estado=="Finalizado" && $user->hasAnyRole(['Jefe de operaciones'])){
+                return true;
+            }else{
+                return false;
+            }
         }
     }
     public function formularioFinalizadoPAramedico(User $user,FormularioEmergencia $formularioEmergencia)
@@ -70,19 +74,30 @@ class FormularioEmercenciaPolicy
         $vehiculos= $formularioEmergencia->formularioVehiculos;
         $vistaParamedico=VehiculoParamedico::whereIn('estacionForVehiculo_id',$vehiculos->pluck('id'))->get();
         $verTotal=$vistaParamedico->whereIn('asistenciaPersonal_id',$asistencias->pluck('id'))->count();
-       
-        if($formularioEmergencia->estado=="Proceso" && $formularioEmergencia->heridos>0){
-            if($verTotal>0){
-                return true;
-            }
+        if($formularioEmergencia->estado=="Finalizado" && $user->hasAnyRole(['Jefe de operaciones'])){
+        return true;
         }else{
-            if($formularioEmergencia->estado=="Proceso" && $formularioEmergencia->emergencia->nombre=="ATENCION PREHOSPITALARIA"){
+            if($formularioEmergencia->estado=="Proceso" && $formularioEmergencia->heridos>0){
                 if($verTotal>0){
                     return true;
+                }
+            }else{
+                if($formularioEmergencia->estado=="Proceso" && $formularioEmergencia->emergencia->nombre=="ATENCION PREHOSPITALARIA"){
+                    if($verTotal>0){
+                        return true;
+                    }
                 }
             }
         }
         
+    }
+    public function imprimirFormulario(User $user,FormularioEmergencia $formularioEmergencia)
+    {
+        if($formularioEmergencia->estado=="Finalizado" && $user->hasAnyRole(['Jefe de operaciones'])){
+            return true;
+        }else{
+            return false;
+        }
     }
     
 }

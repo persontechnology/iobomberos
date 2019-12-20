@@ -34,12 +34,20 @@
                    </tr>
                    <tr>
                         <th>
-                            <strong>Lugar del Incidente: </strong> {{$formulario->puntoReferencia->referencia??'XXXXXXXXXX'}}
+                            <strong>Lugar del Incidente: </strong> {{$formulario->puntoReferencia->referencia??'NO EXISTE UN PUNTO DE REFERENCIA'}}
                         </th>
                         <th>
                             <strong>Nombre de la Institución que informa: </strong> {{$formulario->institucion}}
                         </th>
                    </tr>
+                   <tr>
+                    <th>
+                        <strong>Dirección adicional: </strong> {{ $formulario->localidad??'NO EXISTE DIRECCÍON ADICIONAL'}}
+                    </th>
+                    <th>
+                        <strong>Teléfono: </strong> {{  $formulario->telefono}}
+                    </th>
+               </tr>
                    <tr>
                         <th>
                             <strong>Frecuencia: </strong> {{$formulario->frecuencia}}
@@ -144,7 +152,7 @@
             @endforeach
         </div>
         @if ($formulario->puntoReferencia_id)
-        <p class="mt-5"><strong>Punto de referencia en el mapa: <strong> El incendio forestal se desarrollo en el cantón Latacunga, Parroquia {{ $formulario->puntoReferencia->barrio->parroquia->nombre }}, Barrio {{ $formulario->puntoReferencia->barrio->nombre }}, Sector {{ $formulario->puntoReferencia->referencia }}. Latatitud y Longitud {{ $formulario->puntoReferencia->latitud .','.$formulario->puntoReferencia->longitud }}</p>
+        <p class="mt-5"><strong>Punto de referencia en el mapa: <strong> Cantón Latacunga, Parroquia {{ $formulario->puntoReferencia->barrio->parroquia->nombre }}, Barrio {{ $formulario->puntoReferencia->barrio->nombre }}, Sector {{ $formulario->puntoReferencia->referencia }}. Latatitud y Longitud {{ $formulario->puntoReferencia->latitud .','.$formulario->puntoReferencia->longitud }}</p>
             <div id="map" class="mt-1">
 
             </div>

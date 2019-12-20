@@ -187,7 +187,7 @@
                 @endcan            
             @can('comprobarAtensionHospitalaria', $formu)
                 @if ($formu->tipoEmergencia_id)
-                    <a href="{{ route('atenciones',$formu->id) }}" class="btn btn-primary text-white"> Crear fichas medica</a>
+                    <a href="{{ route('atenciones',$formu->id) }}" class="btn btn-primary text-white"> Crear fichas médicas</a>
                     
                 @else
                     <div class="alert alert-info" role="alert">
@@ -224,16 +224,17 @@
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
-            @endcan
             <h6 class="mt-1"><strong>10.- ANEXOS FOTOGRÁFICOS.</strong></h6>
             <div id="cargarAnexos">
                 
             </div>
             <input type="file" id="foto" name="foto[]" multiple>
         </div>
+        @endcan
         <div class="card-footer">
             <button type="submit" class="btn btn-dark">Guardar ficha</button>
         </div>
+            
     </form>
         
     
