@@ -148,7 +148,7 @@
                             <th>
                                 <div class="form-group" class="text-center">
                                     <label for="pulso">Pulso<i class="text-danger">*</i></label>
-                                    <input  type="number" id="pulso"  value="{{ old('pulso') }}" name="pulso"  class="form-control {{ $errors->has('pulso') ? ' is-invalid' : '' }}" placeholder="Ingrese.." required>
+                                    <input  type="number"  min="0" step="0.01" pattern="^\d+(?:\.\d{1,2})?$" id="pulso"  value="{{ old('pulso') }}" name="pulso"  class="form-control {{ $errors->has('pulso') ? ' is-invalid' : '' }}" placeholder="Ingrese.." required>
                                     @if ($errors->has('pulso'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('pulso') }}</strong>
@@ -159,7 +159,7 @@
                             <th>
                                 <div class="form-group" class="text-center">
                                     <label for="temperatura">Temperatura<i class="text-danger">*</i></label>
-                                    <input  type="number" id="temperatura"  value="{{ old('temperatura') }}" name="temperatura" value="" class="form-control {{ $errors->has('temperatura') ? ' is-invalid' : '' }}" placeholder="Ingrese.." required>
+                                    <input  type="number"  min="0" step="0.01" pattern="^\d+(?:\.\d{1,2})?$" id="temperatura"  value="{{ old('temperatura') }}" name="temperatura" value="" class="form-control {{ $errors->has('temperatura') ? ' is-invalid' : '' }}" placeholder="Ingrese.." required>
                                     @if ($errors->has('temperatura'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('temperatura') }}</strong>
@@ -170,7 +170,7 @@
                             <th>
                                 <div class="form-group" class="text-center">
                                     <label for="presion">Presión Arterial<i class="text-danger">*</i></label>
-                                    <input  type="text" id="presion"  value="{{ old('presion') }}" name="presion"  class="form-control {{ $errors->has('presion') ? ' is-invalid' : '' }}" placeholder="Ingrese.." required>
+                                    <input  type="text"  id="presion"  value="{{ old('presion') }}" name="presion"  class="form-control {{ $errors->has('presion') ? ' is-invalid' : '' }}" placeholder="Ingrese.." required>
                                     @if ($errors->has('presion'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('presion') }}</strong>

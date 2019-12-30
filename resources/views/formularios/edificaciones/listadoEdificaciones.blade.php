@@ -2,7 +2,7 @@
 <table class="table-border text-center">
     <tr>
         <th colspan="6">
-                <h6 class="mt-1"><strong> TIPO DE EDIFICACIÓN.</strong></h6>
+                <h6 class="mt-1"><strong> USO DE EDIFICACIÓN.</strong></h6>
         </th>
     </tr>
     <tr>

@@ -191,7 +191,7 @@
                     
                 @else
                     <div class="alert alert-info" role="alert">
-                        Para crear las fichas Pre-Hospitalarias debe primero acrualizar el formulario
+                        Para crear las fichas Pre-Hospitalarias debe primero actualizar el formulario
                     </div>
                 @endif
             @elsecan('noPreospitalario', $formu)

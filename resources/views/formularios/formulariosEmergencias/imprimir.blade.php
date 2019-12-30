@@ -1,4 +1,11 @@
-<div class="card">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+
+
+<div class="continer">
         <div class="card-header">
             <table  style="border-collapse: collapse; border: none; width: 100%">
                 <td class="noBorder">
@@ -133,7 +140,7 @@
                     <table id="nuevaTabla">
                         <tr>
                             <th colspan="6">
-                                    <h6 class="mt-1"><strong> TIPO DE EDIFICACIÓN.</strong></h6>
+                                    <h6 class="mt-1"><strong> USO DE EDIFICACIÓN.</strong></h6>
                             </th>
                         </tr>
                         <tr>
@@ -404,8 +411,14 @@
            
         @endcan
 </div>
-
+<button onclick="Imprimir()">Imprimir</button>
 <script>
+    function Imprimir() {
+        let doc = new jsPDF('p','pt','a4');
+        doc.addHTML(document.body,function() {
+            doc.save('html.pdf');
+    });
+    }
         var map;
             var marker;
         @if( $formulario->puntoReferencia_id )

@@ -511,7 +511,7 @@ class FormularioEmergencias extends Controller
             'formulario' => 'required|exists:formularioEmergencia,id',
             'tipoEmergencia'=>'required|exists:tipoEmergencia,id',
             'horaEntrada'=>'required',
-            'origenCausa'=>'min:150|string',
+            'origenCausa'=>'min:50|string',
             'numeroHeridos'=>'integer'
         ]);
         $formulario=FormularioEmergencia::findOrFail($request->formulario);

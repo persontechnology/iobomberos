@@ -20,7 +20,7 @@
     </a>        
     @endcan
     @can('imprimirFormulario', $formulario)
-    <a target="_blank" href="{{ route('imprimir-formulario',$formulario->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Editar {{ $formulario->emergencia->nombre }}">
+    <a target="_blank" href="{{ route('imprimir-formulario',$formulario->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Imprimir formulario {{ $formulario->emergencia->nombre }}">
             <i class="fas fa-print"></i>
     </a> 
         
