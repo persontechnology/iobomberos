@@ -122,6 +122,10 @@ class FormularioEmergencia extends Model
     {
         return $this->belongsTo(AsistenciaPersonal::class, 'encardadoFicha_id');
     }
+    public function oficialFormulario()
+    {
+        return $this->belongsTo(User::class, 'maximaAutoridad_id');
+    }
     //FAbian Lopez Buscar atension referente al formulario
     public function atenciones()
     {

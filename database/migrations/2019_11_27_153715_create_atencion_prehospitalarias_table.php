@@ -25,8 +25,8 @@ class CreateAtencionPrehospitalariasTable extends Migration
             $table->time('horaAtencion');
             $table->string('placa')->nullable();
             $table->text('diagnostico');
-            $table->integer('pulso');
-            $table->integer('temperatura');
+            $table->decimal('pulso');
+            $table->decimal('temperatura');
             $table->string('presion');
             $table->integer('sp');
             $table->integer('glasgow');

@@ -28,7 +28,7 @@
     @if ($asistencia)
         <table style="border-collapse: collapse; border: none;">
             <td class="noBorder">
-                    <img src="{!! public_path('img/escudo.png') !!}" alt="" width="75px;" style="text-align: left;">
+                    <img src="{!! public_path('img/ecuador.png') !!}" alt="" width="75px;" style="text-align: left;">
             </td>
             <td class="noBorder">
                 <h4 style="text-align: center;">
@@ -41,7 +41,7 @@
             </td>
             <td class="noBorder">
                 
-                <img src="{!! public_path('img/ecuador.png') !!}" alt="" width="75px;" style="text-align: right;">
+                <img src="{!! public_path('img/escudo.png') !!}" alt="" width="75px;" style="text-align: right;">
             </td>
         </table>
 

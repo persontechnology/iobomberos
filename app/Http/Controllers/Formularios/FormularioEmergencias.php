@@ -529,7 +529,7 @@ class FormularioEmergencias extends Controller
             if($request->condicionClimatica){
                 $formulario->condicionClimatica=$request->condicionClimatica;
             }
-            
+            $formulario->localidadEjecutada=$request->localidadEjecutada;
             $formulario->actualizadoPor=Auth::id();
             $formulario->save();
             //ingresar etapas de incendio
@@ -771,6 +771,7 @@ class FormularioEmergencias extends Controller
             
             $form->frecuencia=$request->frecuencia;
             $form->puntoReferencia_id=$request->puntoReferencia;
+            
             $form->localidad=$request->direcionAdicional;
 
             // maxima autoridad
@@ -963,7 +964,8 @@ class FormularioEmergencias extends Controller
     {
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
         $this->authorize('imprimirFormulario',  $formulario); 
-        $data = array('formulario' => $formulario, );
+        $oficial= Role::where('name', 'Jefe de operaciones')->first()->users->first();
+        $data = array('formulario' => $formulario,'oficial'=>$oficial);
         return view('formularios.formulariosEmergencias.imprimir',$data);
     }
   

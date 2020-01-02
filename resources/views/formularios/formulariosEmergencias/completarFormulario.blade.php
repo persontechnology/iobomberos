@@ -7,7 +7,7 @@
     <div class="card-header">
         <table style="border-collapse: collapse; border: none;">
             <td class="noBorder">
-                    <img src="{{ asset('img/escudo.png') }}" alt="" width="75px;" style="text-align: left;">
+                    <img src="{{ asset('img/ecuador.png') }}" alt="" width="75px;" style="text-align: left;">
             </td>
             <td class="noBorder">
                 <h4 style="text-align: center;">
@@ -19,7 +19,7 @@
             </td>
             <td class="noBorder">
                 
-                <img src="{{ asset('img/ecuador.png') }}" alt="" width="75px;" style="text-align: right;">
+                <img src="{{ asset('img/escudo.png') }}" alt="" width="75px;" style="text-align: right;">
             </td>
         </table>
         <p class="text-right mt-2">Latacunga, {{ $formu->fecha }}</p>
@@ -85,7 +85,7 @@
                 Nombre o Institución que Informa: <strong>{{ $formu->institucion}}</strong> <br>
                 
                 Aviso del evento: <strong>{{ $formu->responsable->hasRole('Radio operador')?'Radio operador':'Personal de guardia' }}</strong>
-
+                
                 <div class="form-check form-check-inline ml-1">
                     <label class="form-check-label" for="Teléfonico">
                             Teléfonico
@@ -100,6 +100,27 @@
                     </div>
 
             </div>
+            <p>
+                <div class="form-group row mt-1">
+                    <label for="inputEmail3" class="col-sm-3 col-form-label"><strong> Seleccione el tipo de localidad </strong></label>
+                    <div class="col-sm-9">
+                
+                            <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="localidadEjecutada" {{ $formu->localidadEjecutada=="Urbano"?'checked':'' }} id="exampleRadios1" value="Urbano" checked>
+                                    <label class="form-check-label" for="exampleRadios1">
+                                      Urbano
+                                    </label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="localidadEjecutada" {{ $formu->localidadEjecutada=="Rural"?'checked':'' }} id="exampleRadios2" value="Rural">
+                                    <label class="form-check-label" for="exampleRadios2">
+                                      Rural
+                                    </label>
+                                  </div>
+                                  
+                    </div>
+                </div>
+            </p>
             <h6 class="mt-1"><strong>3.- PERSONAL Y UNIDADES DESPACHADAS.</strong></h6>
 
             @foreach ($formu->estacionFormularioEmergencias as $estaciones)                      

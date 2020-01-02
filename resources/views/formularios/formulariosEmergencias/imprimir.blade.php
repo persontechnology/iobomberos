@@ -1,30 +1,24 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
-
 
 <div class="continer">
         <div class="card-header">
             <table  style="border-collapse: collapse; border: none; width: 100%">
                 <td class="noBorder">
-                        <img src="{{ asset('img/escudo.png') }}" alt="" width="45px;" style="text-align: left;">
+                        <img src="{{ asset('img/ecuador.png') }}" alt="" width="45px;" style="text-align: left;">
                 </td>
                 <td class="noBorder">
-                    <h4 style="text-align: center;">
+                    <h3 style="text-align: center;">
                         <strong>
                         CUERPO DE BOMBEROS DE LATACUNGA <br>
-                        OPERATIVO <br>
+                        UNIDAD DE OPERACIONES <br>
                         </strong>
-                    </h4>
+                    </h3>
                 </td>
                 <td class="noBorder">
                     
-                    <img src="{{ asset('img/ecuador.png') }}" alt="" width="45px;" style="text-align: right;">
+                    <img src="{{ asset('img/escudo.png') }}" alt="" width="45px;" style="text-align: right;">
                 </td>
             </table>
-            <p style="text-align: right">Latacunga, {{ $formulario->fecha }}</p>
+            <p style="text-align: right">Latacunga, {{ Carbon\Carbon::parse($formulario->fecha)->format('d-m-Y') }}</p>
             <p>
                 {{ $formulario->maximaAutoridad->name }} <br>  
                 
@@ -140,7 +134,7 @@
                     <table id="nuevaTabla">
                         <tr>
                             <th colspan="6">
-                                    <h6 class="mt-1"><strong> USO DE EDIFICACIÓN.</strong></h6>
+                                    <h6 class="mt-1"><strong> TIPO DE EDIFICACIÓN.</strong></h6>
                             </th>
                         </tr>
                         <tr>
@@ -376,49 +370,85 @@
                     $i=0;
                 @endphp               
                     
-                            @foreach ($formulario->anexos as $anexo)
-                            @php
-                            $i++;
-                            @endphp
-                            @if ($i%2==1)
-                                
-                            <table style="width: 50%;" align="left" class="egt" >
-                                        <thead>                                        
-                                    <tr>
-                                    <th>
-                                        <img  width="100%" height="150px" src="{{ Storage::url($anexo->foto) }}" alt="">
-                                        {{ $i }} 
-                                    </th>                   
-                                    </tr>
-                                </thead>
-                            </table>
-                            @else
-                             <table style="width: 50%;" align="right" class="egt" >
+                @foreach ($formulario->anexos as $anexo)
+                    @php
+                         $i++;
+                    @endphp
+                    @if ($i%2==1)
+                        
+                        <table style="width: 50%;" align="left" class="egt" >
                                     <thead>                                        
                                 <tr>
                                 <th>
                                     <img  width="100%" height="150px" src="{{ Storage::url($anexo->foto) }}" alt="">
-                                    {{ $i }} 
+                                    Anexo {{ $i }} 
                                 </th>                   
                                 </tr>
                             </thead>
-                        </table> 
-                            @endif
-                            @endforeach
-                    
-                    
-            @endif
-           
+                        </table>
+                    @else
+                    <table style="width: 50%;" align="right" class="egt" >
+                        <thead>                                        
+                            <tr>
+                                <th>
+                                    <img  width="100%" height="150px" src="{{ Storage::url($anexo->foto) }}" alt="">
+                                    Anexo {{ $i }} 
+                                </th>                   
+                            </tr>
+                        </thead>
+                    </table> 
+                    @endif
+                @endforeach                 
+            @endif           
         @endcan
+        <p><strong>Firmas</strong></p>
+        <table id="nuevaTabla">
+            <thead>
+                <tr>
+                    <th>Elaborado</th>
+                    <th>Elaborado</th>
+                    <th>Revisado</th>
+                </tr>
+            </thead>
+            <tr>
+                <th>    
+                    
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <strong>..................................</strong><br>
+                        {{$formulario->asitenciaEncardado->usuario->name??'XXXXXXXXXX'}}<br>
+                        <strong> OPERATIVO DEL CBL</strong>                        
+                
+                </th>
+                <th>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                        <strong>..................................</strong><br>
+                        <strong> CLASE DE GUARDIA DEL CBL</strong>
+                </th>
+                <th>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                        <strong>..................................</strong><br>
+                        @if ($oficial)
+                            {{ $oficial->name }}
+                        @else
+                            XXXXXXXXX
+                        @endif
+                        <br>
+                        <strong>OFICIAL (E) DE LA UNIDAD DE OPERACIONES </strong>
+                </th>
+            </tr>
+        </table>
 </div>
-<button onclick="Imprimir()">Imprimir</button>
 <script>
-    function Imprimir() {
-        let doc = new jsPDF('p','pt','a4');
-        doc.addHTML(document.body,function() {
-            doc.save('html.pdf');
-    });
-    }
         var map;
             var marker;
         @if( $formulario->puntoReferencia_id )
