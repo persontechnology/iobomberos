@@ -61,7 +61,8 @@ class FormularioEmergencias extends Controller
         ->where('fechaFin','<=',$fechaMenor)->get();
 
         $astenciaPersonal=AsistenciaPersonal::
-        whereIn('asistencia_id',$asistenciaHoy->pluck('id'))->get();
+        whereIn('asistencia_id',$asistenciaHoy->pluck('id'))
+        ->where('estado',1)->get();
 
         $user = User::whereHas('roles', function($q){
             $q->where('name','!=', 'Administrador');
@@ -172,8 +173,7 @@ class FormularioEmergencias extends Controller
                                 $asistenciaPersonalEstacion=AsistenciaPersonal::findOrFail($variableAuxEnca[1]);             
                                 $buscarestacionEstacion->user_id= $asistenciaPersonalEstacion->user_id;
                                 $buscarestacionEstacion->save();
-                                $asistenciaPersonalEstacion->estadoEmergencia='Emergencia';
-                                $asistenciaPersonalEstacion->save();
+                                
                             }
                         }
                         
@@ -629,6 +629,8 @@ class FormularioEmergencias extends Controller
             $formulario->estado='Proceso';
             $formulario->save();
             foreach ($formulario->estacionFormularioEmergencias as $estacione) {
+                
+                //cambio de personal en la estacion
                 foreach ($estacione->formularioEstacionVehiculo as $vehiculo) {
                     $asistenciaVehiculo=AsistenciaVehiculo::findOrFail($vehiculo->asistenciaVehiculo_id);
                     $asistenciaVehiculo->estadoEmergencia='Disponible';

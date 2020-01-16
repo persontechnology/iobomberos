@@ -11,7 +11,7 @@
    <div class="text-center">
        <p><h4><strong>Editar Formulario N° {{$formulario->numero}}</strong></h4></p>
    </div>
-      
+     
     <form method="POST" action="{{ route('ActualizarFormulario') }}" id="formEditarUsuario" enctype="multipart/form-data">
         @csrf
         <div class="card-body">

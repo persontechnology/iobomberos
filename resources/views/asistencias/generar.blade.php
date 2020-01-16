@@ -257,7 +257,8 @@
         $('.table').DataTable({
             "lengthChange": false,
             "scrollY": "400px",
-            "scrollCollapse": true,
+            
+            "scrollCollapse": false,
             "paging": false,
             "language": {
                 "sProcessing":     "Procesando...",

@@ -34,11 +34,12 @@ class Asistencias extends Controller
         $asistencia=$estacion->asistenciasHoy()->first();
 
         if ($asistencia) {
-            $asistencia=$this->listadoPersonal($estacion->id);
+           $asistencia=$this->listadoPersonal($estacion->id);
         }
 
         $data = array('estacion' => $estacion,'asistencia'=>$asistencia );
         return view('asistencias.generar',$data);
+       
     }
 
     public function crearNuevaAsistencia(Request $request)
@@ -50,6 +51,7 @@ class Asistencias extends Controller
     }
     public function listadoPersonal($Idestacion)
     {
+        
         $estacion=Estacion::findOrFail($Idestacion);
         $this->authorize('generarAsistencia', $estacion);
         $asistencia=$estacion->asistenciasHoy()->first();
@@ -64,9 +66,18 @@ class Asistencias extends Controller
             $asistencia->user_id=Auth::id();
             $asistencia->save();
         }
+        
+         $mipersonaldeasitenciatomada= $asistencia->asistenciaPersonal->pluck('id');
+         $mipersonalxestacion=$estacion->personales->pluck('id');
+         $uniontodospersonal=$mipersonaldeasitenciatomada->merge($mipersonalxestacion);
+        $asistencia->asistenciaPersonal()->sync($uniontodospersonal);
 
-        $asistencia->asistenciaPersonal()->sync($estacion->personales->pluck('id'));
-        $asistencia->asistenciaVehiculo()->sync($estacion->vehiculos->pluck('id'));
+        $mivehiculosasistenciatomada=$asistencia->asistenciaVehiculo->pluck('id');
+        $mivehiculosxestacion=$estacion->vehiculos->pluck('id');
+        $miuniontodosvehiculos=$mivehiculosasistenciatomada->merge($mivehiculosxestacion);
+
+        $asistencia->asistenciaVehiculo()->sync($miuniontodosvehiculos);
+       
         
         return $asistencia;
     }

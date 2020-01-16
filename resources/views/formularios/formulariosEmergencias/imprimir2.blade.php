@@ -63,7 +63,7 @@
                
                 
             </div>
-            <div >
+            <div style="width: 100%;height: 35%">
             <p class="mt-1"><strong>3.- PERSONAL Y UNIDADES DESPACHADAS.</strong></p>
 
             @foreach ($formulario->estacionFormularioEmergencias as $estaciones)                      
@@ -254,7 +254,7 @@
                 @endif
                 @if ($formulario->tipoEmergencia->nombre=="FORESTAL")
                 @if ($formulario->tipoIncendioForestal && $formulario->etapaIncendioForestal)
-                <div >
+                <div style="width: 100%;height: 25%">
                 <p class="mt-1"><strong> 4.1. CONDICIONES CLIMÁTICAS</strong>
                     <br>
                     {{ $formulario->condicionClimatica }}
@@ -265,11 +265,8 @@
                 
                 @if ($formulario->puntoReferencia_id)
                 <p class="mt-1"><strong> El incendio forestal se desarrollo en el cantón Latacunga, Parroquia {{ $formulario->puntoReferencia->barrio->parroquia->nombre }}, Barrio {{ $formulario->puntoReferencia->barrio->nombre }}, Sector {{ $formulario->puntoReferencia->referencia }}. Latatitud y Longitud {{ $formulario->puntoReferencia->latitud .','.$formulario->puntoReferencia->longitud }}</strong></p>  
-                <p >
-
-                    <div id="map" >
+                <div id="map" >
                     </div>
-                </p>
                 @else
                     <div class="alert alert-danger" role="alert">
                         no existe punto de referencia
@@ -451,7 +448,6 @@
             </tr>
         </table>
 </div>
-
 <script>
         var map;
             var marker;
@@ -528,7 +524,10 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0Ko6qUa0EFuDWr77BpNJOdxD-QLstjBk&callback=initMap">
       </script>
       <style type="text/css">
-       
+          #map {
+              height: 60%;
+              width: 100%;
+          }
           #nuevaTabla {
             border-collapse: collapse;
             width: 100%;
@@ -543,39 +542,7 @@
             p{
                 font-size: 12px;  
             }
-            #map {
-                height: 350px;
-    max-width: 660px;
-    max-height: 350px;
-    object-fit: cover;
-  display: block; 
-    margin-left: auto;
-    margin-right: auto;
-    border: 3px solid #73AD21;
-}
       </style>
-<script src="{{ asset('admin/js/jquery.min.js') }}"></script>
-      
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js"></script>
 
-<script> 
-       
- 
-//Definimos el botón para escuchar su click, y también el contenedor del canvas
-const $boton = document.querySelector("#btnCapturar"), // El botón que desencadena
-  $objetivo = document.querySelector("#map"), // A qué le tomamos la foto
-  $ontenedorCanvas = document.querySelector("#contenedorCanvas"); // En dónde ponemos el elemento canvas
-
-// Agregar el listener al botón
-$boton.addEventListener("click", () => {
-    html2canvas( $objetivo, 
-    { 
-    useCORS: true,scale: 1,
-    onrendenetworking: function(canvas) {
-        $ontenedorCanvas.appendChild(canvas);
-         } 
-    }); 
-});
-
-            
-    </script> 
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>

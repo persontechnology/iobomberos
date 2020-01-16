@@ -34,7 +34,7 @@
             @if (count($personales))
                 <div class="card">
                     <div class="card-header">
-                        Listado de personal
+                        Listado de personal 123
                     </div>
                     <div class="card-body">
                         <div class="list-cards">  

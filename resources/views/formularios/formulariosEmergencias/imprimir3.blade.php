@@ -452,6 +452,12 @@
         </table>
 </div>
 
+    <button id="btnCapturar">Tomar captura</button>
+    <!--
+      En este elemento vamos a poner al canvas que será generado.
+    -->
+    <div id="contenedorCanvas" style="border: 1px solid red;">
+    </div>
 <script>
         var map;
             var marker;
