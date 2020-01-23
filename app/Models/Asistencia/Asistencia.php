@@ -44,7 +44,7 @@ class Asistencia extends Model
      public function asistenciaVehiculoActivos()
      {
          return $this->belongsToMany(Vehiculo::class, 'asistencia_vehiculos', 'asistencia_id', 'vehiculo_id')
-         
+            
          ->as('asistenciaVehiculo')
          ->withPivot(['id','estado','observacion']);
      }
@@ -97,6 +97,22 @@ class Asistencia extends Model
             $q->where('name','!=', 'Administrador');
 
         });
+        
     }
-     
+    public function asietenciaAsistenciaPersonalesEncargadoEstacion()
+    {
+        $usuarios= $this->belongsToMany(User::class, 'asistencia_personals', 'asistencia_id', 'user_id')
+        ->as('asistenciaPersonal')
+        ->withPivot(['id','estado','estadoEmergencia','observacion'])
+        ->wherePivot('estado',true)
+        ->wherePivot('estadoEmergencia','Disponible')
+        ->orderBy('name','asc')
+        ;
+        return $listado=$usuarios->whereHas('roles', function($q){
+            $q->where('name', 'Oficial de guardía')
+            ->orWhere('name', 'Clase de guardía');
+
+        });
+        
+    } 
 }

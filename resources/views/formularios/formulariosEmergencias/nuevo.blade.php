@@ -270,7 +270,7 @@
                                       Seleccione encargado de la estación {{$estacion_c->nombre}}
                                         <Select name="encargadoEstacion[]" id="representanteEstacion{{$estacion_c->nombre}}" name="representanteEstacion" data-live-search="true" class="form-control selectpicker" required>
                                             <option value=" ">--Seleccione Encargado de estacion-- </option>
-                                            @foreach ($estacion_c->asistenciaHoy->asietenciaAsistenciaPersonalesEncargado as $asistencialis)
+                                            @foreach ($estacion_c->asistenciaHoy->asietenciaAsistenciaPersonalesEncargadoEstacion as $asistencialis)
                                                 <option value="{{$estacion_c->id.'-'.$asistencialis->asistenciaPersonal->id}}">{{$asistencialis->name}}</option>
                                                 
                                             @endforeach

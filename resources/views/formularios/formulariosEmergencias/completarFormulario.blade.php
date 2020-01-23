@@ -67,7 +67,7 @@
             <div class="border">
                 Fecha: <strong>{{\Carbon\Carbon::parse($formu->fecha)->format('d/m/Y')  }}</strong>  Hora de aviso del incidente: <strong>{{ $formu->horaSalida }} </strong>
                 Hora de salida: <strong>{{ $formu->horaSalida }}</strong><br>
-                Hora de Arrivo del Incidente: <strong>
+                Hora de arribo del Incidente: <strong>
                     <input type="time" name="horaEntrada" id="horaEntrada" required value="{{ old('horaEntrada',$formu->horaEntrada)}}" class="form-control form-control-sm @error('horaEntrada') is-invalid @enderror" >
                     @error('horaEntrada')
                         <span class="invalid-feedback" role="alert">

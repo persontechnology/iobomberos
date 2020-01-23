@@ -169,4 +169,5 @@ class FormularioEmergencia extends Model
         
         ->where('estacion_id',$idEstacion)->first();
     }
+    
 }

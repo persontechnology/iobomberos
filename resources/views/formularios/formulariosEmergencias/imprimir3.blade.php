@@ -1,9 +1,27 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
 <div class="continer">
         <div class="card-header">
             <table  style="border-collapse: collapse; border: none; width: 100%">
                 <td class="noBorder">
-                        <img src="{{ asset('img/ecuador.png') }}" alt="" width="45px;" style="text-align: left;">
+                        <img src="{!! public_path('/img/ecuador.png') !!}" alt="" width="45px;" style="text-align: left;">
                 </td>
                 <td class="noBorder">
                     <h3 style="text-align: center;">
@@ -15,7 +33,7 @@
                 </td>
                 <td class="noBorder">
                     
-                    <img src="{{ asset('img/escudo.png') }}" alt="" width="45px;" style="text-align: right;">
+                    <img src="{!! public_path('img/escudo.png') !!}" alt="" width="45px;" style="text-align: right;">
                 </td>
             </table>
             <p style="text-align: right">Latacunga, {{ Carbon\Carbon::parse($formulario->fecha)->format('d-m-Y') }}</p>
@@ -265,11 +283,15 @@
                 
                 @if ($formulario->puntoReferencia_id)
                 <p class="mt-1"><strong> El incendio forestal se desarrollo en el cantón Latacunga, Parroquia {{ $formulario->puntoReferencia->barrio->parroquia->nombre }}, Barrio {{ $formulario->puntoReferencia->barrio->nombre }}, Sector {{ $formulario->puntoReferencia->referencia }}. Latatitud y Longitud {{ $formulario->puntoReferencia->latitud .','.$formulario->puntoReferencia->longitud }}</strong></p>  
-                <p >
+                @if ($formulario->foto)
+                <div style="aling-text:center">
 
-                    <div id="map" >
-                    </div>
-                </p>
+                    <img src="{{ public_path( $formulario->foto) }}" width="80%" height="300px" />
+                </div>
+                @endif
+
+                   
+                
                 @else
                     <div class="alert alert-danger" role="alert">
                         no existe punto de referencia
@@ -383,7 +405,7 @@
                                     <thead>                                        
                                 <tr>
                                 <th>
-                                    <img  width="100%" height="150px" src="{{ Storage::url($anexo->foto) }}" alt="">
+                                    <img  width="100%" height="150px" src="{{public_path('/storage/formularios/'.$anexo->foto) }}" alt="">
                                     Anexo {{ $i }} 
                                 </th>                   
                                 </tr>
@@ -394,7 +416,7 @@
                         <thead>                                        
                             <tr>
                                 <th>
-                                    <img  width="100%" height="150px" src="{{ Storage::url($anexo->foto) }}" alt="">
+                                    <img  width="100%" height="150px" src="{{public_path('/storage/formularios/'.$anexo->foto) }}" alt="">
                                     Anexo {{ $i }} 
                                 </th>                   
                             </tr>
@@ -452,87 +474,6 @@
         </table>
 </div>
 
-    <button id="btnCapturar">Tomar captura</button>
-    <!--
-      En este elemento vamos a poner al canvas que será generado.
-    -->
-    <div id="contenedorCanvas" style="border: 1px solid red;">
-    </div>
-<script>
-        var map;
-            var marker;
-        @if( $formulario->puntoReferencia_id )
-            function initMap() {
-                @if($formulario->estaciones->count()>0)
-                    @foreach($formulario->estaciones as $estacion)
-                        var directionsRenderer{{$estacion->id}} = new google.maps.DirectionsRenderer;
-                        var directionsService{{$estacion->id}} = new google.maps.DirectionsService;
-                    @endforeach
-                @endif
-                var myLatLng={lat: -0.7945178, lng: -78.62189341068114}
-                map = new google.maps.Map(document.getElementById('map'), {
-                  center: myLatLng,
-                 
-                  zoom: 15,
-                mapTypeId: 'satellite',
-                
-                   
-                });
-                
-                var imageEstacion="{{ asset('img/ESTACION1.png') }}";
-                var imagePuntos="{{ asset('img/puntos.png') }}";
-            
-                @if($formulario->estaciones->count()>0)
-                    @foreach($formulario->estaciones as $estacion)
-                    @if ($estacion->latitud&&$estacion->longitud)
-                         
-                            var latitu={{$estacion->latitud}};
-                            var longi={{$estacion->longitud}};
-                            var marker_{{$estacion->id}} = new google.maps.Marker({
-                                map: map,
-                                position:{lat:latitu , lng:longi } ,
-                                title:"{{$estacion->nombre}}",
-                                icon:imageEstacion,
-                            });
-                            
-                            var nombre="{{$estacion->nombre}}";
-                            var geocoder = new google.maps.Geocoder;
-                            var infowindow = new google.maps.InfoWindow;
-                            infowindow.setContent(nombre);
-                            var latitud={{$formulario->puntoReferencia->latitud}};
-                            var longitud={{$formulario->puntoReferencia->longitud}};
-                            infowindow.open(map, marker_{{$estacion->id}}); 
-    
-                            directionsRenderer{{$estacion->id}}.setMap(map);
-                            // des aki para ver 
-                            directionsService{{$estacion->id}}.route({
-                            origin: {lat: latitu, lng: longi},  // Haight.
-                            destination: {lat: latitud, lng:longitud},  // Ocean Beach.
-                            // Note that Javascript allows us to access the constant
-                            // using square brackets and a string value as its
-                            // "property."
-                            
-                            travelMode: 'DRIVING',
-                            }, function(response, status) {
-                            if (status == 'OK') {
-                                directionsRenderer{{$estacion->id}}.setDirections(response);
-                            } else {
-                                window.alert('Directions request failed due to ' + status);
-                            }
-                            });
-                          
-                        @endif
-                    @endforeach
-                @endif         
-            }
-        @endif
-    
-    
-            
-    </script>
-      <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0Ko6qUa0EFuDWr77BpNJOdxD-QLstjBk&callback=initMap">
-      </script>
       <style type="text/css">
        
           #nuevaTabla {
@@ -549,39 +490,5 @@
             p{
                 font-size: 12px;  
             }
-            #map {
-                height: 350px;
-    max-width: 660px;
-    max-height: 350px;
-    object-fit: cover;
-  display: block; 
-    margin-left: auto;
-    margin-right: auto;
-    border: 3px solid #73AD21;
-}
-      </style>
-<script src="{{ asset('admin/js/jquery.min.js') }}"></script>
-      
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js"></script>
-
-<script> 
-       
- 
-//Definimos el botón para escuchar su click, y también el contenedor del canvas
-const $boton = document.querySelector("#btnCapturar"), // El botón que desencadena
-  $objetivo = document.querySelector("#map"), // A qué le tomamos la foto
-  $ontenedorCanvas = document.querySelector("#contenedorCanvas"); // En dónde ponemos el elemento canvas
-
-// Agregar el listener al botón
-$boton.addEventListener("click", () => {
-    html2canvas( $objetivo, 
-    { 
-    useCORS: true,scale: 1,
-    onrendenetworking: function(canvas) {
-        $ontenedorCanvas.appendChild(canvas);
-         } 
-    }); 
-});
-
-            
-    </script> 
+        </style>
+</body>

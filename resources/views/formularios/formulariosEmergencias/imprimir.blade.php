@@ -1,6 +1,13 @@
+@extends('layouts.app',['title'=>'Reporte formulario'])
 
-<div class="continer">
+@section('breadcrumbs', Breadcrumbs::render('formularios'))
+
+
+@section('content')
+<div class="card">
+  
         <div class="card-header">
+            <a href="{{route('formulario-descargar',$formulario->id)}}" target="_blank" > descargar</a>
             <table  style="border-collapse: collapse; border: none; width: 100%">
                 <td class="noBorder">
                         <img src="{{ asset('img/ecuador.png') }}" alt="" width="45px;" style="text-align: left;">
@@ -28,6 +35,9 @@
             <h4 style="text-align: center"><strong>INFORME N° {{ $formulario->numero }} DEL EVENTO ADVERSO</strong></h4>
     
         </div>
+        
+     
+    <div class="card-body">
         <p><strong>1.- TIPO DE EMERGENCIA</strong><br>
             Emergencia: <strong>{{ $formulario->emergencia->nombre }}</strong><br>
             Tipo de Emergencia: <strong>{{ $formulario->tipoEmergencia_id?$formulario->tipoEmergencia->nombre:'No existe' }}</strong> </p>
@@ -125,7 +135,7 @@
                     </tbody>
                 </table>
         @endforeach
-    </div>
+   
         @can('comprobarContraIncendio', $formulario)
         <p><strong>4. CARACTERITICAS DEL INCENDIO</strong></p>
         @if ($formulario->tipoEmergencia_id)
@@ -265,11 +275,21 @@
                 
                 @if ($formulario->puntoReferencia_id)
                 <p class="mt-1"><strong> El incendio forestal se desarrollo en el cantón Latacunga, Parroquia {{ $formulario->puntoReferencia->barrio->parroquia->nombre }}, Barrio {{ $formulario->puntoReferencia->barrio->nombre }}, Sector {{ $formulario->puntoReferencia->referencia }}. Latatitud y Longitud {{ $formulario->puntoReferencia->latitud .','.$formulario->puntoReferencia->longitud }}</strong></p>  
-                <p >
+                {{--  actualizacion de imagen                     --}}
+                <button id="geeks" type="button" class="btn btn-primary "> Actualizar Imagen</button> 
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div id="map" >
+                            </div>
 
-                    <div id="map" >
+                        </div>
+                        <div class="col-sm-6">                             
+                            <div id="cargarImagen">
+                            </div> 
+                             
+                        </div>
                     </div>
-                </p>
+                
                 @else
                     <div class="alert alert-danger" role="alert">
                         no existe punto de referencia
@@ -383,7 +403,7 @@
                                     <thead>                                        
                                 <tr>
                                 <th>
-                                    <img  width="100%" height="150px" src="{{ Storage::url($anexo->foto) }}" alt="">
+                                    <img   class="img-fluid img-thumbnail" src="{{ Storage::url($anexo->foto) }}" alt="">
                                     Anexo {{ $i }} 
                                 </th>                   
                                 </tr>
@@ -404,55 +424,17 @@
                 @endforeach                 
             @endif           
         @endcan
-        <p><strong>Firmas</strong></p>
-        <table id="nuevaTabla">
-            <thead>
-                <tr>
-                    <th>Elaborado</th>
-                    <th>Elaborado</th>
-                    <th>Revisado</th>
-                </tr>
-            </thead>
-            <tr>
-                <th>    
-                    
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <strong>..................................</strong><br>
-                        {{$formulario->asitenciaEncardado->usuario->name??'XXXXXXXXXX'}}<br>
-                        <strong> OPERATIVO DEL CBL</strong>                        
-                
-                </th>
-                <th>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                        <strong>..................................</strong><br>
-                        <strong> CLASE DE GUARDIA DEL CBL</strong>
-                </th>
-                <th>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                        <strong>..................................</strong><br>
-                        @if ($oficial)
-                            {{ $oficial->name }}
-                        @else
-                            XXXXXXXXX
-                        @endif
-                        <br>
-                        <strong>OFICIAL (E) DE LA UNIDAD DE OPERACIONES </strong>
-                </th>
-            </tr>
-        </table>
+        <br>
+      
+        </div>
+    </div>
 </div>
+@push('linksCabeza')
+<script src= "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js">	</script>
+@endpush
 
-<script>
+@prepend('linksPie')
+    <script>
         var map;
             var marker;
         @if( $formulario->puntoReferencia_id )
@@ -465,10 +447,9 @@
                 @endif
                 var myLatLng={lat: -0.7945178, lng: -78.62189341068114}
                 map = new google.maps.Map(document.getElementById('map'), {
-                  center: myLatLng,
-                 
-                  zoom: 15,
-                mapTypeId: 'satellite',
+                  center: myLatLng,                 
+                  zoom: 12,
+                mapTypeId: 'hybrid',
                 
                    
                 });
@@ -527,9 +508,9 @@
       <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0Ko6qUa0EFuDWr77BpNJOdxD-QLstjBk&callback=initMap">
       </script>
-      <style type="text/css">
-       
-          #nuevaTabla {
+    <style>
+
+        #nuevaTabla {
             border-collapse: collapse;
             width: 100%;
             }
@@ -540,42 +521,29 @@
             .noBorder{
                 border: none; 
             }
-            p{
-                font-size: 12px;  
-            }
-            #map {
-                height: 350px;
-    max-width: 660px;
-    max-height: 350px;
-    object-fit: cover;
-  display: block; 
-    margin-left: auto;
-    margin-right: auto;
-    border: 3px solid #73AD21;
-}
-      </style>
-<script src="{{ asset('admin/js/jquery.min.js') }}"></script>
-      
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js"></script>
-
-<script> 
+          
+    #map {
+        height: 450px;
        
- 
-//Definimos el botón para escuchar su click, y también el contenedor del canvas
-const $boton = document.querySelector("#btnCapturar"), // El botón que desencadena
-  $objetivo = document.querySelector("#map"), // A qué le tomamos la foto
-  $ontenedorCanvas = document.querySelector("#contenedorCanvas"); // En dónde ponemos el elemento canvas
+        border: 3px solid #73AD21;
+    }
+</style>
+<script>
 
-// Agregar el listener al botón
-$boton.addEventListener("click", () => {
-    html2canvas( $objetivo, 
-    { 
-    useCORS: true,scale: 1,
-    onrendenetworking: function(canvas) {
-        $ontenedorCanvas.appendChild(canvas);
-         } 
-    }); 
-});
-
-            
-    </script> 
+    function cargarImagenJava() {
+              
+        $("#cargarImagen").load("{{ route('formulario-imagen-vista',$formulario->id) }}", function(responseTxt, statusTxt, xhr){
+          cargarGif();
+              if(statusTxt == "success"){
+                  $.unblockUI();
+              }              
+              if(statusTxt == "error"){
+                  $.unblockUI();
+                  notificar('error','NO se pudo cargar materiales del formulario');
+              }            
+        });
+      }
+      cargarImagenJava();
+</script>
+@endprepend
+@endsection

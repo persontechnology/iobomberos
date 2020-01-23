@@ -217,6 +217,9 @@ Route::middleware(['verified', 'auth'])->group(function () {
         
         //artualizar formulario
         Route::post('/formulario-actualizar', 'FormularioEmergencias@actualizarFormulario')->name('ActualizarFormulario');
+        Route::post('/formulario-imagen', 'FormularioEmergencias@guardarImagen')->name('formulario-imagen');
+        Route::get('/formulario-imagen-vista/{id}', 'FormularioEmergencias@Imagen')->name('formulario-imagen-vista');
+        Route::get('/formulario-descargar/{id}', 'FormularioEmergencias@descargarFormulario')->name('formulario-descargar');
 
         
 

@@ -35,6 +35,7 @@ use iobom\Models\FormularioEmergencia\VehiculoOperador;
 use iobom\Models\FormularioEmergencia\VehiculoOperativo;
 use iobom\Models\FormularioEmergencia\VehiculoParamedico;
 use iobom\Notifications\NoticarEncargadoNuevoFormulario;
+use PDF;
 
 class FormularioEmergencias extends Controller
 {
@@ -969,6 +970,38 @@ class FormularioEmergencias extends Controller
         $oficial= Role::where('name', 'Jefe de operaciones')->first()->users->first();
         $data = array('formulario' => $formulario,'oficial'=>$oficial);
         return view('formularios.formulariosEmergencias.imprimir',$data);
+    }
+    public function guardarImagen(Request $request)
+    {
+        $formulario=FormularioEmergencia::findOrFail($request->formulario);
+        $base64_image = $request->foto;
+        
+        if (preg_match('/^data:image\/(\w+);base64,/', $base64_image)) {
+            $data = substr($base64_image, strpos($base64_image, ',') + 1);
+            $data = base64_decode($data);
+            $nombreFoto=$formulario->id.'.jpg';
+            Storage::put("public/formularios/".$nombreFoto, $data);
+            $url = Storage::url("public/formularios/".$nombreFoto);
+            $formulario->foto=$url;
+            $formulario->save();
+            return response()->json(['ok'=>'ok']);
+        }
+        return response()->json(['ok'=>'error']);
+    }
+    public function Imagen($idFormulario)
+    {
+        $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $data = array('formulario' => $formulario);
+        return view('formularios.formulariosEmergencias.respaldo',$data);
+    }
+    public function descargarFormulario($idFormulario)
+    {
+        $formulario=FormularioEmergencia::findOrFail($idFormulario);
+        $oficial= Role::where('name', 'Jefe de operaciones')->first()->users->first();
+        $data = array('formulario' => $formulario,'oficial'=>$oficial);
+        $pdf = Pdf::loadView('formularios.formulariosEmergencias.imprimir3', $data);
+        return $pdf->inline();
+        //return $pdf->download('acta-'.$acta->>comunidad->nombre.'-'.$acta->poaCuentaContableMes->mes->mes.'.pdf');
     }
   
 }
