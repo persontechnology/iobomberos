@@ -284,7 +284,7 @@
                 @if ($formulario->puntoReferencia_id)
                 <p class="mt-1"><strong> El incendio forestal se desarrollo en el cantón Latacunga, Parroquia {{ $formulario->puntoReferencia->barrio->parroquia->nombre }}, Barrio {{ $formulario->puntoReferencia->barrio->nombre }}, Sector {{ $formulario->puntoReferencia->referencia }}. Latatitud y Longitud {{ $formulario->puntoReferencia->latitud .','.$formulario->puntoReferencia->longitud }}</strong></p>  
                 @if ($formulario->foto)
-                <div style="aling-text:center">
+                <div style="text-align: center">
 
                     <img src="{{ public_path( $formulario->foto) }}" width="80%" height="300px" />
                 </div>
@@ -405,7 +405,7 @@
                                     <thead>                                        
                                 <tr>
                                 <th>
-                                    <img  width="100%" height="150px" src="{{public_path('/storage/formularios/'.$anexo->foto) }}" alt="">
+                                    <img  width="100%" height="150px" src="{{ base_path() . '/storage/app/'.$anexo->foto }}" alt="">
                                     Anexo {{ $i }} 
                                 </th>                   
                                 </tr>
@@ -416,7 +416,7 @@
                         <thead>                                        
                             <tr>
                                 <th>
-                                    <img  width="100%" height="150px" src="{{public_path('/storage/formularios/'.$anexo->foto) }}" alt="">
+                                    <img  width="100%" height="150px" src="{{base_path() . '/storage/app/'.$anexo->foto}}" alt="">
                                     Anexo {{ $i }} 
                                 </th>                   
                             </tr>
@@ -426,18 +426,48 @@
                 @endforeach                 
             @endif           
         @endcan
-        <p><strong>Firmas</strong></p>
-        <table id="nuevaTabla">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h3><strong>Firmas</strong></h3>
+        <table id="nuevaTabla" style="border: none">
             <thead>
                 <tr>
-                    <th>Elaborado</th>
-                    <th>Elaborado</th>
-                    <th>Revisado</th>
+                    <th style="border: none">Elaborado</th>
+                    <th style="border: none">Elaborado</th>
+                    <th style="border: none">Revisado</th>
                 </tr>
             </thead>
             <tr>
-                <th>    
-                    
+                <th style="border: none">    
+                    <p>
                         <br>
                         <br>
                         <br>
@@ -445,30 +475,45 @@
                         <strong>..................................</strong><br>
                         {{$formulario->asitenciaEncardado->usuario->name??'XXXXXXXXXX'}}<br>
                         <strong> OPERATIVO DEL CBL</strong>                        
-                
+                    </p>
                 </th>
-                <th>
+                <th style="border: none">
+                   <p>
                     <br>
                     <br>
                     <br>
                     <br>
                     <br>
                         <strong>..................................</strong><br>
-                        <strong> CLASE DE GUARDIA DEL CBL</strong>
+                        @php
+                            $i=1;
+                        @endphp
+                        @foreach ($formulario->formularioUsuarioEstacion as $usuario)
+                            @if($i==1)
+                            {{ $usuario->name }}
+                            @endif
+                            @php
+                                $i++;
+                            @endphp
+                        @endforeach
+                        <br><strong> CLASE DE GUARDIA DEL CBL</strong>
+                    </p>
                 </th>
-                <th>
+                <th style="border: none">
+                    <p>
                     <br>
                     <br>
                     <br>
                     <br>
                         <strong>..................................</strong><br>
                         @if ($oficial)
-                            {{ $oficial->name }}
+                        {{ $oficial->name }}
                         @else
                             XXXXXXXXX
                         @endif
                         <br>
                         <strong>OFICIAL (E) DE LA UNIDAD DE OPERACIONES </strong>
+                    </p>
                 </th>
             </tr>
         </table>
@@ -488,7 +533,7 @@
                 border: none; 
             }
             p{
-                font-size: 12px;  
+                font-size: 14px;  
             }
         </style>
 </body>

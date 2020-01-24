@@ -596,11 +596,12 @@ class FormularioEmergencias extends Controller
                     
                     if ($imagen->isValid()) {
                         $anexos=new Anexo();
+                        $anexos->formularioEmergencia_id=$formulario->id;
+                        $anexos->save();
                         $extension =$imagen->extension();
                         $path = Storage::putFileAs(
-                            'public/anexos', $imagen,$diaHoy->format('Y/m/d H:i:s').$i.'_'.$formulario->id.'.'.$extension
+                            'public/anexos', $imagen,$anexos->id.'.'.$extension
                         );
-                        $anexos->formularioEmergencia_id=$formulario->id;
                         $anexos->foto=$path;
                         $anexos->save();
                     }

@@ -169,5 +169,12 @@ class FormularioEmergencia extends Model
         
         ->where('estacion_id',$idEstacion)->first();
     }
+
+    // A:fabian 
+    // D:un formualrio tiene vehiculo
+    public function formularioUsuarioEstacion()
+    {
+        return $this->belongsToMany(User::class, 'estacion_formulario_emergencias', 'formularioEmergencia_id', 'user_id');
+    }
     
 }
