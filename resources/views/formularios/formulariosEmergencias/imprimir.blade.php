@@ -7,7 +7,7 @@
 <div class="card">
   
         <div class="card-header">
-            <a href="{{route('formulario-descargar',$formulario->id)}}" target="_blank" > descargar</a>
+            <a href="{{route('formulario-descargar',$formulario->id)}}" class="btn btn-primary" target="_blank" > Descargar Formulario</a>
             <table  style="border-collapse: collapse; border: none; width: 100%">
                 <td class="noBorder">
                         <img src="{{ asset('img/ecuador.png') }}" alt="" width="45px;" style="text-align: left;">
