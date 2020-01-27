@@ -180,7 +180,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
     });
 
     Route::get('/generar-estaditica', 'Reportes@estadisticas')->name('generarEstadisticas');
-
+    Route::get('/buscar-reporte', 'Reportes@resporteMes')->name('buscarReporte');   
 
     Route::namespace('Asistencias')->group(function () {
         //insumos
@@ -263,6 +263,8 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/formulario-imagen', 'FormularioEmergencias@guardarImagen')->name('formulario-imagen');
         Route::get('/formulario-imagen-vistas/{id}', 'FormularioEmergencias@imagenFormulario')->name('formularioImagenVista');
         Route::get('/formulario-descargar/{id}', 'FormularioEmergencias@descargarFormulario')->name('formulario-descargar');
+        //buscar reporte
+        
 
         
     });

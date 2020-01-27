@@ -4,6 +4,7 @@ namespace iobom\Http\Controllers;
 
 use Illuminate\Http\Request;
 use iobom\Models\Emergencia\Emergencia;
+use iobom\Models\FormularioEmergencia;
 
 class Reportes extends Controller
 {
@@ -18,5 +19,16 @@ class Reportes extends Controller
         // }
         $data = array('emergencias' =>$emergencia , );
         return view('reportes.estadisticas',$data);
+    }
+    public function resporteMes(Request $request)
+    {
+
+        $bucarFormularios=FormularioEmergencia::whereYear('fecha',date('Y',strtotime($request->fecha)))
+        ->whereMonth('fecha',date('m',strtotime($request->fecha)))
+        ->orderBy('fecha','asc')->get();
+        $data = array('formularios' =>$bucarFormularios ,'fecha'=>$request->fecha );
+        return view('reportes.reporte',$data);
+        
+        
     }
 }
