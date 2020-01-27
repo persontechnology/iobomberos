@@ -985,11 +985,11 @@ class FormularioEmergencias extends Controller
             $url = Storage::url("public/formularios/".$nombreFoto);
             $formulario->foto=$url;
             $formulario->save();
-            return response()->json(['ok'=>'ok']);
+            
         }
-        return response()->json(['ok'=>'error']);
+        return response()->json(['ok'=>'ok']);
     }
-    public function Imagen($idFormulario)
+    public function imagenFormulario($idFormulario)
     {
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
         $data = array('formulario' => $formulario);

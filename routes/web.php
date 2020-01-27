@@ -179,6 +179,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         
     });
 
+    Route::get('/generar-estaditica', 'Reportes@estadisticas')->name('generarEstadisticas');
 
 
     Route::namespace('Asistencias')->group(function () {
@@ -217,10 +218,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         
         //artualizar formulario
         Route::post('/formulario-actualizar', 'FormularioEmergencias@actualizarFormulario')->name('ActualizarFormulario');
-        Route::post('/formulario-imagen', 'FormularioEmergencias@guardarImagen')->name('formulario-imagen');
-        Route::get('/formulario-imagen-vista/{id}', 'FormularioEmergencias@Imagen')->name('formulario-imagen-vista');
-        Route::get('/formulario-descargar/{id}', 'FormularioEmergencias@descargarFormulario')->name('formulario-descargar');
-
+       
         
 
         Route::get('/informacion-formulario/{id}','FormularioEmergencias@informacionFormulario' )->name('informacion-formulario');
@@ -262,6 +260,9 @@ Route::middleware(['verified', 'auth'])->group(function () {
         
         //imprimir formulario
         Route::get('/imprimir-formularios/{id}','FormularioEmergencias@imprimirFormulario' )->name('imprimir-formulario');
+        Route::post('/formulario-imagen', 'FormularioEmergencias@guardarImagen')->name('formulario-imagen');
+        Route::get('/formulario-imagen-vistas/{id}', 'FormularioEmergencias@imagenFormulario')->name('formularioImagenVista');
+        Route::get('/formulario-descargar/{id}', 'FormularioEmergencias@descargarFormulario')->name('formulario-descargar');
 
         
     });

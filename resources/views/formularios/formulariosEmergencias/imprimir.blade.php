@@ -275,8 +275,7 @@
                 
                 @if ($formulario->puntoReferencia_id)
                 <p class="mt-1"><strong> El incendio forestal se desarrollo en el cantón Latacunga, Parroquia {{ $formulario->puntoReferencia->barrio->parroquia->nombre }}, Barrio {{ $formulario->puntoReferencia->barrio->nombre }}, Sector {{ $formulario->puntoReferencia->referencia }}. Latatitud y Longitud {{ $formulario->puntoReferencia->latitud .','.$formulario->puntoReferencia->longitud }}</strong></p>  
-                {{--  actualizacion de imagen                     --}}
-                <button id="geeks" type="button" class="btn btn-primary "> Actualizar Imagen</button> 
+                <button onclick="cambiarImagen()" class="btn btn-primary "> Actualizar Imagen</button> <br>
                     <div class="row">
                         <div class="col-sm-6">
                             <div id="map" >
@@ -284,12 +283,13 @@
 
                         </div>
                         <div class="col-sm-6">                             
-                            <div id="cargarImagen">
+                           
+                            <div id="cargarimagen">
+                                        
                             </div> 
                              
                         </div>
                     </div>
-                
                 @else
                     <div class="alert alert-danger" role="alert">
                         no existe punto de referencia
@@ -434,7 +434,8 @@
 @endpush
 
 @prepend('linksPie')
-    <script>
+    
+<script>
         var map;
             var marker;
         @if( $formulario->puntoReferencia_id )
@@ -503,11 +504,49 @@
         @endif
     
     
-            
+        
     </script>
       <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0Ko6qUa0EFuDWr77BpNJOdxD-QLstjBk&callback=initMap">
       </script>
+
+      <script>
+        function cambiarImagen() { 
+            cargarGif();
+            html2canvas($("#map"), { 
+                useCORS: true,
+                onrendered: function(canvas) {             
+                    var dataURL = canvas.toDataURL();         
+                    $.ajax({
+                        method: "POST",
+                        url: "{{ route('formulario-imagen') }}",
+                        data: {  formulario: "{{ $formulario->id }}",foto:dataURL }
+                      })
+                        .done(function( msg ) {
+                            notificar("success","imagen actualizada exitosamente");
+                            location.replace("{{ route('imprimir-formulario',$formulario->id) }}");
+                   });        
+                    
+                } 
+            }); 
+        }
+      </script>
+      <script>
+        function cargarMateriales1() {
+              
+            $("#cargarimagen").load("{{ route('formularioImagenVista',$formulario->id) }}", function(responseTxt, statusTxt, xhr){
+              cargarGif();
+                  if(statusTxt == "success"){
+                      $.unblockUI();
+                  }              
+                  if(statusTxt == "error"){
+                      $.unblockUI();
+                      notificar('error','NO se pudo cargar materiales del formulario');
+                  }            
+            });
+          }
+            cargarMateriales1();
+        </script>
     <style>
 
         #nuevaTabla {
@@ -528,22 +567,6 @@
         border: 3px solid #73AD21;
     }
 </style>
-<script>
 
-    function cargarImagenJava() {
-              
-        $("#cargarImagen").load("{{ route('formulario-imagen-vista',$formulario->id) }}", function(responseTxt, statusTxt, xhr){
-          cargarGif();
-              if(statusTxt == "success"){
-                  $.unblockUI();
-              }              
-              if(statusTxt == "error"){
-                  $.unblockUI();
-                  notificar('error','NO se pudo cargar materiales del formulario');
-              }            
-        });
-      }
-      cargarImagenJava();
-</script>
 @endprepend
 @endsection
