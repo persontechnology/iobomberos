@@ -24,9 +24,21 @@ class Emergencia extends Model
     {
        return $this->tipos();
     }
-    public function formularios()
+    public function formulariosEstadisticas($id,$fecha,$mes)
     {
-        $fecha="2020-01";
-        return $this->hasMany(FormularioEmergencia::class,'emergencia_id');
+        $anio=date('Y',strtotime($fecha));
+       return $formulario=FormularioEmergencia::where('emergencia_id',$id)
+        ->whereYear('fecha',$anio)
+        ->whereMonth('fecha',$mes)->count();
+
+        
+    }
+    public function formularioPastel($id,$fecha)
+    {
+        $anio=date('Y',strtotime($fecha));
+        $formularios=FormularioEmergencia::whereYear('fecha',$anio)->count();
+        $misformularios=FormularioEmergencia::where('emergencia_id',$id)
+        ->whereYear('fecha',$anio)->count();
+        return $operacion=number_format((($misformularios*$formularios)/100),2);
     }
 }

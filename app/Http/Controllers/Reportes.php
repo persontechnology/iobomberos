@@ -10,16 +10,12 @@ use PDF;
 
 class Reportes extends Controller
 {
-    public function estadisticas()
+    public function estadisticas(Request $request)
     {
-        $fecha="2020-01";
-        $emergencia=Emergencia::get();
         
-        // foreach ($emergencia as $emergencia) {
-        //     echo $emergencia->formularios ."</br>";
-
-        // }
-        $data = array('emergencias' =>$emergencia , );
+        $emergencia=Emergencia::get();       
+      
+        $data = array('emergencias' =>$emergencia ,'fecha'=>$request->fecha );
         return view('reportes.estadisticas',$data);
     }
     public function resporteMes(Request $request)

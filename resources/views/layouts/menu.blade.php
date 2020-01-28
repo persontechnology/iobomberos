@@ -168,9 +168,9 @@
                             </li> 
                             
                             
-                                {{--  <li class="nav-item">
-                                    <a href="{{ route('nuevo-formulario') }}" class="nav-link" id="menuNuevoFormularios">Nuevo Formulario</a>
-                                </li>       --}}
+                                <li class="nav-item">
+                                    <a href="{{ route('generarEstadisticas') }}" class="nav-link" id="menuEstadisticas">Estadísticas</a>
+                                </li>     
                            
                             
                         </ul>
