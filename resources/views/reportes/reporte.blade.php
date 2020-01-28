@@ -22,9 +22,14 @@
         </div>
     </div>
     <div class="card-body">
+        <h4 class="text-center"><strong> CUERPO DE BOMBEROS DE LATACUNGA </strong></h4>
         @if ($formularios->count()>0)
         <h4>Reporte de emergencias del Año <strong>{{date('Y',strtotime($fecha))}}</strong> del Mes <strong>{{date('m',strtotime($fecha))}}</strong></h4>
-            <div class="table-responsive">
+        <a href="{{ route('exportarReporte',$fecha) }}" target="_blanck" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Exportar Reporte">
+            <i class="far fa-file-pdf"></i>
+            Exportar PDF
+        </a>    
+        <div class="table-responsive">
                 <table class="" style="width: 100%">
                     <thead>
                         <tr >

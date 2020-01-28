@@ -180,8 +180,11 @@ Route::middleware(['verified', 'auth'])->group(function () {
     });
 
     Route::get('/generar-estaditica', 'Reportes@estadisticas')->name('generarEstadisticas');
-    Route::get('/buscar-reporte', 'Reportes@resporteMes')->name('buscarReporte');   
+    Route::get('/buscar-reporte', 'Reportes@resporteMes')->name('buscarReporte');
+    Route::get('/exportar-reporte/{fecha}', 'Reportes@exportarReporte')->name('exportarReporte');   
+    Route::get('/header-reporte', 'Reportes@headrePdf')->name('headerReporte');   
 
+    
     Route::namespace('Asistencias')->group(function () {
         //insumos
         Route::get('/generar-asistencia', 'Asistencias@index')->name('generarAsistencia');
