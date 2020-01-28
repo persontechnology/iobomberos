@@ -109,9 +109,10 @@
 
 @prepend('linksPie')
 
-<script>
-   
-    </script>
+<script type="text/javascript">
+    $('#menuEstadisticas').addClass('nav-item-expanded nav-item-open');
+     $('#menuReportes').addClass('active');
+</script>
     <style>
         table {
           border-collapse: collapse;

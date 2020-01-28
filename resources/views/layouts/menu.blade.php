@@ -155,6 +155,26 @@
                     </a>
                 </li>
                 @role('Administrador')
+                       {{-- generar formulario de emergencia --}}
+                       <li class="nav-item nav-item-submenu" id="menuEstadisticas">
+                        <a href="#" class="nav-link">
+                            <i class="icon-file-presentation2"></i>
+                            <span>Reportes y Estadisticas</span>
+                        </a>
+                        <ul class="nav nav-group-sub" data-submenu-title="Peportes">
+                        
+                            <li class="nav-item">
+                                <a href="{{ route('buscarReporte') }}" class="nav-link" id="menuReportes">Reportes</a>
+                            </li> 
+                            
+                            
+                                {{--  <li class="nav-item">
+                                    <a href="{{ route('nuevo-formulario') }}" class="nav-link" id="menuNuevoFormularios">Nuevo Formulario</a>
+                                </li>       --}}
+                           
+                            
+                        </ul>
+                    </li>
                 <li class="nav-item-header">
                     <div class="text-uppercase font-size-xs line-height-xs">SISTEMA</div> 
                     <i class="icon-menu" title="Sistemas"></i>

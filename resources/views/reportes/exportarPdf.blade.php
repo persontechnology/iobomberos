@@ -44,7 +44,24 @@
     </style>
 </head>
 <body>
-    <h4 class="text-center"><strong> CUERPO DE BOMBEROS DE LATACUNGA </strong></h4>
+    
+    <table  style="border-collapse: collapse; border: none; width: 100%">
+        <td class="noBorder">
+                <img src="{!! public_path('/img/ecuador.png') !!}" alt="" width="65px;" style="text-align: left;">
+        </td>
+        <td class="noBorder">
+            <h3 style="text-align: center;">
+                <strong>
+                CUERPO DE BOMBEROS DE LATACUNGA <br> 
+                REPORTE DE EMERGENCIAS DEL  MES  DE {{$mes}} AÑO <strong>{{date('Y',strtotime($fecha))}}</strong>           
+                </strong>
+            </h3>
+        </td>
+        <td class="noBorder">
+            
+            <img src="{!! public_path('img/escudo.png') !!}" alt="" width="65px;" style="text-align: right;">
+        </td>
+    </table>
         @if ($formularios->count()>0)
         
         <div >
@@ -113,7 +130,9 @@
                         </td>
                     </tr>
                     @endforeach
+                    
                 </tbody>
+             
             </table>
         </div>
         @else

@@ -2,6 +2,7 @@
 
 namespace iobom\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use iobom\Models\Emergencia\Emergencia;
 use iobom\Models\FormularioEmergencia;
@@ -37,18 +38,21 @@ class Reportes extends Controller
         $bucarFormularios=FormularioEmergencia::whereYear('fecha',date('Y',strtotime($fecha)))
         ->whereMonth('fecha',date('m',strtotime($fecha)))
         ->orderBy('fecha','asc')->get();
-        $data = array('formularios' =>$bucarFormularios ,'fecha'=>$fecha );
+        $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+        $fecha1 = Carbon::parse($fecha);
+        $mes = $meses[($fecha1->format('n')) - 1];
+        $data = array('formularios' =>$bucarFormularios ,'fecha'=>$fecha,'mes'=>$mes );
 
         $pdf = Pdf::loadView('reportes.exportarPdf', $data)
         ->setOrientation('landscape')
         ->setPaper('a4')
-        ->setOption('margin-top', '25')
-        ->setOption('margin-bottom', '30mm')
+        ->setOption('margin-top', '15')
+        ->setOption('margin-bottom', '15')
         ->setOption('margin-left', '15mm')
-        
+
         ->setOption('margin-right', '15mm');
  
-        return $pdf->inline();
+        return $pdf->inline('Reporte-'.$mes.'.pdf');
     }
     public function headrePdf()
     {
