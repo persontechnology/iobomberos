@@ -159,7 +159,7 @@
                        <li class="nav-item nav-item-submenu" id="menuEstadisticas">
                         <a href="#" class="nav-link">
                             <i class="icon-file-presentation2"></i>
-                            <span>Reportes y Estadisticas</span>
+                            <span>Reportes y Estadísticas</span>
                         </a>
                         <ul class="nav nav-group-sub" data-submenu-title="Peportes">
                         
