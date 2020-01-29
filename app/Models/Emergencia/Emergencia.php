@@ -37,8 +37,12 @@ class Emergencia extends Model
     {
         $anio=date('Y',strtotime($fecha));
          $formularios=FormularioEmergencia::whereYear('fecha',$anio)->count();
-         $misformularios=FormularioEmergencia::where('emergencia_id',$id)
+          $misformularios=FormularioEmergencia::where('emergencia_id',$id)
         ->whereYear('fecha',$anio)->count();
-        return $operacion=number_format((($misformularios*100)/$formularios),1);
+        if($formularios>0){
+            return $operacion=number_format((($misformularios*100)/$formularios),2);
+        }else{
+            return 0;
+        }
     }
 }
