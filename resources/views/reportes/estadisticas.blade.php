@@ -25,8 +25,8 @@
     <div class="card-body">
         @if ($fecha)
             
-            <div class="row">
-                <div class="col-sm-12">
+            <div class="card">
+                    
                     {{--  <canvas id="myChart" height="100"></canvas>  --}}
                     <figure class="highcharts-figure">
                         <div id="containerLinea"></div>
@@ -34,15 +34,13 @@
                     </figure>
                     
                 </div>
-                <div class="col-sm-12">
+                <div class="card">
                     <figure class="highcharts-figure">
                         <div id="containerBar"></div>
                         
                     </figure>
-                </div>   
-
-
-            </div>
+                </div> 
+          
         @else
         <div class="alert alert-danger" role="alert">
             No se existen datos
@@ -50,26 +48,40 @@
             
         @endif
     </div>
+    
 </div>
 @push('linksCabeza')
 {{--  datatable  --}}
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/data.js"></script>
-<script src="https://code.highcharts.com/modules/drilldown.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
+<script src="{{ asset('admin/plus/highcharts/highcharts.js') }}"></script>
+<script src="{{ asset('admin/plus/highcharts/data.js') }}"></script>
+<script src="{{ asset('admin/plus/highcharts/drilldown.js') }}"></script>
+<script src="{{ asset('admin/plus/highcharts/exporting.js') }}"></script>
+<script src="{{ asset('admin/plus/highcharts/export-data.js') }}"></script>
+<script src="{{ asset('admin/plus/highcharts/accessibility.js') }}"></script>
 @endpush
 
 @prepend('linksPie')
 <script>
-
+var languaje={
+    downloadCSV:"Descargar CSV",
+    
+    downloadJPEG:"Descargar imagen JPEG",
+    downloadPDF:"Descargar documento PDF",
+    downloadPNG:"Descargar imagen PNG ",
+    downloadSVG:"Descargar imagen vectorial SVG",
+    downloadXLS:"Descargar XLS",
+    loading:"Cargando...",
+    printChart:"Imprimir",
+    viewFullscreen:"Expander",
+    viewAsDataTableButtonText:"Ver tabla"
+};
 $('#menuEstadisticas').addClass('nav-item-expanded nav-item-open');
 $('#menuEstadisticas').addClass('active');
 Highcharts.chart('containerLinea', {
     chart: {
-        type: 'column'
+        type: 'column',
+        downloadXLS:false,
     },
     title: {
         text: 'Total Emergencias'
@@ -81,6 +93,7 @@ Highcharts.chart('containerLinea', {
         categories: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Séptiembre', 'Octubre', 'Noviembre', 'Diciembre'],
         crosshair: true
     },
+    lang:languaje,
     yAxis: {
         min: 0,
         title: {
@@ -98,7 +111,10 @@ Highcharts.chart('containerLinea', {
     plotOptions: {
         column: {
             pointPadding: 0.2,
-            borderWidth: 0
+            borderWidth: 0,
+            dataLabels: {
+                enabled: true
+            },
         }
     },
     series: [
@@ -135,7 +151,7 @@ Highcharts.chart('containerBar', {
         type: 'pie'
     },
     title: {
-        text: 'Browser market shares in January, 2018'
+        text: 'Porcentajes de emergencias del año {{date('Y',strtotime($fecha))}}'
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -155,6 +171,7 @@ Highcharts.chart('containerBar', {
             }
         }
     },
+    lang:languaje,
     series: [{
         name: 'Brands',
         colorByPoint: true,
@@ -171,58 +188,7 @@ Highcharts.chart('containerBar', {
     }]
 });
 </script>
-<script>
-    {{--  var colors = ['#007bff','#28a745','#333333','#3F51B5','#dc3545','#6c757d'];
-    var bacColor= ['#29B0D0','#2A516E','#F07124','#CBE0E3','#979193'];
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Séptiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            @php
-                $i=0;
-            @endphp
-            datasets: [
-                @foreach ($emergencias as $emergencia)
-                {
-                    label:'{{$emergencia->nombre}}',
-                    data: [
-                            {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,1) }},
-                            {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,2) }},
-                            {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,3) }},
-                            {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,4) }},
-                            {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,5) }},
-                            {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,6) }},
-                            {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,7) }},
-                            {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,8) }},
-                            {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,9) }},
-                            {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,10) }},
-                            {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,11) }},
-                            {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,12) }},
-                            
-                        ],
-                    backgroundColor: bacColor[{{ $i }}],
-                    borderColor: colors[{{ $i }}],
-                    borderWidth: 2,
-                    pointBackgroundColor: colors[0]
-                },
-                @php
-                    $i++;
-                @endphp
-                @endforeach
-            ]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });  --}}
-    </script>
+
 @endprepend
 
 

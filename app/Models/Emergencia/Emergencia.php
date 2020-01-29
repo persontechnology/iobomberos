@@ -36,9 +36,9 @@ class Emergencia extends Model
     public function formularioPastel($id,$fecha)
     {
         $anio=date('Y',strtotime($fecha));
-        $formularios=FormularioEmergencia::whereYear('fecha',$anio)->count();
-        $misformularios=FormularioEmergencia::where('emergencia_id',$id)
+         $formularios=FormularioEmergencia::whereYear('fecha',$anio)->count();
+         $misformularios=FormularioEmergencia::where('emergencia_id',$id)
         ->whereYear('fecha',$anio)->count();
-        return $operacion=number_format((($misformularios*$formularios)/100),2);
+        return $operacion=number_format((($misformularios*100)/$formularios),1);
     }
 }
