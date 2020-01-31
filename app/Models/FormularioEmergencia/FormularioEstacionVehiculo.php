@@ -13,6 +13,10 @@ class FormularioEstacionVehiculo extends Model
     {
         return $this->belongsTo(AsistenciaVehiculo::class,'asistenciaVehiculo_id');
     }
+    public function estacionFormulario()
+    {
+        return $this->belongsTo(EstacionFormularioEmergencia::class,'estacionForEmergencias_id');
+    }
     public function vehiculoOperador()
     {
         return $this->hasOne(VehiculoOperador::class,'estacionForVehiculo_id');

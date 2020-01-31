@@ -33,6 +33,17 @@ class Emergencia extends Model
 
         
     }
+    public function formulariosEstadisticasMas($id,$fecha,$mes)
+    {
+        $anio=date('Y',strtotime($fecha));
+        $tipo=TipoEmergencia::where('emergencia_id',id);
+       return $formulario=FormularioEmergencia::where('emergencia_id',$id)
+        ->whereYear('fecha',$anio)
+        ->whereMonth('fecha',$mes)->count();
+
+        
+    }
+
     public function formularioPastel($id,$fecha)
     {
         $anio=date('Y',strtotime($fecha));

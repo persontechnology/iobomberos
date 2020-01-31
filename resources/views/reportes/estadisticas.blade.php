@@ -78,6 +78,92 @@ var languaje={
 };
 $('#menuEstadisticas').addClass('nav-item-expanded nav-item-open');
 $('#menuEstadisticas').addClass('active');
+// Create the chart
+{{-- var categorias= ['null','Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Séptiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+Highcharts.chart('containerLinea', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Browser market shares. January, 2018'
+    },
+    subtitle: {
+        text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
+    },
+    accessibility: {
+        announceNewData: {
+            enabled: true
+        }
+    },
+    xAxis: {
+        type: 'category'
+    },
+    yAxis: {
+        title: {
+            text: 'Total percent market share'
+        }
+
+    },
+    legend: {
+        enabled: false
+    },
+    plotOptions: {
+        series: {
+            borderWidth: 0,
+            dataLabels: {
+                enabled: true,
+                format: '{point.y:.1f}%'
+            }
+        }
+    },
+
+    tooltip: {
+        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+    },
+
+    series: [
+        
+        @foreach ($emergencias as $emergencia)
+            {
+            name: '{{$emergencia->nombre}}',
+            colorByPoint: true,
+            data: [
+                
+                @for ($i = 1; $i < 13; $i++)
+                    {
+                       name:categorias[{{ $i }}],
+                        y: {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,$i) }},
+                        drilldown: "{{$emergencia->id}}-{{$emergencia->nombre}}-{{$i}}"
+                    },
+                @endfor
+                
+            ]
+        },
+        @endforeach
+    ],
+    drilldown: {
+        series: [
+            @foreach ($emergencias as $emergencia)
+            @for ($i = 1; $i < 13; $i++)
+            {
+                name: "{{$emergencia->nombre}}",
+                id: "{{$emergencia->id}}-{{$emergencia->nombre}}-{{$i}}",
+                data: [
+                    
+                    [
+                        "{{$i}}",
+                        {{ $i }}
+                    ],
+                    
+                ]
+            },
+            @endfor
+            @endforeach
+            
+        ]
+    }
+}); --}}
 Highcharts.chart('containerLinea', {
     chart: {
         type: 'column',

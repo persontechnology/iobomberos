@@ -274,3 +274,11 @@ Route::middleware(['verified', 'auth'])->group(function () {
        
 
 });
+
+Route::namespace('Movil')->group(function () {
+    // login
+    Route::get('/login-app/{email}/{password}', 'Consultas@login')->name('loginApp');
+    Route::get('/consulta-usuario/{id}', 'Consultas@consultaFormularios')->name('consulta-usuario');
+    Route::get('/consulta-formularios/{id}', 'Consultas@consultaMisFormularios')->name('consulta-formularios');
+
+});

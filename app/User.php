@@ -92,4 +92,13 @@ class User extends Authenticatable
         return $this->hasMany(AsistenciaPersonal::class,'user_id');
     }
 
+    public function asistenciaConsultas()
+    {
+        $diaHoy=Carbon::now()->addDays(1);
+        $fechaMenor=$diaHoy->setDateTime($diaHoy->year,$diaHoy->month,$diaHoy->day,7,30,0,0)->toDateTimeString();
+        return $this->belongsToMany(Asistencia::class, 'asistencia_personals', 'user_id', 'asistencia_id')
+        ->withPivot(['id','estado'])
+        ->wherePivot('estado',true)
+        ->where('fecha',Carbon::now()->toDateString())->where('fechaFin','<=',$fechaMenor);
+    }
 }
