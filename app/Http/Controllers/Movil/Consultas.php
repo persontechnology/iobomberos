@@ -3,6 +3,7 @@
 namespace iobom\Http\Controllers\Movil;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use iobom\Http\Controllers\Controller;
 use iobom\Models\Asistencia\AsistenciaPersonal;
 use iobom\Models\FormularioEmergencia;
