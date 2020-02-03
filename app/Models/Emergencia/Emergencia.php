@@ -24,22 +24,42 @@ class Emergencia extends Model
     {
        return $this->tipos();
     }
-    public function formulariosEstadisticas($id,$fecha,$mes)
+    public function formulariosEstadisticasAnio($id,$fecha,$mes)
     {
         $anio=date('Y',strtotime($fecha));
-       return $formulario=FormularioEmergencia::where('emergencia_id',$id)
+  
+        $formulario=FormularioEmergencia::where('emergencia_id',$id)
         ->whereYear('fecha',$anio)
-        ->whereMonth('fecha',$mes)->count();
+        ->whereMonth('fecha',$mes)
+        ->where('estado','Finalizado')
+        ->count();
+        return $formulario;
 
         
     }
-    public function formulariosEstadisticasMas($id,$fecha,$mes)
+    public function formulariosEstadisticas($id,$fecha)
     {
         $anio=date('Y',strtotime($fecha));
-        $tipo=TipoEmergencia::where('emergencia_id',id);
+        $mes=date('n',strtotime($fecha));
+        $formulario=FormularioEmergencia::where('emergencia_id',$id)
+        ->whereYear('fecha',$anio)
+        ->whereMonth('fecha',$mes)
+        ->where('estado','Finalizado')
+        ->count();
+        return $formulario;
+
+        
+    }
+    public function formulariosEstadisticasMas($id,$fecha)
+    {
+        $anio=date('Y',strtotime($fecha));
+        $mes=date('n',strtotime($fecha));
+        
        return $formulario=FormularioEmergencia::where('emergencia_id',$id)
         ->whereYear('fecha',$anio)
-        ->whereMonth('fecha',$mes)->count();
+        ->whereMonth('fecha',$mes)
+        ->where('estado','Finalizado ')
+        ->count();
 
         
     }
@@ -47,9 +67,33 @@ class Emergencia extends Model
     public function formularioPastel($id,$fecha)
     {
         $anio=date('Y',strtotime($fecha));
-         $formularios=FormularioEmergencia::whereYear('fecha',$anio)->count();
+         $formularios=FormularioEmergencia::whereYear('fecha',$anio)
+         ->where('estado','Finalizado')
+         ->count();
           $misformularios=FormularioEmergencia::where('emergencia_id',$id)
-        ->whereYear('fecha',$anio)->count();
+        ->whereYear('fecha',$anio)
+        ->where('estado','Finalizado')
+        ->count();
+        if($formularios>0){
+            return $operacion=number_format((($misformularios*100)/$formularios),2);
+        }else{
+            return 0;
+        }
+    }
+
+    public function formularioPastelMes($id,$fecha)
+    {
+        $anio=date('Y',strtotime($fecha));
+        $mes=date('n',strtotime($fecha));
+         $formularios=FormularioEmergencia::whereYear('fecha',$anio)
+         ->where('estado','Finalizado')
+         ->whereMonth('fecha',$mes)
+         ->count();
+          $misformularios=FormularioEmergencia::where('emergencia_id',$id)
+        ->whereYear('fecha',$anio)
+        ->whereMonth('fecha',$mes)
+        ->where('estado','Finalizado')
+        ->count();
         if($formularios>0){
             return $operacion=number_format((($misformularios*100)/$formularios),2);
         }else{

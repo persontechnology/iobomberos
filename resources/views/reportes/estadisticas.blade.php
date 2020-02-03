@@ -26,7 +26,13 @@
         @if ($fecha)
             
             <div class="card">
+                <figure class="highcharts-figure">
+                    <div id="containerLineaAnio"></div>
                     
+                </figure>
+                
+            </div>
+                <div class="card"> 
                     {{--  <canvas id="myChart" height="100"></canvas>  --}}
                     <figure class="highcharts-figure">
                         <div id="containerLinea"></div>
@@ -39,7 +45,14 @@
                         <div id="containerBar"></div>
                         
                     </figure>
-                </div> 
+                </div>
+                <div class="card">
+                    <figure class="highcharts-figure">
+                        <div id="containerPorcentajeMes"></div>
+                        
+                    </figure>
+                </div>
+                 
           
         @else
         <div class="alert alert-danger" role="alert">
@@ -48,6 +61,7 @@
             
         @endif
     </div>
+ 
     
 </div>
 @push('linksCabeza')
@@ -74,21 +88,23 @@ var languaje={
     loading:"Cargando...",
     printChart:"Imprimir",
     viewFullscreen:"Expander",
-    viewAsDataTableButtonText:"Ver tabla"
+    viewAsDataTableButtonText:"Ver tabla",
+    viewData:"Ver tabla de valores",
+    drillUpText:"◁ Regresar"
 };
 $('#menuEstadisticas').addClass('nav-item-expanded nav-item-open');
 $('#menuEstadisticas').addClass('active');
 // Create the chart
-{{-- var categorias= ['null','Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Séptiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+var categorias= ['null','Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Séptiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 Highcharts.chart('containerLinea', {
     chart: {
         type: 'column'
     },
     title: {
-        text: 'Browser market shares. January, 2018'
+        text: 'Total de emergencias de mes de '+categorias[{{ date('n',strtotime($fecha)) }}]+ ' del '+{{ date('Y',strtotime($fecha)) }}
     },
     subtitle: {
-        text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
+        text: 'Click sobre las columnas para ver los tipos de Emeregencia'
     },
     accessibility: {
         announceNewData: {
@@ -100,71 +116,66 @@ Highcharts.chart('containerLinea', {
     },
     yAxis: {
         title: {
-            text: 'Total percent market share'
+            text: 'Total de emergencias'
         }
 
     },
     legend: {
         enabled: false
     },
+    lang:languaje,
     plotOptions: {
         series: {
             borderWidth: 0,
             dataLabels: {
                 enabled: true,
-                format: '{point.y:.1f}%'
+                format: '{point.y:.0f}'
             }
         }
     },
 
     tooltip: {
         headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b> en total<br/>'
     },
 
     series: [
-        
-        @foreach ($emergencias as $emergencia)
-            {
-            name: '{{$emergencia->nombre}}',
+        {
+            name: "Emergencia",
             colorByPoint: true,
             data: [
-                
-                @for ($i = 1; $i < 13; $i++)
-                    {
-                       name:categorias[{{ $i }}],
-                        y: {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,$i) }},
-                        drilldown: "{{$emergencia->id}}-{{$emergencia->nombre}}-{{$i}}"
-                    },
-                @endfor
-                
+                @foreach ($emergencias as $emergencia)
+                {
+                    name: "{{$emergencia->nombre}}",
+                    y:{{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha) }},
+                    drilldown: "{{$emergencia->nombre}}"
+                },
+                @endforeach
             ]
-        },
-        @endforeach
+        }
     ],
     drilldown: {
         series: [
             @foreach ($emergencias as $emergencia)
-            @for ($i = 1; $i < 13; $i++)
             {
                 name: "{{$emergencia->nombre}}",
-                id: "{{$emergencia->id}}-{{$emergencia->nombre}}-{{$i}}",
+                id: "{{$emergencia->nombre}}",
                 data: [
-                    
+                    @foreach ($emergencia->tipos as $tipo) 
                     [
-                        "{{$i}}",
-                        {{ $i }}
+                        "{{$tipo->nombre}}",
+                       {{$tipo->formulariosEstadisticasTipos($tipo->id,$fecha)}}
                     ],
+                    @endforeach
+                ]         
                     
-                ]
             },
-            @endfor
-            @endforeach
-            
+        @endforeach  
+          
         ]
     }
-}); --}}
-Highcharts.chart('containerLinea', {
+});
+Highcharts.chart('containerLineaAnio', {
     chart: {
         type: 'column',
         downloadXLS:false,
@@ -208,18 +219,18 @@ Highcharts.chart('containerLinea', {
             {
             name: '{{$emergencia->nombre}}',
             data: [
-                {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,1) }},
-                {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,2) }},
-                {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,3) }},
-                {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,4) }},
-                {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,5) }},
-                {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,6) }},
-                {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,7) }},
-                {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,8) }},
-                {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,9) }},
-                {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,10) }},
-                {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,11) }},
-                {{ $emergencia->formulariosEstadisticas($emergencia->id,$fecha,12) }},
+                {{ $emergencia->formulariosEstadisticasAnio($emergencia->id,$fecha,1) }},
+                {{ $emergencia->formulariosEstadisticasAnio($emergencia->id,$fecha,2) }},
+                {{ $emergencia->formulariosEstadisticasAnio($emergencia->id,$fecha,3) }},
+                {{ $emergencia->formulariosEstadisticasAnio($emergencia->id,$fecha,4) }},
+                {{ $emergencia->formulariosEstadisticasAnio($emergencia->id,$fecha,5) }},
+                {{ $emergencia->formulariosEstadisticasAnio($emergencia->id,$fecha,6) }},
+                {{ $emergencia->formulariosEstadisticasAnio($emergencia->id,$fecha,7) }},
+                {{ $emergencia->formulariosEstadisticasAnio($emergencia->id,$fecha,8) }},
+                {{ $emergencia->formulariosEstadisticasAnio($emergencia->id,$fecha,9) }},
+                {{ $emergencia->formulariosEstadisticasAnio($emergencia->id,$fecha,10) }},
+                {{ $emergencia->formulariosEstadisticasAnio($emergencia->id,$fecha,11) }},
+                {{ $emergencia->formulariosEstadisticasAnio($emergencia->id,$fecha,12) }},
                 
             ]
 
@@ -237,7 +248,7 @@ Highcharts.chart('containerBar', {
         type: 'pie'
     },
     title: {
-        text: 'Porcentajes de emergencias del año {{date('Y',strtotime($fecha))}}'
+        text: 'Porcentajes de emergencias del año {{date('Y',strtotime($fecha))}}',
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -272,6 +283,82 @@ Highcharts.chart('containerBar', {
             @endforeach
             ]
     }]
+});
+
+
+
+//porcentajes por mes
+// Create the chart
+Highcharts.chart('containerPorcentajeMes', {
+    chart: {
+        type: 'pie'
+    },
+    title: {
+        text: 'Total de emergencias de mes de '+categorias[{{ date('n',strtotime($fecha)) }}]+ ' del '+{{ date('Y',strtotime($fecha)) }}
+    },
+    subtitle: {
+        text: 'sobre las partes del pastel para ver los tipos de Emeregencia'
+    },
+
+    accessibility: {
+        announceNewData: {
+            enabled: true
+        },
+        point: {
+            valueSuffix: '%'
+        }
+    },
+
+    plotOptions: {
+        series: {
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}: {point.y:.1f}%'
+            }
+        }
+    },
+
+    tooltip: {
+        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> en total<br/>'
+    },
+    lang:languaje,
+
+    series: [
+        {
+            name: "Emergencia",
+            colorByPoint: true,
+            data: [
+                @foreach ($emergencias as $emergencia)
+                {
+                    name: "{{$emergencia->nombre}}",
+                    y:{{ $emergencia->formularioPastelMes($emergencia->id,$fecha) }},
+                    drilldown: "{{$emergencia->nombre}}"
+                },
+                @endforeach
+            ]
+        }
+    ],
+    drilldown: {
+        series: [
+            
+            @foreach ($emergencias as $emergencia)
+            {
+                name: "{{$emergencia->nombre}}",
+                id: "{{$emergencia->nombre}}",
+                data: [
+                    @foreach ($emergencia->tipos as $tipo) 
+                    [
+                        "{{$tipo->nombre}}",
+                       {{$tipo->formulariosEstadisticasTiposPastel($tipo->id,$fecha,$emergencia->formulariosEstadisticasMas($emergencia->id,$fecha))}}
+                    ],
+                    @endforeach
+                ]         
+                    
+            },
+        @endforeach 
+        ]
+    }
 });
 </script>
 

@@ -15,6 +15,7 @@ use iobom\Models\Asistencia\Asistencia;
 use iobom\Models\Asistencia\AsistenciaPersonal;
 use iobom\Models\Asistencia\AsistenciaVehiculo;
 use iobom\Models\Emergencia\Emergencia;
+use iobom\Models\Emergencia\TipoEmergencia;
 use iobom\Models\Estacion;
 use iobom\Models\FormularioEmergencia;
 use iobom\Models\FormularioEmergencia\Danio;
@@ -760,7 +761,8 @@ class FormularioEmergencias extends Controller
 
     public function actualizarFormulario(Request $request)
     {
-        $this->authorize('crearNuevoFormularioEmergencia', Auth::user()); 
+
+         $this->authorize('crearNuevoFormularioEmergencia', Auth::user()); 
         
         try {
             DB::beginTransaction();
@@ -782,16 +784,33 @@ class FormularioEmergencias extends Controller
             
             $form->emergencia_id=$request->emergencia;
             $form->actualizadoPor=Auth::id();
-            
+            $emergencia=Emergencia::findOrFail($request->emergencia);
+            if($emergencia->nombre=="FALSA ALARMA"){
+                $tipoEmergencia=TipoEmergencia::where('nombre','FALSA ALARMA')
+                ->where('emergencia_id',$emergencia->id)->first();
+                if($tipoEmergencia){
+                  $form->tipoEmergencia_id=$tipoEmergencia->id;
+                }else{
+                    $tipoEme=new TipoEmergencia();
+                $tipoEme->nombre="FALSA ALARMA";
+                $tipoEme->emergencia_id=$emergencia->id;
+                $tipoEme->save();
+                $form->tipoEmergencia_id=$tipoEme->id;
+                }
+            }else{
+                $form->tipoEmergencia_id=null;
+            }
             $form->save();
             //actualizar encargado del formulario
+            if($request->encargadoFormulario){
             $encargadoFormulario=FormularioEmergencia::findOrFail($form->id);
             $encargadoFormulario->encardadoFicha_id=$request->encargadoFormulario;
             $encargadoFormulario->save();
+            }
 
             // A:deivid
             // D: enviar notificacion por email al encargado del formulario
-            $encargadoFormulario->asitenciaEncardado->usuario->notify(new NoticarEncargadoNuevoFormulario() );
+             $encargadoFormulario->asitenciaEncardado->usuario->notify(new NoticarEncargadoNuevoFormulario() );
 
 
             // crear formulario y los vehiculos asignados
@@ -880,7 +899,9 @@ class FormularioEmergencias extends Controller
             
              $request->session()->flash('danger','Ocurrio un error, vuelva intentar');
         }
-        return redirect()->route('editar-formulario',$form->id);
+        
+         return redirect()->route('editar-formulario',$form->id);
+        
     }
     public function finalizarFormulario(Request $request)
     {
