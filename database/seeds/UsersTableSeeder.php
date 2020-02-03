@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder
     {
        $user= User::firstOrCreate([
             'name' => 'Bomberos',
-            'email' => 'david.criollo14@gmail.com',
+            'email' => 'gestion.tecnologica.cbl@gmail.com',
             'estacion_id'=>1,
             'password' => Hash::make('12345678'),
             'email_verified_at'=>Carbon::now()
