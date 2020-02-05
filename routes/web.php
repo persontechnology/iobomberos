@@ -22,7 +22,7 @@ Route::get('/', function () {
     // Artisan::call('config:cache');
     // Artisan::call('storage:link');
     // Artisan::call('key:generate');
-    
+
 });
 
 Auth::routes(['verify' => true]);
@@ -31,7 +31,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
     // perfil de usuario
     Route::get('/mi-perfil', 'HomeController@miPerfil')->name('miPerfil');
     Route::post('/actualizar-mi-perfil', 'HomeController@miPerfilActualizar')->name('actualizarMiPerfil');
-    
+
 
     //A:Deivid
     //D. Roles y permisos de sistema solo acesso Administrador
@@ -62,7 +62,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::get('/usuarios-informacion-imprimir/{idUsuario}', 'Usuarios@informacionImprimir')->name('usuarioInformacionImprimir');
         Route::get('/usuarios-importar', 'Usuarios@importar')->name('usuariosImportar');
         Route::post('/usuarios-procesar-importar', 'Usuarios@procesarImportacion')->name('procesarImportacionUsuarios');
-            
+
     });
 
     //A:Fabian Lopez
@@ -86,14 +86,14 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::namespace('Emergencias')->group(function () {
         // emergencias
         Route::get('/emergencia', 'Emergencias@index')->name('emergencia');
-        Route::post('/emergencia-guardar', 'Emergencias@guardar')->name('emergenciaGuardar');      
+        Route::post('/emergencia-guardar', 'Emergencias@guardar')->name('emergenciaGuardar');
         Route::get('/emergencia-editar/{id}', 'Emergencias@editar')->name('editarEmergencia');
         Route::post('/emergencia-actualizar', 'Emergencias@actualizar')->name('emergenciaActualizar');
         Route::post('/emergencia-eliminar', 'Emergencias@eliminar')->name('eliminarEmergencia');
         // tipo de emergencia
-        
+
         Route::get('/tipo-emergencia/{idEmergencia}', 'TipoEmergencias@index')->name('tipoEmergencia');
-        Route::post('/tipo-emergencia-guardar', 'TipoEmergencias@guardar')->name('guardarTipoEmergencia');      
+        Route::post('/tipo-emergencia-guardar', 'TipoEmergencias@guardar')->name('guardarTipoEmergencia');
         Route::get('/tipo-emergencia-editar/{id}', 'TipoEmergencias@editar')->name('editarTipoEmergencia');
         Route::post('/tipo-emergencia-actualizar', 'TipoEmergencias@actualizar')->name('actualizarTipoEmergencia');
         Route::post('/tipo-emergencia-eliminar', 'TipoEmergencias@eliminar')->name('eliminarTipoEmergencia');
@@ -122,7 +122,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('/editar-barrio/{id}', 'Barrios@editar')->name('editarBarrio');
     Route::post('/actualizar-barrio', 'Barrios@actualizar')->name('actualizarBarrio');
     Route::post('/barrio-eliminar', 'Barrios@eliminar')->name('barrioEliminar');
-   
+
     //A:Fabian Lopez
     //D. administracion de puntos de referencia
     Route::get('/puntos-referencia', 'PuntosReferencias@index')->name('puntosReferencia');
@@ -134,11 +134,11 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::post('/puntos-referencia-eliminar', 'PuntosReferencias@eliminar')->name('puntosReferenciaEliminar');
     // parroquias y barrios
     Route::post('/obtener-barrios-x-parroquia', 'PuntosReferencias@obtenerBarrios')->name('obtenerBarrios');
-    
+
    //importar puntos de referencia
    Route::get('/puntos-referencia-importar', 'PuntosReferencias@importar')->name('puntosReferenciaImportar');
    Route::post('/puntos-referencia-guardar-importacion', 'PuntosReferencias@guardarImportacion')->name('puntosGuardarImportacion');
-   
+
     //A:Fabian Lopez
     //D. administracion de puntos de Vehiculos
     Route::namespace('Vehiculos')->group(function () {
@@ -148,7 +148,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::get('/editar-tipo-vehiculo/{id}', 'TipoVehiculos@editar')->name('editarTipoVehiculo');
         Route::post('/actualizar-tipo-vehiculo', 'TipoVehiculos@actualizar')->name('actualizarTipoVehiculo');
         Route::post('/eliminar-tipo-vehiculo', 'TipoVehiculos@eliminar')->name('eliminarTipoVehiculo');
-        
+
         // vehiculos
         Route::get('/vehiculos/{id}', 'Vehiculos@index')->name('vehiculos');
         Route::get('/nuevo-vehiculos/{id}', 'Vehiculos@nuevo')->name('nuevoVehiculo');
@@ -159,7 +159,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::get('/importar-vehiculos', 'Vehiculos@importar')->name('importarVehiculos');
         Route::post('/importar-archivo', 'Vehiculos@importarArchivo')->name('imnportarArchivoVehiculos');
         Route::post('/eliminar-vehiculo', 'Vehiculos@eliminar')->name('eliminarVehiculo');
-        
+
     });
 
     Route::namespace('Descargos')->group(function () {
@@ -176,27 +176,27 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::get('/medicamentos-editar/{id}', 'Medicamentos@editar')->name('editarMedicamento');
         Route::post('/medicamentos-actualizar', 'Medicamentos@actualizar')->name('medicamentoActualizar');
         Route::post('/medicamentos-eliminar', 'Medicamentos@eliminar')->name('eliminarMedicamento');
-        
+
     });
 
     Route::get('/generar-estaditica', 'Reportes@estadisticas')->name('generarEstadisticas');
     Route::get('/buscar-reporte', 'Reportes@resporteMes')->name('buscarReporte');
-    Route::get('/exportar-reporte/{fecha}', 'Reportes@exportarReporte')->name('exportarReporte');   
-    Route::get('/header-reporte', 'Reportes@headrePdf')->name('headerReporte');   
+    Route::get('/exportar-reporte/{fecha}', 'Reportes@exportarReporte')->name('exportarReporte');
+    Route::get('/header-reporte', 'Reportes@headrePdf')->name('headerReporte');
 
-    
+
     Route::namespace('Asistencias')->group(function () {
         //insumos
         Route::get('/generar-asistencia', 'Asistencias@index')->name('generarAsistencia');
         Route::get('/crear-asistencia/{estacion}', 'Asistencias@crearAsistencia')->name('crearAsistencia');
         Route::post('/crear-nueva-asistencia', 'Asistencias@crearNuevaAsistencia')->name('crearNuevaAsistencia');
-        
+
         Route::post('/estado-personal-asistencia', 'Asistencias@estadoPersonal')->name('estadoAsistenciaPersonal');
         Route::post('/estado-vehiculo-asistencia', 'Asistencias@estadoVehiculo')->name('estadoAsistenciaVehiculo');
         Route::post('/observacion-personal-asistencia', 'Asistencias@obsPersonal')->name('obsAsistenciaPersonal');
         Route::post('/observacion-vehiculo-asistencia', 'Asistencias@obsVehiculo')->name('obsAsistenciaVehiculo');
         Route::get('/listado-personal-asistencia-exportar-pdf/{asistencia}', 'Asistencias@exportarPdf')->name('exportPdfAsistencia');
-        Route::get('/buscar-asistencia/{estacion}', 'Asistencias@buscarAsistencia')->name('buscarAsistencia');    
+        Route::get('/buscar-asistencia/{estacion}', 'Asistencias@buscarAsistencia')->name('buscarAsistencia');
 
     });
     Route::namespace('Formularios')->group(function () {
@@ -204,25 +204,25 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::get('/nuevo-formulario','FormularioEmergencias@nuevo' )->name('nuevo-formulario');
         Route::get('/proceso-formulario/{id}','FormularioEmergencias@proceso' )->name('proceso-formulario');
         Route::get('/editar-formulario/{id}','FormularioEmergencias@editarFormulario' )->name('editar-formulario');
-        
+
         Route::get('/cargarPersonalUnidadesDespachadas/{id}','FormularioEmergencias@cargarPersonalUnidadesDespachadas' )->name('cargarPersonalUnidadesDespachadas');
-        
-        
+
+
         Route::post('/formulario-guardar', 'FormularioEmergencias@guardarFormulario')->name('guardarFormulario');
         Route::post('/buscar-puntos-referencia', 'FormularioEmergencias@buscarPuntoReferenciaId')->name('buscarPuntosReferencia');
         Route::post('/formulario-buscar-personal-Operador', 'FormularioEmergencias@buscarPersonalOperador')->name('buscarPersonalOperadorFormulario');
         Route::post('/formulario-buscar-personal-Operativo', 'FormularioEmergencias@buscarPersonalOperativo')->name('buscarPersonalOperativoFormulario');
         Route::post('/formulario-buscar-personal-Paramedico', 'FormularioEmergencias@buscarPersonalParamedico')->name('buscarPersonalParamedicoFormulario');
-        
+
         //buscar usuarios para editar
         Route::post('/formulario-buscar-personal-Operador-ediatar', 'FormularioEmergencias@buscarPersonalOperadorEditar')->name('buscarPersonalOperadorFormularioEditar');
         Route::post('/formulario-buscar-personal-Operativo-ediatar', 'FormularioEmergencias@buscarPersonalOperativoEditar')->name('buscarPersonalOperativoFormularioEditar');
         Route::post('/formulario-buscar-personal-Paramedico-ediatar', 'FormularioEmergencias@buscarPersonalParamedicoEditar')->name('buscarPersonalParamedicoFormularioEditar');
-        
+
         //artualizar formulario
         Route::post('/formulario-actualizar', 'FormularioEmergencias@actualizarFormulario')->name('ActualizarFormulario');
-       
-        
+
+
 
         Route::get('/informacion-formulario/{id}','FormularioEmergencias@informacionFormulario' )->name('informacion-formulario');
         Route::get('/atenciones/{formulario}','AtencionPrehospitalarias@index' )->name('atenciones');
@@ -230,7 +230,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/guardar-atencion','AtencionPrehospitalarias@guardarAtencion' )->name('guardar-atencion');
         Route::get('/editar-atencion/{id}','AtencionPrehospitalarias@editarAtencion' )->name('editar-atencion');
         Route::post('/actualizar-atencion','AtencionPrehospitalarias@actualizarAtencion' )->name('actualizar-atencion');
-        //Completar mis formularios 
+        //Completar mis formularios
         Route::get('/mis-formularios','FormularioEmergencias@misFormularios' )->name('mis-formulario');
         Route::post('/finalizar-formularios','FormularioEmergencias@finalizarFormulario' )->name('finalizar-formulario');
         //rutas para los materiales
@@ -243,8 +243,8 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/guardar-danio','FormularioEmergencias@guardarDanios' )->name('guardar-danio');
         Route::post('/eliminar-danio','FormularioEmergencias@eliminarDanio' )->name('eliminar-danio');
         //completar informacion del formulario
-         
-        Route::post('/completar-informacion','FormularioEmergencias@completarFormularioResposable' )->name('completar-informacion');       
+
+        Route::post('/completar-informacion','FormularioEmergencias@completarFormularioResposable' )->name('completar-informacion');
         //cambiar a proceso el formulario
         Route::post('/cambio-proceso-formularios','FormularioEmergencias@cambiarEstadoProceso' )->name('cambio-proceso-formulario');
 
@@ -253,25 +253,25 @@ Route::middleware(['verified', 'auth'])->group(function () {
         Route::post('/eliminar-anexos-formularios','FormularioEmergencias@eliminarAnexo' )->name('eliminar-anexos-formulario');
         //edificacines en base al formulario
         Route::get('/edificaciones-formularios/{id}','FormularioEmergencias@vistaTipoEdificacion' )->name('lista-edificaciones-formulario');
-        
+
         Route::post('/guardar-edificacion-formularios','FormularioEmergencias@cerarEtapasIncendiEdificacion' )->name('guardar-edificacion-formulario');
         Route::post('/eliminar-edificacion-formularios','FormularioEmergencias@eliminarEtapasIncendiEdificacion' )->name('eliminar-edificacion-formulario');
         //incendio forestal
         Route::get('/incendio-forestal-formularios/{id}','FormularioEmergencias@vistaCondicionClimatica' )->name('incendio-forestal-formularios');
         Route::post('/guardar-forestal-formularios','FormularioEmergencias@cerarCondicionClimatica' )->name('guardar-forestal-formulario');
         Route::post('/eliminar-forestal-formularios','FormularioEmergencias@eliminarCondicionClimatica' )->name('eliminar-forestal-formulario');
-        
+
         //imprimir formulario
         Route::get('/imprimir-formularios/{id}','FormularioEmergencias@imprimirFormulario' )->name('imprimir-formulario');
         Route::post('/formulario-imagen', 'FormularioEmergencias@guardarImagen')->name('formulario-imagen');
         Route::get('/formulario-imagen-vistas/{id}', 'FormularioEmergencias@imagenFormulario')->name('formularioImagenVista');
         Route::get('/formulario-descargar/{id}', 'FormularioEmergencias@descargarFormulario')->name('formulario-descargar');
         //buscar reporte
-        
 
-        
+
+
     });
-       
+
 
 });
 

@@ -1,4 +1,4 @@
-@extends('layouts.app',['title'=>'Actualizar usuario'])
+@extends('layouts.app',['title'=>'Actualizar Personal operativo'])
 
 @section('breadcrumbs', Breadcrumbs::render('editarUsuario',$usuario))
 
@@ -30,7 +30,7 @@
                     @enderror
                     @endif
                 </div>
-            </div>   
+            </div>
             <div class="form-group row">
                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}<i class="text-danger">*</i></label>
 
@@ -44,9 +44,9 @@
                     @enderror
                 </div>
             </div>
-         
+
             <div class="form-group row">
-                <label for="telefono" class="col-md-4 col-form-label text-md-right">Teléfono<i class="text-danger">*</i></label>
+                <label for="telefono" class="col-md-4 col-form-label text-md-right">Teléfono/Celular<i class="text-danger">*</i></label>
 
                 <div class="col-md-6">
                     <input id="telefono" type="number" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{old('telefono',$usuario->telefono)}}"  autocomplete="telefono" placeholder="Teléfono">
@@ -73,21 +73,18 @@
             </div>
             <div class="form-group row">
                 <label class="col-md-4 col-form-label text-md-right" for="estado">Estado<i class="text-danger">*</i></label>
-                 <div class="col-md-6"> 
+                 <div class="col-md-6">
                     <div class="custom-control custom-radio">
                         <input type="radio" class="custom-control-input {{ $errors->has('estado') ? ' is-invalid' : '' }}" value="Activo" id="Activo" name="estado"  required {{ old('estado',$usuario->estado)=='Activo'?'checked':'checked' }}>
                         <label class="custom-control-label" for="Activo">Activo</label>
                     </div>
 
-                    {{--  <div class="custom-control custom-radio ml-1">
-                        <input type="radio" class="custom-control-input {{ $errors->has('estado') ? ' is-invalid' : '' }}" value="Inactivo" id="Inactivo" name="estado"  required {{ old('estado',$usuario->estado)=='Inactivo'?'checked':'' }}>
-                        <label class="custom-control-label" for="Inactivo">Inactivo</label>
-                    </div>  --}}
+
 
                     <div class="custom-control custom-radio ml-1">
                         <input type="radio" class="custom-control-input{{ $errors->has('estado') ? ' is-invalid' : '' }}" value="Dado de baja" id="Dado de baja" name="estado" required {{ old('estado',$usuario->estado)=='Dado de baja'?'checked':'' }}>
                         <label class="custom-control-label" for="Dado de baja">Dado de baja</label>
-                          
+
                           @if ($errors->has('estado'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('estado') }}</strong>
@@ -118,7 +115,7 @@
                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation"  autocomplete="new-password">
                 </div>
             </div>
-              
+
             <div class="form-group row">
                 <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Foto de perfil') }}</label>
 
@@ -133,7 +130,7 @@
                 {{ $usuario->foto }}
             </div>
 
-            
+
         </div>
         <div class="card-footer">
             <button type="submit" class="btn btn-dark">Guardar cambios</button>
@@ -171,9 +168,9 @@
                     email: true
                 }
             },
-        }); 
+        });
     </script>
-    
+
 @endprepend
 
 @endsection

@@ -1,4 +1,4 @@
-@extends('layouts.app',['title'=>'Nuevo usuario'])
+@extends('layouts.app',['title'=>'Nuevo Personal operativo'])
 
 @section('breadcrumbs', Breadcrumbs::render('usuariosNuevo'))
 
@@ -17,7 +17,7 @@
 
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">Estaciones<i class="text-danger">*</i></label>
-        
+
                             <div class="col-md-6">
                                 @if($estaciones)
                                 <select class="form-control @error('estacion_id') is-invalid @enderror" name="estacion_id" id="estacion_id" >
@@ -25,7 +25,7 @@
                                     <option value="{{ $esta->id }}" {{ (old("estacion_id") == $esta->id ? "selected":"") }} >{{$esta->nombre}}</option>
                                     @endforeach
                                 </select>
-        
+
                                 @error('estacion_id')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -34,13 +34,13 @@
                                 @endif
                             </div>
                         </div>
-            
+
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}<i class="text-danger">*</i></label>
-        
+
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Nombre">
-        
+
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -50,11 +50,11 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="telefono" class="col-md-4 col-form-label text-md-right">Teléfono<i class="text-danger">*</i></label>
-        
+                            <label for="telefono" class="col-md-4 col-form-label text-md-right">Teléfono/Celular<i class="text-danger">*</i></label>
+
                             <div class="col-md-6">
                                 <input id="telefono" type="text" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{old('telefono')}}" placeholder="Teléfono">
-        
+
                                 @error('telefono')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -62,13 +62,13 @@
                                 @enderror
                             </div>
                         </div>
-        
+
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}<i class="text-danger">*</i></label>
-        
+
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Email">
-        
+
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -76,14 +76,14 @@
                                 @enderror
                             </div>
                         </div>
-                     
-        
+
+
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}<i class="text-danger">*</i></label>
-        
+
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="********">
-        
+
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -91,24 +91,24 @@
                                 @enderror
                             </div>
                         </div>
-        
+
                         <div class="form-group row">
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}<i class="text-danger">*</i></label>
-        
+
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="********">
                             </div>
                         </div>
 
-                        
+
                         <div class="form-group row">
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Foto de perfil') }}</label>
-        
+
                             <div class="col-md-6">
                                 <input type="file" class="form-control-file" id="exampleFormControlFile1" name="foto" accept="image/*">
                             </div>
                         </div>
-                        
+
                     </div>
                     <div class="col-md-4">
                         <div class="table-responsive">
@@ -128,7 +128,7 @@
                                             </td>
                                         </tr>
                                     @endforeach
-                                    
+
                                 </tbody>
                             </table>
                         </div>
@@ -159,7 +159,7 @@
         $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
         $('#menuUsuarios').addClass('active');
 
-        
+
         $( "#formNuevoUsuario" ).validate({
             rules: {
                 name:{
@@ -185,9 +185,9 @@
                     email: true
                 }
             },
-        }); 
+        });
     </script>
-    
+
 @endprepend
 
 @endsection

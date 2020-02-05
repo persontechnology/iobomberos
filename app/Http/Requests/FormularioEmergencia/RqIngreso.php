@@ -15,7 +15,7 @@ class RqIngreso extends FormRequest
     {
         return true;
     }
-    
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -37,7 +37,7 @@ class RqIngreso extends FormRequest
             'emergencia'=>'required|exists:emergencia,id',
             'puntoReferencia'=>'nullable|exists:puntoReferencia,id',
             'direcionAdicional'=>'nullable|string|max:255',
-            'telefono'=>'nullable|digits_between:9,10',
+            'telefono'=>'nullable|digits_between:6,10',
             'encargadoFormulario'=>'required|exists:asistencia_personals,id'
         ];
     }

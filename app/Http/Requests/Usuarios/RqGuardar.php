@@ -3,7 +3,7 @@
 namespace iobom\Http\Requests\Usuarios;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Support\Facades\Validator;
 class RqGuardar extends FormRequest
 {
     /**
@@ -23,12 +23,23 @@ class RqGuardar extends FormRequest
      */
     public function rules()
     {
+
+        Validator::extend('emailLongitud', function($attribute, $value, $parameters){
+            $email_primero=explode("@",$value);
+            if(strlen($email_primero[0])<6){
+                return false;
+            }
+            return true;
+
+        },"Tu nombre debe tener entre 6 y 30 caracteres de longitud.");
+
+
         return [
             'name' => 'required|string|max:191',
-            'email' => 'required|string|email|max:191|unique:users',
+            'email' => 'required|string|email|max:191|emailLongitud|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'telefono' => 'required',
-            'estacion_id' => 'required',         
+            'telefono' => 'required|digits_between:6,10',
+            'estacion_id' => 'required',
             "roles"    => "nullable|array",
             "roles.*"  => "nullable|exists:roles,id",
             'foto'=>'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',

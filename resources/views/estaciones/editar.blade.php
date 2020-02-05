@@ -9,7 +9,7 @@
     <div class="card-header">
     	Complete información
     </div>
-    <div class="card-body"> 
+    <div class="card-body">
 		<div class="row">
 			<div class="col-sm-6">
 				<input type="hidden" name="estacion" id="estacion" value="{{$estacion->id}}">
@@ -37,7 +37,7 @@
 				</div>
 
 				<div class="form-group row">
-					<label class="col-form-label col-lg-3">Imagén</label>
+					<label class="col-form-label col-lg-3">Imagen</label>
 					<div class="col-lg-9">
 						<input type="file"  id="foto" name="foto" value="{{ old('foto') }}"  class="form-control @error('foto') is-invalid @enderror" >
 						@error('foto')
@@ -45,13 +45,13 @@
 								<strong>{{ $message }}</strong>
 							</span>
 						@enderror
-						
+
 						<br>
 						@if (Storage::exists($estacion->foto))
 							<a href="{{ Storage::url($estacion->foto) }}" class="btn-link" data-toggle="tooltip" data-placement="top" title="Ver foto">
 								<img src="{{ Storage::url($estacion->foto) }}" alt="" class="img-fluid">
 							</a>
-						@endif	
+						@endif
 					</div>
 				</div>
 			</div>
@@ -68,8 +68,8 @@
 						<input   value="{{ old('longitud',$estacion->longitud) }}" id="longitud" name="longitud"  type="text" class="@error('longitud') is-invalid @enderror form-control"  >
 						<a class="btn btn-dark text-white" id="buscarUbicacion"><i class="icon-search4"></i></a>
 				</div>
-				<!-- datso para la ubicacion en google maop -->	  
-				<div id="map"></div>        	
+				<!-- datso para la ubicacion en google maop -->
+				<div id="map"></div>
 			</div>
 		</div>
 	</div>
@@ -82,19 +82,19 @@
 
 @push('linksCabeza')
 
-  
+
 {{-- validate --}}
 {{-- validate --}}
 <script src="{{ asset('admin/plus/validate/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin/plus/validate/messages_es.min.js') }}"></script>
-  
+
 @endpush
 
 @prepend('linksPie')
 
  <script>
 	$('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
-	$('#menuEstacion').addClass('active'); 
+	$('#menuEstacion').addClass('active');
 
 	$( "#formEditar" ).validate({
 		rules: {
@@ -114,7 +114,7 @@
  </script>
  <script>
 	/*Inicializa el mapa en haciendo referencia al departamento*/
-	
+
 	var map;
 	var marker;
 	function initMap() {
@@ -127,7 +127,7 @@
 		  center: myLatLng,
 		  zoom: 10,
 		  mapTypeId: 'hybrid'
-		});	
+		});
 		var marker = new google.maps.Marker({
 		    map: map,
 		    draggable: true,
@@ -139,18 +139,18 @@
 		  marker.setMap(map);
 		  marker.addListener('dragend', function() {
 		    var destinationLat = marker.getPosition().lat();
-		    var destinationLng = marker.getPosition().lng(); 
-		    puntosEspecificos(destinationLat,destinationLng)      
-		  });		
+		    var destinationLng = marker.getPosition().lng();
+		    puntosEspecificos(destinationLat,destinationLng)
+		  });
 		var geocoder = new google.maps.Geocoder;
 		var infowindow = new google.maps.InfoWindow;
 		 document.getElementById('buscarUbicacion').addEventListener('click', function() {
 		  geocodeLatLng(geocoder, map, infowindow,marker);
-		   
+
 		});
 
 	}
-	
+
 	/*funcion para buscar latitud y longitud en casa de que exista
 	-1.2768936132798347
 	-78.63767815143547
@@ -169,18 +169,18 @@ function geocodeLatLng(geocoder, map, infowindow,marker) {
 		    draggable: true,
 		    animation: google.maps.Animation.DROP,
 		    draggable:true,
-		    position: latlng,			    
+		    position: latlng,
 		  });
 		  marker1.setMap(map);
 		  marker1.addListener('dragend', function() {
 		    var destinationLat = marker1.getPosition().lat();
-		    var destinationLng = marker1.getPosition().lng(); 
+		    var destinationLng = marker1.getPosition().lng();
 		    puntosEspecificos(destinationLat,destinationLng);
 		    infowindow.setContent(null)
 			infowindow.open(null)
 		  });
           infowindow.setContent(results[0].formatted_address);
-          infowindow.open(map, marker1);        
+          infowindow.open(map, marker1);
         } else {
           notificar("warning","Resultados no encontrados");
         }

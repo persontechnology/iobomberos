@@ -27,7 +27,7 @@ class RqCrear extends FormRequest
     public function rules()
     {
         Validator::extend('existeInfo', function($attribute, $value, $parameters){
- 
+
             $validateequipo=Vehiculo::where('codigo',$this->input('codigo'))
             ->where('tipoVehiculo_id',$this->input('tipo'))
             ->first();
@@ -40,7 +40,7 @@ class RqCrear extends FormRequest
         },"El codigo del vehículo ya esta registrado");
 
         return [
-          'estacion'=>'required|string|max:191',  
+          'estacion'=>'required|string|max:191',
           'placa'=>'required|string|max:191|unique:vehiculo',
           'codigo'=>'required|integer|existeInfo',
           'marca'=>'required|string|max:191',

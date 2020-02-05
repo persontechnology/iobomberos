@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app',['title'=>'Administración'])
 
 @section('content')
 <div class="container">
@@ -25,10 +25,10 @@
 
 @prepend('linksPie')
     <script>
-        
+
         $('#menuEscritorio').addClass('active');
-        
+
     </script>
-    
+
 @endprepend
 @endsection

@@ -1,4 +1,4 @@
-@extends('layouts.app',['title'=>'Actualizar roles de usuario'])
+@extends('layouts.app',['title'=>'Actualizar roles de Personal operativo'])
 
 @section('breadcrumbs', Breadcrumbs::render('editarRolUsuario',$usuario))
 
@@ -30,7 +30,7 @@
                                 </td>
                             </tr>
                         @endforeach
-                        
+
                     </tbody>
                 </table>
             </div>
@@ -56,7 +56,7 @@
         $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
         $('#menuUsuarios').addClass('active');
     </script>
-    
+
 @endprepend
 
 @endsection

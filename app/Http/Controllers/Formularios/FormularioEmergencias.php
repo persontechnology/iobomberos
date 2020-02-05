@@ -40,25 +40,25 @@ use PDF;
 
 class FormularioEmergencias extends Controller
 {
-    
+
     public function index(FormularioEmergenciasDataTable $dataTable)
     {
         return  $dataTable->render('formularios.formulariosEmergencias.index');
     }
-    
+
     public function nuevo( )
     {
-        $this->authorize('crearNuevoFormularioEmergencia', Auth::user());   
-        
+        $this->authorize('crearNuevoFormularioEmergencia', Auth::user());
+
         $emergencias=Emergencia::get();
         $puntoReferencias=PuntoReferencia::get();
         $parroquias=Parroquia::get();
         $estacines=Estacion::get();
-        //buscar usuario que esten el la lista 
+        //buscar usuario que esten el la lista
         $diaHoy=Carbon::now();
         $sumarUnDia=$diaHoy->addDays(1);
         $fechaMenor=$diaHoy->setDateTime($sumarUnDia->year,$sumarUnDia->month,$sumarUnDia->day,7,30,0,0)->toDateTimeString();
-        
+
         $asistenciaHoy=Asistencia::where('fecha',Carbon::now()->toDateString())
         ->where('fechaFin','<=',$fechaMenor)->get();
 
@@ -70,7 +70,7 @@ class FormularioEmergencias extends Controller
             $q->where('name','!=', 'Administrador');
         })->get();
 
-        $asistenciaHoyFitro=$astenciaPersonal->whereIn('user_id',$user->pluck('id'));      
+        $asistenciaHoyFitro=$astenciaPersonal->whereIn('user_id',$user->pluck('id'));
         //fin de la busqueda de usuarios
         $numero=FormularioEmergencia::latest()->value('numero');
         if($numero){
@@ -78,18 +78,18 @@ class FormularioEmergencias extends Controller
         }else{
             $numero=1;
         }
-        
+
         $data = array(
             'emergencias' => $emergencias,
             'puntoReferencias'=>$puntoReferencias,
-            'estaciones'=>$estacines, 
+            'estaciones'=>$estacines,
             'parroquias'=>$parroquias,
-            'asistenciaHoy'=> $asistenciaHoyFitro, 
-            'numero'=>$numero,      
+            'asistenciaHoy'=> $asistenciaHoyFitro,
+            'numero'=>$numero,
         );
 
         return view('formularios.formulariosEmergencias.nuevo',$data);
-        
+
     }
 
     public function buscarPuntoReferenciaId(Request $request)
@@ -104,8 +104,8 @@ class FormularioEmergencias extends Controller
 
     public function guardarFormulario(RqIngreso $request)
     {
-        $this->authorize('crearNuevoFormularioEmergencia', Auth::user()); 
-        
+        $this->authorize('crearNuevoFormularioEmergencia', Auth::user());
+
         try {
             DB::beginTransaction();
             $numero=FormularioEmergencia::latest()->value('numero');
@@ -114,7 +114,7 @@ class FormularioEmergencias extends Controller
             }else{
                 $numero=1;
             }
-            
+
             $form=new FormularioEmergencia();
             $form->numero=$numero;
             $form->fecha=Carbon::now();
@@ -133,7 +133,7 @@ class FormularioEmergencias extends Controller
             $form->maximaAutoridad_id=$maximaAutoridad->id??null;
             $form->emergencia_id=$request->emergencia;
             $form->creadoPor=Auth::id();
-            
+
             $form->save();
             //actualizar encargado del formulario
             $encargadoFormulario=FormularioEmergencia::findOrFail($form->id);
@@ -150,49 +150,49 @@ class FormularioEmergencias extends Controller
             foreach ($request->vehiculos as $vehiculos) {
                 //Buscar asistencia del vehiculo en el dia
                 $asistenciaVehiculo=AsistenciaVehiculo::findOrFail($vehiculos);
-                //buscar si existe una estacion de formulario de emergencia 
+                //buscar si existe una estacion de formulario de emergencia
                 $estacionFOrmulara=EstacionFormularioEmergencia::where('estacion_id',$asistenciaVehiculo->vehiculo->estacion_id)
                 ->where('formularioEmergencia_id',$form->id)
                 ->count();
                 $estacionFormularioEmergencia=new EstacionFormularioEmergencia();
-                $formularioEstacionVehiculo=new FormularioEstacionVehiculo();                              
-                
+                $formularioEstacionVehiculo=new FormularioEstacionVehiculo();
+
                 //verifiacar si la estacion ya esta registrada
                 if($estacionFOrmulara==0){
                     //guardar la estacion a quien pertence el vehiculo
                     $estacionFormularioEmergencia->estacion_id=$asistenciaVehiculo->vehiculo->estacion_id;
-                    $estacionFormularioEmergencia->formularioEmergencia_id=$form->id;                    
+                    $estacionFormularioEmergencia->formularioEmergencia_id=$form->id;
                     $estacionFormularioEmergencia->save();
                     //guardar vehiculo en cada uno de las estaciones
                     $formularioEstacionVehiculo->estacionForEmergencias_id=$estacionFormularioEmergencia->id;
-                    $formularioEstacionVehiculo->asistenciaVehiculo_id=$asistenciaVehiculo->id;                  
+                    $formularioEstacionVehiculo->asistenciaVehiculo_id=$asistenciaVehiculo->id;
                     $formularioEstacionVehiculo->save();
                     //buscar estacion del formulario
                     $buscarestacionEstacion=EstacionFormularioEmergencia::findOrFail($estacionFormularioEmergencia->id);
                         foreach($request->encargadoEstacion as $encargadoEstacion){
                             $variableAuxEnca=explode('-',$encargadoEstacion);
                             if($buscarestacionEstacion->estacion_id==$variableAuxEnca[0]){
-                                $asistenciaPersonalEstacion=AsistenciaPersonal::findOrFail($variableAuxEnca[1]);             
+                                $asistenciaPersonalEstacion=AsistenciaPersonal::findOrFail($variableAuxEnca[1]);
                                 $buscarestacionEstacion->user_id= $asistenciaPersonalEstacion->user_id;
                                 $buscarestacionEstacion->save();
-                                
+
                             }
                         }
-                        
-                    
+
+
                 }else{
-                    //Buscar si la estacion existe en la asignacion del formulario 
+                    //Buscar si la estacion existe en la asignacion del formulario
                     $estacionFormularaPrimero=EstacionFormularioEmergencia::where('estacion_id',$asistenciaVehiculo->vehiculo->estacion_id)
                     ->where('formularioEmergencia_id',$form->id)->first();
                     //guardar la estacion a quien pertence el vehiculo
                     $formularioEstacionVehiculo->estacionForEmergencias_id=$estacionFormularaPrimero->id;
-                    $formularioEstacionVehiculo->asistenciaVehiculo_id=$asistenciaVehiculo->id;                 
-                    $formularioEstacionVehiculo->save();                    
-                 
+                    $formularioEstacionVehiculo->asistenciaVehiculo_id=$asistenciaVehiculo->id;
+                    $formularioEstacionVehiculo->save();
+
                 }
                 //guardar operador en cada veiculo registrado
                 if($request->operador[$i]){
-                $vehiculoOperador=new VehiculoOperador();  
+                $vehiculoOperador=new VehiculoOperador();
                 $vehiculoOperador->estacionForVehiculo_id=$formularioEstacionVehiculo->id;
                 $vehiculoOperador->asistenciaPersonal_id=$request->operador[$i];
                 $vehiculoOperador->save();
@@ -201,20 +201,20 @@ class FormularioEmergencias extends Controller
                 foreach ($request->operativos as $operativo ) {
                     $variableAux=explode('-',$operativo);
                      if($variableAux[0]==$asistenciaVehiculo->id){
-                        $personalOperacional=new VehiculoOperativo();                                           
+                        $personalOperacional=new VehiculoOperativo();
                         $personalOperacional->estacionForVehiculo_id=$formularioEstacionVehiculo->id;
                         $personalOperacional->asistenciaPersonal_id=$variableAux[1];
                         $personalOperacional->save();
                         //cambiar estado al personal
                         $asistenciaPersonal=AsistenciaPersonal::findOrFail($variableAux[1]);
                         $asistenciaPersonal->estadoEmergencia='Emergencia';
-                        $asistenciaPersonal->save();                         
+                        $asistenciaPersonal->save();
                      }
                 }
                 //guardar Paramedico
-                
+
                 if($request->paramedico[$i]){
-                    $vehiculoParamedico=new VehiculoParamedico();  
+                    $vehiculoParamedico=new VehiculoParamedico();
                     $vehiculoParamedico->estacionForVehiculo_id=$formularioEstacionVehiculo->id;
                     $vehiculoParamedico->asistenciaPersonal_id=$request->paramedico[$i];
                     $vehiculoParamedico->save();
@@ -222,7 +222,7 @@ class FormularioEmergencias extends Controller
                     $personalParamedico->estadoEMergencia="Emergencia";
                     $personalParamedico->save();
                 }
-                // cambiar de estado al vehiculo 
+                // cambiar de estado al vehiculo
                 $asistenciaVehiculo->estadoEMergencia="Emergencia";
                 $asistenciaVehiculo->save();
                 // cambiar de estado del operador asignado a la emergencia
@@ -239,7 +239,7 @@ class FormularioEmergencias extends Controller
         }
         return redirect()->route('formularios');
     }
-    
+
     public function completarFormulario($idFormulario)
     {
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
@@ -272,13 +272,13 @@ class FormularioEmergencias extends Controller
             $tipoEdificacion=new TipoEdificacion();
             $tipoEdificacion->formularioEmergencia_id=$formulario->id;
             $tipoEdificacion->save();
-            
+
             return response(['success'=>'Edificación creada exitosamente']);
         }
-        
+
     }
     public function eliminarEtapasIncendiEdificacion(Request $request)
-    {        
+    {
         $request->validate([
             'formulario'=>'required|exists:formularioEmergencia,id',
         ]);
@@ -287,18 +287,18 @@ class FormularioEmergencias extends Controller
             $formulario=FormularioEmergencia::findOrFail($request->formulario);
              //ingresar etapas de incendio
              if($formulario->tipoEdificacion){
-                $tipoIncendio=TipoEdificacion::findOrFail($formulario->tipoEdificacion->id);                          
-                $tipoIncendio->delete();            
+                $tipoIncendio=TipoEdificacion::findOrFail($formulario->tipoEdificacion->id);
+                $tipoIncendio->delete();
             }
             //ingresar etapas de incendio
             if($formulario->etapaIncendio){
-                $etapaIncendio=EtapaIncendio::findOrFail($formulario->etapaIncendio->id);               
-                $etapaIncendio->delete();            
+                $etapaIncendio=EtapaIncendio::findOrFail($formulario->etapaIncendio->id);
+                $etapaIncendio->delete();
             }
             //registro de edificacion
             if($formulario->edificacion){
-                $edificacion=Edificacion::findOrFail($formulario->edificacion->id);                
-                $edificacion->delete();  
+                $edificacion=Edificacion::findOrFail($formulario->edificacion->id);
+                $edificacion->delete();
             }
             DB::commit();
             return response()->json(['success'=>'Material eliminada exitosamente']);
@@ -306,7 +306,7 @@ class FormularioEmergencias extends Controller
             DB::rollBack();
             return response()->json(['default'=>'No se puede eliminar el material']);
         }
-        
+
     }
     public function buscarPersonalOperador(Request $request)
     {
@@ -318,14 +318,14 @@ class FormularioEmergencias extends Controller
             $q->where('name','!=', 'Administrador');
 
         })->get();
-        $data = array();       
+        $data = array();
         foreach ($usuarios as $usuario) {
-            
+
             array_push( $data,$usuario->getRoleNames()->first().'--'.$usuario->name.'--'.$usuario->asistenciaPersonal->id);
-        }   
+        }
         // return $data;
         return response()->json($data);
-    
+
     }
     public function buscarPersonalOperativo(Request $request)
     {
@@ -337,14 +337,14 @@ class FormularioEmergencias extends Controller
             $q->where('name','!=', 'Administrador');
 
         })->get();
-        $data = array();       
+        $data = array();
         foreach ($usuarios as $usuario) {
-            
+
             array_push( $data,$usuario->getRoleNames()->first().'--'.$usuario->name.'--'.$usuario->asistenciaPersonal->id);
-        }   
+        }
         // return $data;
         return response()->json($data);
-    
+
     }
 
     public function buscarPersonalParamedico(Request $request)
@@ -357,14 +357,14 @@ class FormularioEmergencias extends Controller
             $q->where('name', 'Paramédico');
 
         })->get();
-        $data = array();       
+        $data = array();
         foreach ($usuarios as $usuario) {
-            
+
             array_push($data ,$usuario->name.'--'.$usuario->asistenciaPersonal->id);
-        }   
+        }
         // return $data;
         return response()->json($data);
-    
+
     }
     public function informacionFormulario($idFormulario)
     {
@@ -377,18 +377,18 @@ class FormularioEmergencias extends Controller
     public function editarFormulario($idFormulario)
     {
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
-        $this->authorize('editarFormulario', $formulario); 
+        $this->authorize('editarFormulario', $formulario);
         $emergencias=Emergencia::get();
         $puntoReferencias=PuntoReferencia::get();
         $parroquias=Parroquia::get();
         $estacines=Estacion::get();
-        //buscar usuario que esten el la lista 
+        //buscar usuario que esten el la lista
         $diaHoy1= Carbon::parse($formulario->fecha)->format('Y-m-d');
         $diaHoy=Carbon::parse($formulario->fecha);
         $sumarUnDia=$diaHoy->addDays(1);
         $fechaMenor=$diaHoy->setDateTime($sumarUnDia->year,$sumarUnDia->month,$sumarUnDia->day,7,30,0,0)->toDateTimeString();
         $asistenciaHoy= Asistencia::where('fecha', 'like',  '%'.$diaHoy1 .'%')
-        ->where('fechaFin','<=',$fechaMenor)->get();      
+        ->where('fechaFin','<=',$fechaMenor)->get();
 
         $astenciaPersonal=AsistenciaPersonal::
         whereIn('asistencia_id',$asistenciaHoy->pluck('id'))->get();
@@ -397,19 +397,19 @@ class FormularioEmergencias extends Controller
             $q->where('name','!=', 'Administrador');
         })->get();
 
-        $asistenciaHoyFitro=$astenciaPersonal->whereIn('user_id',$user->pluck('id'));      
-       
+        $asistenciaHoyFitro=$astenciaPersonal->whereIn('user_id',$user->pluck('id'));
+
         $data = array(
             'emergencias' => $emergencias,
             'puntoReferencias'=>$puntoReferencias,
-            'estaciones'=>$estacines, 
+            'estaciones'=>$estacines,
             'parroquias'=>$parroquias,
-            'asistenciaHoy'=> $asistenciaHoyFitro, 
-            
-            'formulario'=>$formulario,      
+            'asistenciaHoy'=> $asistenciaHoyFitro,
+
+            'formulario'=>$formulario,
         );
-        
-        return view('formularios.formulariosEmergencias.editar',$data); 
+
+        return view('formularios.formulariosEmergencias.editar',$data);
     }
 
     public function misFormularios()
@@ -419,30 +419,30 @@ class FormularioEmergencias extends Controller
         $formulariosAsignados=FormularioEmergencia::where('estado','Proceso')
         ->whereIn('encardadoFicha_id',$asistenciaPersonal->pluck('id'))
         ->get();
-        
+
         $formulariosFinalizados=FormularioEmergencia::where('estado','Finalizado')
         ->whereIn('encardadoFicha_id',$asistenciaPersonal->pluck('id'))
         ->get();
-        
-        $data = array('formulariosAsignados' =>$formulariosAsignados, 
+
+        $data = array('formulariosAsignados' =>$formulariosAsignados,
                     'formulariosFinalizados'=>$formulariosFinalizados, );
         // return $formularios;
-        return view('formularios.formulariosEmergencias.misFormularios',$data); 
+        return view('formularios.formulariosEmergencias.misFormularios',$data);
     }
     public function proceso($idFormulario)
     {
-        
+
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
-        $this->authorize('misFormularios', $formulario); 
+        $this->authorize('misFormularios', $formulario);
         $data = array('formu' =>$formulario );
-        return view('formularios.formulariosEmergencias.completarFormulario',$data); 
+        return view('formularios.formulariosEmergencias.completarFormulario',$data);
     }
     //gfuncion para completar los materiales que se utilizarn dentro de un formulrio
     public function materialesFormulario($idFormulario)
     {
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
         $data = array('formulario' =>$formulario );
-        return view('formularios.materiales.index',$data); 
+        return view('formularios.materiales.index',$data);
     }
     public function guardarMateriales(Request $request)
     {
@@ -456,7 +456,7 @@ class FormularioEmergencias extends Controller
         $materiales->save();
     }
     public function eliminarMaterial(Request $request)
-    {        
+    {
         $request->validate([
             'material'=>'required|exists:materials,id',
         ]);
@@ -470,7 +470,7 @@ class FormularioEmergencias extends Controller
             DB::rollBack();
             return response()->json(['default'=>'No se puede eliminar el material']);
         }
-        
+
     }
 
     //funcion para completar los materiales que se utilizarn dentro de un formulrio
@@ -478,7 +478,7 @@ class FormularioEmergencias extends Controller
     {
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
         $data = array('formulario' =>$formulario );
-        return view('formularios.danios.index',$data); 
+        return view('formularios.danios.index',$data);
     }
     public function guardarDanios(Request $request)
     {
@@ -492,7 +492,7 @@ class FormularioEmergencias extends Controller
         $danio->save();
     }
     public function eliminarDanio(Request $request)
-    {        
+    {
         $request->validate([
             'danio'=>'required|exists:danios,id',
         ]);
@@ -506,10 +506,10 @@ class FormularioEmergencias extends Controller
             DB::rollBack();
             return response()->json(['default'=>'No se puede eliminar el daño ocasional']);
         }
-        
+
     }
     public function completarFormularioResposable(Request $request)
-    {    $request->validate([            
+    {    $request->validate([
             'formulario' => 'required|exists:formularioEmergencia,id',
             'tipoEmergencia'=>'required|exists:tipoEmergencia,id',
             'horaEntrada'=>'required',
@@ -518,7 +518,7 @@ class FormularioEmergencias extends Controller
         ]);
         $formulario=FormularioEmergencia::findOrFail($request->formulario);
         $diaHoy=Carbon::now();
-        
+
         try {
             DB::beginTransaction();
             $formulario->tipoEmergencia_id=$request->tipoEmergencia;
@@ -540,8 +540,8 @@ class FormularioEmergencias extends Controller
                 $tipoIncendio->domestico=$this->conversioCheckbox($request->domestico);
                 $tipoIncendio->comercial=$this->conversioCheckbox($request->comercial);
                 $tipoIncendio->industrial=$this->conversioCheckbox($request->industrial);
-                $tipoIncendio->galpones=$this->conversioCheckbox($request->galpones);             
-                $tipoIncendio->save();            
+                $tipoIncendio->galpones=$this->conversioCheckbox($request->galpones);
+                $tipoIncendio->save();
             }
             //ingresar etapas de incendio
             if($formulario->etapaIncendio){
@@ -552,7 +552,7 @@ class FormularioEmergencias extends Controller
                 $etapaIncendio->flashover=$this->conversioCheckbox($request->flashover);
                 $etapaIncendio->decadencia=$this->conversioCheckbox($request->decadencia);
                 $etapaIncendio->arder=$this->conversioCheckbox($request->arder);
-                $etapaIncendio->save();            
+                $etapaIncendio->save();
             }
             //registro de edificacion
             if($formulario->edificacion){
@@ -568,7 +568,7 @@ class FormularioEmergencias extends Controller
                 $edificacion->segundoPiso=$this->conversioCheckbox($request->segundoPiso);
                 $edificacion->tercerPiso=$this->conversioCheckbox($request->tercerPiso);
                 $edificacion->patio=$this->conversioCheckbox($request->patio);
-                $edificacion->save();  
+                $edificacion->save();
             }
             //crear edificacion de forestal
             if($formulario->tipoIncendioForestal ){
@@ -576,25 +576,25 @@ class FormularioEmergencias extends Controller
                 $tipoIncendioforestal->agricola=$this->conversioCheckbox($request->agricola);
                 $tipoIncendioforestal->suelo=$this->conversioCheckbox($request->suelo);
                 $tipoIncendioforestal->copas=$this->conversioCheckbox($request->copas);
-                $tipoIncendioforestal->subSuelo=$this->conversioCheckbox($request->subSuelo);               
-                $tipoIncendioforestal->save();   
+                $tipoIncendioforestal->subSuelo=$this->conversioCheckbox($request->subSuelo);
+                $tipoIncendioforestal->save();
             }
             if($formulario->etapaIncendioForestal){
                 $etapasIncendioforestal=EtapaIncendioForestal::findOrFail($formulario->etapaIncendioForestal->id);
                 $etapasIncendioforestal->iniciacion=$this->conversioCheckbox($request->iniciacion);
                 $etapasIncendioforestal->propagacion=$this->conversioCheckbox($request->propagacion);
                 $etapasIncendioforestal->estabilizado=$this->conversioCheckbox($request->estabilizado);
-                $etapasIncendioforestal->activo=$this->conversioCheckbox($request->activo); 
+                $etapasIncendioforestal->activo=$this->conversioCheckbox($request->activo);
                 $etapasIncendioforestal->controlado=$this->conversioCheckbox($request->controlado);
-                $etapasIncendioforestal->extinguido=$this->conversioCheckbox($request->extinguido);               
-                $etapasIncendioforestal->save(); 
+                $etapasIncendioforestal->extinguido=$this->conversioCheckbox($request->extinguido);
+                $etapasIncendioforestal->save();
             }
 
             //Subir imagenes
             if ($request->hasFile('foto')) {
                 $i=0;
                 foreach ($request->file('foto') as $imagen) {
-                    
+
                     if ($imagen->isValid()) {
                         $anexos=new Anexo();
                         $anexos->formularioEmergencia_id=$formulario->id;
@@ -612,19 +612,19 @@ class FormularioEmergencias extends Controller
 
             DB::commit();
             $request->session()->flash('success','Formulario completado exitosamente ');
-            
+
         } catch (\Exception $th) {
             DB::rollBack();
-            
+
             $request->session()->flash('warning','no se puede completar el formulario verifique los datos y vuelva a intentar ');
         }
         return redirect()->route('proceso-formulario',$formulario->id);
-        
+
     }
    public function cambiarEstadoProceso(Request $request)
    {
-    $request->validate([            
-        'formulario' => 'required|exists:formularioEmergencia,id',        
+    $request->validate([
+        'formulario' => 'required|exists:formularioEmergencia,id',
     ]);
     try {
         DB::beginTransaction();
@@ -632,7 +632,7 @@ class FormularioEmergencias extends Controller
             $formulario->estado='Proceso';
             $formulario->save();
             foreach ($formulario->estacionFormularioEmergencias as $estacione) {
-                
+
                 //cambio de personal en la estacion
                 foreach ($estacione->formularioEstacionVehiculo as $vehiculo) {
                     $asistenciaVehiculo=AsistenciaVehiculo::findOrFail($vehiculo->asistenciaVehiculo_id);
@@ -645,7 +645,7 @@ class FormularioEmergencias extends Controller
                     }
                     if($vehiculo->vehiculoOperativos->count()>0){
                         foreach ($vehiculo->vehiculoOperativos as $vehiculoOperativo) {
-                            
+
                             $asistenciaPersonaloperativos=AsistenciaPersonal::findOrFail($vehiculoOperativo->asistenciaPersonal_id);
                             $asistenciaPersonaloperativos->estadoEmergencia='Disponible';
                             $asistenciaPersonaloperativos->save();
@@ -655,7 +655,7 @@ class FormularioEmergencias extends Controller
                         $asistenciaPersonalParamedico=AsistenciaPersonal::findOrFail($vehiculo->vehiculoParamedico->asistenciaPersonal_id);
                         $asistenciaPersonalParamedico->estadoEmergencia='Disponible';
                         $asistenciaPersonalParamedico->save();
-                                    
+
                     }
                 }
             }
@@ -683,7 +683,7 @@ class FormularioEmergencias extends Controller
     }
    //funcion para eliminar las images
    public function eliminarAnexo(Request $request)
-    {        
+    {
         $request->validate([
             'anexo'=>'required|exists:anexos,id',
         ]);
@@ -697,7 +697,7 @@ class FormularioEmergencias extends Controller
             DB::rollBack();
             return response()->json(['default'=>'No se puede eliminar el anexo']);
         }
-        
+
     }
     //Buscar personal para editar
     public function buscarPersonalOperadorEditar(Request $request)
@@ -710,14 +710,14 @@ class FormularioEmergencias extends Controller
             $q->where('name','!=', 'Administrador');
 
         })->get();
-        $data = array();       
+        $data = array();
         foreach ($usuarios as $usuario) {
-            
+
             array_push( $data,$usuario->getRoleNames()->first().'--'.$usuario->name.'--'.$usuario->asistenciaPersonal->id);
-        }   
+        }
         // return $data;
         return response()->json($data);
-    
+
     }
     public function buscarPersonalOperativoEditar(Request $request)
     {
@@ -729,14 +729,14 @@ class FormularioEmergencias extends Controller
             $q->where('name','!=', 'Administrador');
 
         })->get();
-        $data = array();       
+        $data = array();
         foreach ($usuarios as $usuario) {
-            
+
             array_push( $data,$usuario->getRoleNames()->first().'--'.$usuario->name.'--'.$usuario->asistenciaPersonal->id);
-        }   
+        }
         // return $data;
         return response()->json($data);
-    
+
     }
 
     public function buscarPersonalParamedicoEditar(Request $request)
@@ -749,39 +749,39 @@ class FormularioEmergencias extends Controller
             $q->where('name', 'Paramédico');
 
         })->get();
-        $data = array();       
+        $data = array();
         foreach ($usuarios as $usuario) {
-            
+
             array_push($data ,$usuario->name.'--'.$usuario->asistenciaPersonal->id);
-        }   
+        }
         // return $data;
         return response()->json($data);
-    
+
     }
 
     public function actualizarFormulario(Request $request)
     {
 
-         $this->authorize('crearNuevoFormularioEmergencia', Auth::user()); 
-        
+         $this->authorize('crearNuevoFormularioEmergencia', Auth::user());
+
         try {
             DB::beginTransaction();
-         
-            
-            $form=FormularioEmergencia::findOrFail($request->formulario);        
-            
+
+
+            $form=FormularioEmergencia::findOrFail($request->formulario);
+
 
             $form->institucion=$request->institucion;
             $form->telefono=$request->telefono;
             $form->formaAviso=$request->formaAviso;;
-            
+
             $form->frecuencia=$request->frecuencia;
             $form->puntoReferencia_id=$request->puntoReferencia;
-            
+
             $form->localidad=$request->direcionAdicional;
 
             // maxima autoridad
-            
+
             $form->emergencia_id=$request->emergencia;
             $form->actualizadoPor=Auth::id();
             $emergencia=Emergencia::findOrFail($request->emergencia);
@@ -819,40 +819,40 @@ class FormularioEmergencias extends Controller
                 foreach ($request->vehiculos as $vehiculos) {
                     //Buscar asistencia del vehiculo en el dia
                     $asistenciaVehiculo=AsistenciaVehiculo::findOrFail($vehiculos);
-                    //buscar si existe una estacion de formulario de emergencia 
+                    //buscar si existe una estacion de formulario de emergencia
                     $estacionFOrmulara=EstacionFormularioEmergencia::where('estacion_id',$asistenciaVehiculo->vehiculo->estacion_id)
                     ->where('formularioEmergencia_id',$form->id)
                     ->count();
                     $estacionFormularioEmergencia=new EstacionFormularioEmergencia();
-                    $formularioEstacionVehiculo=new FormularioEstacionVehiculo();                              
-                    
+                    $formularioEstacionVehiculo=new FormularioEstacionVehiculo();
+
                     //verifiacar si la estacion ya esta registrada
                     if($estacionFOrmulara==0){
                         //guardar la estacion a quien pertence el vehiculo
                         $estacionFormularioEmergencia->estacion_id=$asistenciaVehiculo->vehiculo->estacion_id;
-                        $estacionFormularioEmergencia->formularioEmergencia_id=$form->id;                    
+                        $estacionFormularioEmergencia->formularioEmergencia_id=$form->id;
                         $estacionFormularioEmergencia->save();
                         //guardar vehiculo en cada uno de las estaciones
                         $formularioEstacionVehiculo->estacionForEmergencias_id=$estacionFormularioEmergencia->id;
-                        $formularioEstacionVehiculo->asistenciaVehiculo_id=$asistenciaVehiculo->id;                  
+                        $formularioEstacionVehiculo->asistenciaVehiculo_id=$asistenciaVehiculo->id;
                         $formularioEstacionVehiculo->save();
                         //buscar estacion del formulario
                         $buscarestacionEstacion=EstacionFormularioEmergencia::findOrFail($estacionFormularioEmergencia->id);
-                        
-                        
+
+
                     }else{
-                        //Buscar si la estacion existe en la asignacion del formulario 
+                        //Buscar si la estacion existe en la asignacion del formulario
                         $estacionFormularaPrimero=EstacionFormularioEmergencia::where('estacion_id',$asistenciaVehiculo->vehiculo->estacion_id)
                         ->where('formularioEmergencia_id',$form->id)->first();
                         //guardar la estacion a quien pertence el vehiculo
                         $formularioEstacionVehiculo->estacionForEmergencias_id=$estacionFormularaPrimero->id;
-                        $formularioEstacionVehiculo->asistenciaVehiculo_id=$asistenciaVehiculo->id;                 
-                        $formularioEstacionVehiculo->save();                    
-                    
+                        $formularioEstacionVehiculo->asistenciaVehiculo_id=$asistenciaVehiculo->id;
+                        $formularioEstacionVehiculo->save();
+
                     }
                     //guardar operador en cada veiculo registrado
                     if($request->operador[$i]){
-                    $vehiculoOperador=new VehiculoOperador();  
+                    $vehiculoOperador=new VehiculoOperador();
                     $vehiculoOperador->estacionForVehiculo_id=$formularioEstacionVehiculo->id;
                     $vehiculoOperador->asistenciaPersonal_id=$request->operador[$i];
                     $vehiculoOperador->save();
@@ -861,20 +861,20 @@ class FormularioEmergencias extends Controller
                     foreach ($request->operativos as $operativo ) {
                         $variableAux=explode('-',$operativo);
                         if($variableAux[0]==$asistenciaVehiculo->id){
-                            $personalOperacional=new VehiculoOperativo();                                           
+                            $personalOperacional=new VehiculoOperativo();
                             $personalOperacional->estacionForVehiculo_id=$formularioEstacionVehiculo->id;
                             $personalOperacional->asistenciaPersonal_id=$variableAux[1];
                             $personalOperacional->save();
                             //cambiar estado al personal
                             $asistenciaPersonal=AsistenciaPersonal::findOrFail($variableAux[1]);
                             $asistenciaPersonal->estadoEmergencia='Emergencia';
-                            $asistenciaPersonal->save();                         
+                            $asistenciaPersonal->save();
                         }
                     }
                     //guardar Paramedico
-                    
+
                     if($request->paramedico[$i]){
-                        $vehiculoParamedico=new VehiculoParamedico();  
+                        $vehiculoParamedico=new VehiculoParamedico();
                         $vehiculoParamedico->estacionForVehiculo_id=$formularioEstacionVehiculo->id;
                         $vehiculoParamedico->asistenciaPersonal_id=$request->paramedico[$i];
                         $vehiculoParamedico->save();
@@ -882,7 +882,7 @@ class FormularioEmergencias extends Controller
                         $personalParamedico->estadoEMergencia="Emergencia";
                         $personalParamedico->save();
                     }
-                    // cambiar de estado al vehiculo 
+                    // cambiar de estado al vehiculo
                     $asistenciaVehiculo->estadoEMergencia="Emergencia";
                     $asistenciaVehiculo->save();
                     // cambiar de estado del operador asignado a la emergencia
@@ -896,12 +896,12 @@ class FormularioEmergencias extends Controller
             $request->session()->flash('success','Formulario # '.$form->numero.' editado exitosamente');
         } catch (\Exception $th) {
             DB::rollback();
-            
+
              $request->session()->flash('danger','Ocurrio un error, vuelva intentar');
         }
-        
+
          return redirect()->route('editar-formulario',$form->id);
-        
+
     }
     public function finalizarFormulario(Request $request)
     {
@@ -919,7 +919,7 @@ class FormularioEmergencias extends Controller
             DB::rollBack();
             return $request->session()->flash('default','No se puede finalizar el formulario');
         }
-        
+
     }
     //modificacion para completar el formulario
     //funcion para llama r ajax en tipo de edificacion
@@ -928,19 +928,19 @@ class FormularioEmergencias extends Controller
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
         $data = array('formulario' => $formulario );
         return view('formularios.edificaciones.listadoEdificaciones',$data);
-        
+
     }
     public function vistaCondicionClimatica($idFormulario)
     {
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
         $data = array('formulario' => $formulario );
         return view('formularios.condiciones.listadoCondiciones',$data);
-        
+
     }
 
     public function cerarCondicionClimatica(Request $request)
     {
-        $formulario=FormularioEmergencia::findOrFail($request->formulario);        
+        $formulario=FormularioEmergencia::findOrFail($request->formulario);
 
         if($formulario->tipoIncendioForestal && $formulario->etapaIncendioForestal){
             return response(['default'=>'Ya existe etapas de incendio']);
@@ -951,44 +951,44 @@ class FormularioEmergencias extends Controller
             $edificacion=new TipoIncendioForestal();
             $edificacion->formularioEmergencia_id=$formulario->id;
             $edificacion->save();
-                       
+
             return response(['success'=>'Edificación incendio forestal creada exitosamente']);
         }
-        
+
     }
     public function eliminarCondicionClimatica(Request $request)
-    {        
+    {
         $request->validate([
             'formulario'=>'required|exists:formularioEmergencia,id',
         ]);
         try {
             DB::beginTransaction();
             $formulario=FormularioEmergencia::findOrFail($request->formulario);
-            $formulario->condicionClimatica="";  
+            $formulario->condicionClimatica="";
            $formulario->save();
              //ingresar etapas de incendio
              if($formulario->tipoIncendioForestal){
-                $tipoIncendio=TipoIncendioForestal::findOrFail($formulario->tipoIncendioForestal->id);                          
-                $tipoIncendio->delete();            
+                $tipoIncendio=TipoIncendioForestal::findOrFail($formulario->tipoIncendioForestal->id);
+                $tipoIncendio->delete();
             }
             //ingresar etapas de incendio
             if($formulario->etapaIncendioForestal){
-                $etapaIncendio=EtapaIncendioForestal::findOrFail($formulario->etapaIncendioForestal->id);               
-                $etapaIncendio->delete();            
+                $etapaIncendio=EtapaIncendioForestal::findOrFail($formulario->etapaIncendioForestal->id);
+                $etapaIncendio->delete();
             }
-            
+
             DB::commit();
             return response()->json(['success'=>'etapas de incendio forestal eliminada exitosamente']);
         } catch (\Exception $th) {
             DB::rollBack();
             return response()->json(['default'=>'No se puede eliminar las etapas de incendio forestal']);
         }
-        
+
     }
     public function imprimirFormulario($idFormulario)
     {
         $formulario=FormularioEmergencia::findOrFail($idFormulario);
-        $this->authorize('imprimirFormulario',  $formulario); 
+        $this->authorize('imprimirFormulario',  $formulario);
         $oficial= Role::where('name', 'Jefe de operaciones')->first()->users->first();
         $data = array('formulario' => $formulario,'oficial'=>$oficial);
         return view('formularios.formulariosEmergencias.imprimir',$data);
@@ -997,7 +997,7 @@ class FormularioEmergencias extends Controller
     {
         $formulario=FormularioEmergencia::findOrFail($request->formulario);
         $base64_image = $request->foto;
-        
+
         if (preg_match('/^data:image\/(\w+);base64,/', $base64_image)) {
             $data = substr($base64_image, strpos($base64_image, ',') + 1);
             $data = base64_decode($data);
@@ -1006,7 +1006,7 @@ class FormularioEmergencias extends Controller
             $url = Storage::url("public/formularios/".$nombreFoto);
             $formulario->foto=$url;
             $formulario->save();
-            
+
         }
         return response()->json(['ok'=>'ok']);
     }
@@ -1025,5 +1025,5 @@ class FormularioEmergencias extends Controller
         return $pdf->inline();
         //return $pdf->download('acta-'.$acta->>comunidad->nombre.'-'.$acta->poaCuentaContableMes->mes->mes.'.pdf');
     }
-  
+
 }

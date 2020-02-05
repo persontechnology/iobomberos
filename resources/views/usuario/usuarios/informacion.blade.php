@@ -1,4 +1,4 @@
-@extends('layouts.app',['title'=>'Información de usuario'])
+@extends('layouts.app',['title'=>'Información de Personal operativo'])
 
 @section('breadcrumbs', Breadcrumbs::render('informacionUsuario',$usuario))
 
@@ -44,7 +44,7 @@
         $('#menuGestionInformacion').addClass('nav-item-expanded nav-item-open');
         $('#menuUsuarios').addClass('active');
     </script>
-    
+
 @endprepend
 
 @endsection

@@ -12,22 +12,22 @@
             </a>
         </div>
         <!-- /sidebar mobile toggler -->
-    
-        
+
+
         <!-- Sidebar content -->
         <div class="sidebar-content">
-    
+
             <!-- Main navigation -->
-    
+
             <div class="card card-sidebar-mobile">
             <ul class="nav nav-sidebar" data-nav-type="accordion">
-    
-                
+
+
                 <li class="nav-item-header">
-                    <div class="text-uppercase font-size-xs line-height-xs">Navegación</div> 
+                    <div class="text-uppercase font-size-xs line-height-xs">Navegación</div>
                     <i class="icon-menu" title="Navegación"></i>
                 </li>
-                
+
                 {{--  menus del sistema  --}}
                 <li class="nav-item">
                     <a href="{{ route('home') }}" class="nav-link" id="menuEscritorio">
@@ -36,7 +36,7 @@
                             Escritorio
                         </span>
                     </a>
-                </li>               
+                </li>
                  {{--  menus para las gestiones del proyecto  --}}
                 <li class="nav-item nav-item-submenu" id="menuGestionInformacion">
                     <a href="#" class="nav-link">
@@ -45,47 +45,47 @@
                     </a>
                     <ul class="nav nav-group-sub" data-submenu-title="Gestión de información">
                         @can('G. de estaciones')
-                            
-                        
+
+
                         <li class="nav-item">
                             <a href="{{ route('estaciones') }}" class="nav-link" id="menuEstacion">Estaciones</a>
-                        </li> 
+                        </li>
 
                         @endcan
-                        
+
                         @can('G. de emergencias')
                         <li class="nav-item">
                             <a href="{{ route('emergencia') }}" class="nav-link" id="menuEmergencia">Emergencias</a>
-                        </li>     
+                        </li>
                         @endcan
-                        
+
                         @can('G. de personal operativos')
-                            
+
                         <li class="nav-item">
-                            <a href="{{ route('usuarios') }}" class="nav-link" id="menuUsuarios">Personal operativos</a>
-                        </li> 
+                            <a href="{{ route('usuarios') }}" class="nav-link" id="menuUsuarios">Personal operativo</a>
+                        </li>
 
                         @endcan
 
                         @can('G. de clínicas')
                         <li class="nav-item">
                             <a href="{{ route('clinicas') }}" class="nav-link" id="menuClinicas">Clínicas</a>
-                        </li>     
-                        @endcan          
+                        </li>
+                        @endcan
 
                         @can('G. de vehículos')
-                            
+
                         <li class="nav-item">
                             <a href="{{ route('tipoVehiculos') }}" class="nav-link" id="menuVehiculos">Vehículos</a>
-                        </li> 
+                        </li>
 
                         @endcan
 
                         @can('G. de insumos y medicamentos')
-                            
+
                         <li class="nav-item">
                             <a href="{{ route('insumos') }}" class="nav-link" id="menuMedicamentosInsumos">Insumos y medicamentos</a>
-                        </li> 
+                        </li>
 
                         @endcan
 
@@ -100,22 +100,22 @@
                         <span>Gestión de Puntos de referencia</span>
                     </a>
                     <ul class="nav nav-group-sub" data-submenu-title="Gestión de puntos de referencias">
-                    
+
                         <li class="nav-item">
                             <a href="{{ route('parroquias') }}" class="nav-link" id="menuParroquias">Parroquias</a>
-                        </li> 
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('barrios') }}" class="nav-link" id="menuBarrios">Barrios</a>
-                        </li> 
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('puntosReferencia') }}" class="nav-link" id="menuPuntosReferencia">Puntos de referencias</a>
-                        </li> 
+                        </li>
                     </ul>
                 </li>
                 @endcan
                 {{--  generar asistencia  --}}
                 @can('Generar asistencia')
-                    
+
                 <li class="nav-item">
                     <a href="{{ route('generarAsistencia') }}" class="nav-link" id="menuGenerarAsistencia">
                         <i class="fas fa-clipboard-list"></i>
@@ -123,7 +123,7 @@
                             Generar asistencia
                         </span>
                     </a>
-                </li> 
+                </li>
 
                 @endcan
                 {{-- generar formulario de emergencia --}}
@@ -133,17 +133,17 @@
                         <span>Gestión de Formularios</span>
                     </a>
                     <ul class="nav nav-group-sub" data-submenu-title="Gestión de formularios">
-                    
+
                         <li class="nav-item">
                             <a href="{{ route('formularios') }}" class="nav-link" id="menuFormularios">Formularios</a>
-                        </li> 
-                        
+                        </li>
+
                         @can('crearNuevoFormularioEmergencia', iobom\User::class)
                             <li class="nav-item">
                                 <a href="{{ route('nuevo-formulario') }}" class="nav-link" id="menuNuevoFormularios">Nuevo Formulario</a>
-                            </li>     
+                            </li>
                         @endcan
-                        
+
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -159,24 +159,24 @@
                        <li class="nav-item nav-item-submenu" id="menuEstadisticas">
                         <a href="#" class="nav-link">
                             <i class="icon-file-presentation2"></i>
-                            <span>Reportes y Estadísticas</span>
+                            <span>Reportes y Estadísticas de Emergencias</span>
                         </a>
                         <ul class="nav nav-group-sub" data-submenu-title="Peportes">
-                        
+
                             <li class="nav-item">
                                 <a href="{{ route('buscarReporte') }}" class="nav-link" id="menuReportes">Reportes</a>
-                            </li> 
-                            
-                            
+                            </li>
+
+
                                 <li class="nav-item">
-                                    <a href="{{ route('generarEstadisticas') }}" class="nav-link" id="menuEstadisticas">Estadísticas</a>
-                                </li>     
-                           
-                            
+                                    <a href="{{ route('generarEstadisticas') }}" class="nav-link" id="menuEstadisticas_m">Estadísticas</a>
+                                </li>
+
+
                         </ul>
                     </li>
                 <li class="nav-item-header">
-                    <div class="text-uppercase font-size-xs line-height-xs">SISTEMA</div> 
+                    <div class="text-uppercase font-size-xs line-height-xs">SISTEMA</div>
                     <i class="icon-menu" title="Sistemas"></i>
                 </li>
 
@@ -189,17 +189,17 @@
                     </a>
                 </li>
                 @endrole
-    
-                
-                
+
+
+
                 <!-- /page kits -->
-    
+
             </ul>
         </div>
-            
+
             <!-- /main navigation -->
-    
+
         </div>
         <!-- /sidebar content -->
-        
+
     </div>

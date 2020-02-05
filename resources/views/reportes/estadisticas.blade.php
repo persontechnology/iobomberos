@@ -1,4 +1,4 @@
-@extends('layouts.app',['title'=>'estadisticas'])
+@extends('layouts.app',['title'=>'Estadísticas'])
 
 @section('content')
 
@@ -24,45 +24,45 @@
 
     <div class="card-body">
         @if ($fecha)
-            
+
             <div class="card">
                 <figure class="highcharts-figure">
                     <div id="containerLineaAnio"></div>
-                    
+
                 </figure>
-                
+
             </div>
-                <div class="card"> 
+                <div class="card">
                     {{--  <canvas id="myChart" height="100"></canvas>  --}}
                     <figure class="highcharts-figure">
                         <div id="containerLinea"></div>
-                        
+
                     </figure>
-                    
+
                 </div>
                 <div class="card">
                     <figure class="highcharts-figure">
                         <div id="containerBar"></div>
-                        
+
                     </figure>
                 </div>
                 <div class="card">
                     <figure class="highcharts-figure">
                         <div id="containerPorcentajeMes"></div>
-                        
+
                     </figure>
                 </div>
-                 
-          
+
+
         @else
         <div class="alert alert-danger" role="alert">
             No se existen datos
         </div>
-            
+
         @endif
     </div>
- 
-    
+
+
 </div>
 @push('linksCabeza')
 {{--  datatable  --}}
@@ -79,7 +79,7 @@
 <script>
 var languaje={
     downloadCSV:"Descargar CSV",
-    
+
     downloadJPEG:"Descargar imagen JPEG",
     downloadPDF:"Descargar documento PDF",
     downloadPNG:"Descargar imagen PNG ",
@@ -93,7 +93,7 @@ var languaje={
     drillUpText:"◁ Regresar"
 };
 $('#menuEstadisticas').addClass('nav-item-expanded nav-item-open');
-$('#menuEstadisticas').addClass('active');
+$('#menuEstadisticas_m').addClass('active');
 // Create the chart
 var categorias= ['null','Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Séptiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 Highcharts.chart('containerLinea', {
@@ -161,17 +161,17 @@ Highcharts.chart('containerLinea', {
                 name: "{{$emergencia->nombre}}",
                 id: "{{$emergencia->nombre}}",
                 data: [
-                    @foreach ($emergencia->tipos as $tipo) 
+                    @foreach ($emergencia->tipos as $tipo)
                     [
                         "{{$tipo->nombre}}",
                        {{$tipo->formulariosEstadisticasTipos($tipo->id,$fecha)}}
                     ],
                     @endforeach
-                ]         
-                    
+                ]
+
             },
-        @endforeach  
-          
+        @endforeach
+
         ]
     }
 });
@@ -231,7 +231,7 @@ Highcharts.chart('containerLineaAnio', {
                 {{ $emergencia->formulariosEstadisticasAnio($emergencia->id,$fecha,10) }},
                 {{ $emergencia->formulariosEstadisticasAnio($emergencia->id,$fecha,11) }},
                 {{ $emergencia->formulariosEstadisticasAnio($emergencia->id,$fecha,12) }},
-                
+
             ]
 
             },
@@ -341,22 +341,22 @@ Highcharts.chart('containerPorcentajeMes', {
     ],
     drilldown: {
         series: [
-            
+
             @foreach ($emergencias as $emergencia)
             {
                 name: "{{$emergencia->nombre}}",
                 id: "{{$emergencia->nombre}}",
                 data: [
-                    @foreach ($emergencia->tipos as $tipo) 
+                    @foreach ($emergencia->tipos as $tipo)
                     [
                         "{{$tipo->nombre}}",
                        {{$tipo->formulariosEstadisticasTiposPastel($tipo->id,$fecha,$emergencia->formulariosEstadisticasMas($emergencia->id,$fecha))}}
                     ],
                     @endforeach
-                ]         
-                    
+                ]
+
             },
-        @endforeach 
+        @endforeach
         ]
     }
 });

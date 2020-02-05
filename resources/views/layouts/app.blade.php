@@ -33,7 +33,7 @@
 
 	<script src="{{ asset('admin/js/app.js') }}"></script>
 	<!-- /theme JS files -->
-	
+
 	{{--  Lobibox.min  --}}
 	<link rel="stylesheet" href="{{ asset('admin/plus/Lobibox/css/lobibox.min.css') }}">
 	<script src="{{ asset('admin/plus/Lobibox/js/lobibox.js') }}"></script>
@@ -74,7 +74,7 @@
 				errorPlacement: function ( error, element ) {
 					// Add the `invalid-feedback` class to the error element
 					error.addClass( "invalid-feedback" );
-	
+
 					if ( element.prop( "type" ) === "checkbox" ) {
 						error.insertAfter( element.next( "label" ) );
 					} else {
@@ -89,8 +89,8 @@
 				}
 			});
 		}
-		
-		
+
+
 		$(document).on('click', '[data-toggle="lightbox"]', function(event){
 			event.preventDefault();
 			$(this).ekkoLightbox();
@@ -155,7 +155,7 @@
         </div>
         @endauth
 
-        
+
 	</div>
 	{{--  /Cabecera  --}}
 
@@ -176,13 +176,13 @@
 
 			{{--  Links  --}}
 			<div class="page-header page-header-light">
-				
+
 				<div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
 					<div class="d-flex">
 						<div class="breadcrumb">
 							@yield('breadcrumbs')
 						</div>
-						
+
 
 						{{--  si existe barra laterla se muestra  --}}
 						@hasSection('barraLateral')
@@ -210,24 +210,24 @@
 					</script>
 					@endif
 				@endforeach
-				
+
 
 				@if ($errors->any())
 					<div class="alert alert-danger border-0 alert-dismissible">
 						<button type="button" class="close" data-dismiss="alert">
 							<i class="fas fa-times"></i>
 						</button>
-						
+
 						@foreach ($errors->all() as $error)
 						<span class="font-weight-semibold"><li>{{ $error }}</li></span>
 						@endforeach
-						
+
 					</div>
 
-					
+
 
 				@endif
-				
+
                 @yield('content')
 
 			</div>
@@ -251,12 +251,12 @@
 			$('[data-toggle="tooltip"]').tooltip();
 		})
 
-		
-		
+
+
 	</script>
-	
+
 	@stack('linksPie')
-	
+
 
 
 </body>

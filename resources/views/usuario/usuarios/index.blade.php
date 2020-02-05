@@ -1,4 +1,4 @@
-@extends('layouts.app',['title'=>'Usuarios'])
+@extends('layouts.app',['title'=>'Personal operativo'])
 
 @section('breadcrumbs', Breadcrumbs::render('usuarios'))
 
@@ -75,7 +75,7 @@
                         notificar("info",data.success);
                     }
                     if(data.default){
-                        notificar("default",data.default);   
+                        notificar("default",data.default);
                     }
                     console.log(data)
                 }).always(function(){
@@ -83,14 +83,14 @@
                 }).fail(function(){
                     notificar("error","Ocurrio un error");
                 });
-    
+
             });
         }
 
-        
+
     </script>
     {!! $dataTable->scripts() !!}
-    
+
 @endprepend
 
 @endsection

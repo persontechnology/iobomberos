@@ -60,8 +60,9 @@ class EstacionDataTable extends DataTable
             'id',
             'nombre',
             'direccion',
-            'foto'
-            
+            'foto',
+            'created_at'
+
         ];
     }
      protected function getColumnsTable()
@@ -69,7 +70,8 @@ class EstacionDataTable extends DataTable
         return [
             'foto'=>['exportable'=>false,'printable' => false,'title'],
             'nombre',
-            'direccion'=>['title'=>'Dirección'],            
+            'direccion'=>['title'=>'Dirección'],
+            'created_at'=>['title'=>'Fecha creado']
         ];
     }
 
