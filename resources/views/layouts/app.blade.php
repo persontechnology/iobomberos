@@ -9,6 +9,9 @@
 
     <title>{{ config('app.name', 'Laravel') }} | {{ ucfirst($title ?? '') }}</title>
 
+    <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
+
 	<!-- Global stylesheets -->
 	<link href="{{ asset('admin/font/roboto.css') }}" rel="stylesheet" type="text/css">
 	<link href="{{ asset('admin/font/icomoon/styles.min.css') }}" rel="stylesheet" type="text/css">

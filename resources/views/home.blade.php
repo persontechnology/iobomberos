@@ -17,6 +17,7 @@
                     @endif
 
                     <img src="{{ asset('admin/img/home.jpg') }}" class="img-fluid img-thumbnail rounded mx-auto d-block" alt="">
+                    <p>{{asset('apk/android.apk')}}</p>
                 </div>
             </div>
         </div>
